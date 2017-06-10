@@ -8,7 +8,7 @@ export default class Main extends React.Component {
       super(props);
       this.state = {content:"dadwa"};
   }
-  componentDidMount(this) {
+  componentDidMount() {
     // return fetch('api/project.json')
     //   .then((response) => response.json())
     //   .then((responseJson) => {
