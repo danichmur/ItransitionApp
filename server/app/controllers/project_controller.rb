@@ -1,5 +1,6 @@
 class ProjectController < ApplicationController
+  
   def index
-    render status: 200, json: {param: 'blabalbla'}
+    render status: 200, json: Project.all.to_json
   end 
 end
