@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
+  "proxy": "http://localhost:3001/",
   "scripts": {
-    "dev": "webpack-dev-server --hot --inline --historyApiFallback --port 8080",
+    "dev": "webpack-dev-server --hot --inline --historyApiFallback --port 3000",
     "build": "webpack"
   },
   "keywords": [
@@ -37,6 +38,7 @@
   },
   "devDependencies": {
     "css-loader": "^0.28.4",
+    "flexboxgrid": "^6.3.1",
     "style-loader": "^0.18.1",
     "webpack-dev-server": "^2.4.5",
     "webpack-notifier": "^1.5.0"
