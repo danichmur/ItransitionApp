@@ -37,7 +37,7 @@ const lightBaseTheme = {
   fontFamily: 'Roboto, sans-serif',
   borderRadius: 2,
   palette: {
-    primary1Color: cyan500,
+    primary1Color: grey900,
     primary2Color: cyan700,
     primary3Color: grey400,
     accent1Color: pinkA200,
@@ -52,9 +52,6 @@ const lightBaseTheme = {
     pickerHeaderColor: cyan500,
     clockCircleColor: fade(darkBlack, 0.07),
     shadowColor: fullBlack,
-  },
-  appBar: {
-    color: grey900,
   },
 };
 const THEME = getMuiTheme(lightBaseTheme);
