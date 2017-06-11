@@ -8,7 +8,12 @@ import LogUpForm from './logUp/LogUpForm';
 import AllProjects from './Projects/AllProjects';
 import Project from './SomeProject/Project';
 import News from './news/News';
-import {BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom';
 
 export default class Content extends React.Component {
 
@@ -25,15 +30,15 @@ export default class Content extends React.Component {
 		return (
       <Router>
         <div>
-          <Header showDrawer={this.leftButtonTouch.bind(this)}/>
-          <Drawer drawerState={this.drawerState} />
-          <Route path='/main' component={Main} />
-          <Route path='/profile' component={Profile} />
-          <Route path='/projects' component={AllProjects} />
-          <Route path='/logIn' component={LogInForm} />
-          <Route path='/logUp' component={LogUpForm} />
-          <Route path='/news' component={News} />
-          <Route path='/project/:id' component={Project}/>
+            <Header showDrawer={this.leftButtonTouch.bind(this)}/>
+            <Drawer drawerState={this.drawerState} />
+            <Route path='/main' component={Main} />
+            <Route path='/profile' component={Profile} />
+            <Route path='/projects' component={AllProjects}/>
+            <Route path='/logIn' component={LogInForm} />
+            <Route path='/logUp' component={LogUpForm} />
+            <Route path='/news' component={News} />
+            <Route path='/project/:id' component={Project}/>
         </div>
       </Router>
     );
