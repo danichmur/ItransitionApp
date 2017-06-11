@@ -14,7 +14,7 @@ function parseJSON(response) {
 };
 
 function getFewProjects(fun) {
-  return fetch('http://localhost:3001/api/project')
+  return fetch('http://localhost:3001/project')
     .then(checkStatus)
     .then(parseJSON)
     .then(fun);
