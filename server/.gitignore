@@ -10,7 +10,20 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
-!/log/.keep
-!/tmp/.keep
+
 
 .byebug_history
+/app/*
+/bin/*
+/config/*
+/db/*
+/lib/*
+/app/*
+/public/*
+/test/*
+/vendor/*
+.ru
+.lock
+.md
+Gemfile
+Procfile
