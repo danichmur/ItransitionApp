@@ -19,6 +19,7 @@ export default class AllProjects extends React.Component {
     ApiQueries.getOneProject(this.props.match.params.id, (data => {
       this.setState({ projects: data });
     }));
+    console.log(this.state.project);
   };
   render() {
 		return (
