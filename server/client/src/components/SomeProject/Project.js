@@ -20,6 +20,7 @@ export default class AllProjects extends React.Component {
       this.setState({ projects: data });
     }));
     console.log(this.state.project);
+    sefe
   };
   render() {
 		return (
