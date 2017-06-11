@@ -14,13 +14,13 @@ function parseJSON(response) {
 };
 
 function getFewProjects(fun) {
-  return fetch('http://localhost:3001/project')
+  return fetch('http://localhost:3001/projects')
     .then(checkStatus)
     .then(parseJSON)
     .then(fun);
 };
 function getOneProject(id,fun){
-  return fetch('http://localhost:3001/project/'+id)
+  return fetch('http://localhost:3001/projects/'+id)
     .then(checkStatus)
     .then(parseJSON)
     .then(fun);
