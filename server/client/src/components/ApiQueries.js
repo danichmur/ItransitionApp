@@ -19,6 +19,11 @@ function getFewProjects(fun) {
     .then(parseJSON)
     .then(fun);
 };
-
-const ApiQueries = { getFewProjects };
+function getOneProject(id,fun){
+  return fetch('http://localhost:3001/project/'+id)
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(fun);
+};
+const ApiQueries = { getFewProjects, getOneProject };
 export default ApiQueries;
