@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     #get :show, to: 'project#show'
  # end
   
-  resources :project, :users, :news
+  resources :projects, :users, :news
 # resources :projects do
 #    get :search, on: :collection
 #  end

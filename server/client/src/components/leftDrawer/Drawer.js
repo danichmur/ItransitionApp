@@ -22,7 +22,7 @@ export default class DrawerSimpleExample extends React.Component {
             onRequestChange={this.handleClose.bind(this)}
             >
             <List>
-              <Link to="/profile">
+              <Link to={'/profile'}>
                 <ListItem className="menu-link"
                           onTouchTap={this.handleClose.bind(this)}>
                       <Row middle="xs">
@@ -39,7 +39,7 @@ export default class DrawerSimpleExample extends React.Component {
                 </Row>
               </ListItem>
             </Link>
-            <Link to="/project">
+            <Link to="/projects">
               <ListItem className="menu-link"
                         onTouchTap={this.handleClose.bind(this)}>
                 <Row center="xs">

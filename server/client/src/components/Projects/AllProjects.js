@@ -2,8 +2,10 @@ import React from 'react';
 import { Paper,Divider,Chip, MenuItem }  from 'material-ui';
 import { Grid,Row,Col } from 'react-flexbox-grid';
 import {List, ListItem} from 'material-ui/List';
+import { Route, Link } from 'react-router-dom';
 import './AllProjects.scss';
 import ApiQueries from '../ApiQueries';
+import Main from '../main/Main';
 
 export default class AllProjects extends React.Component {
 
@@ -11,6 +13,7 @@ export default class AllProjects extends React.Component {
     super(props);
     this.state = {
       projects: [],
+      linkTo:'',
     }
   };
 
@@ -29,17 +32,23 @@ export default class AllProjects extends React.Component {
             <Paper zDepth={2}>
               <List>
                 {this.state.projects.map((project => (
-                  <ListItem
-                    key = {project.id}
-                    secondaryText={
-                      <Row end="xs">
-                        Created by {project.author},09.06.2017
-                      </Row>
-                    }
+                  <Link
+                    key={project.id}
+                    to={{
+                      pathname:`/project/${project.id}`
+                    }}
                   >
-                    <h3>{project.name}</h3>
-                    <p>{project.description}</p>
-                  </ListItem>
+                    <ListItem
+                      secondaryText={
+                        <Row end="xs">
+                          Created by {project.author},{project.created_at}
+                        </Row>
+                      }
+                    >
+                      <h3>{project.name}</h3>
+                      <p>{project.description}</p>
+                    </ListItem>
+                  </Link>
                 )))}
               </List>
             </Paper>
