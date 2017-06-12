@@ -7,6 +7,7 @@ import LogInForm from './logIn/LogInForm';
 import LogUpForm from './logUp/LogUpForm';
 import AllProjects from './Projects/AllProjects';
 import Project from './SomeProject/Project';
+
 import News from './news/News';
 import {
   BrowserRouter as Router,
@@ -33,7 +34,7 @@ export default class Content extends React.Component {
             <Header showDrawer={this.leftButtonTouch.bind(this)}/>
             <Drawer drawerState={this.drawerState} />
             <Route path='/main' component={Main} />
-            <Route path='/profile' component={Profile} />
+            <Route path='/profile/:id' component={Profile} />
             <Route path='/projects' component={AllProjects}/>
             <Route path='/logIn' component={LogInForm} />
             <Route path='/logUp' component={LogUpForm} />
