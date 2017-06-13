@@ -10,12 +10,16 @@ class ProjectsController < ApplicationController
   
   def show
     project = Project.find(params[:id])
-    render status: 200, json: project.to_json(:include => 
-      {:users => 
-          { :only => [:name, :id]},
-       :tags => 
-          {:only => [:value, :id]}
-        }
+    render status: 200, json: project.to_json(:include => {
+      :users => 
+        { :only => [:nickname, :id]},
+      :tags => 
+        {:only => [:value, :id]},
+      :documents => 
+        {:only => [:name, :url]},
+      :discussions =>
+        {:only => [:id, :name]}
+      }
     )
   end
   
