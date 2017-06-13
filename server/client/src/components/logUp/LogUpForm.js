@@ -9,7 +9,7 @@ import { RaisedButton,
          StepContent,
          MenuItem,
          SelectField} from 'material-ui';
-import { ValidatorForm, TextValidator, SelectValidator} from 'react-material-ui-form-validator';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import './LogUpForm.scss';
 
 export default class LogUpForm extends React.Component {
@@ -127,7 +127,7 @@ renderStepActions(step) {
               <Step>
                 <StepLabel>Fill in form</StepLabel>
                 <StepContent>
-                  <ValidatorForm onSubmit={this.handleSubmit}>
+                  <ValidatorForm onSubmit={this.handleSubmit.bind(this)}>
                     <TextValidator floatingLabelText="Nick name"
                                    onChange={this.handleInputNickName}
                                    name="nickName"

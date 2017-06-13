@@ -19,10 +19,19 @@ export default class ParticipantsDlg extends React.Component {
         marginBottom:10,
       }
     }
+    this.state = {
+      users: [
+        {id:25, name: 'Name1', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
+        {id:26, name: 'Ekaterina', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
+        {id:27, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
+        {id:28, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
+        {id:29, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
+      ],
+    }
   };
-
+  
   handleCloseParticipants() {
-    this.props.openDlg();
+    this.props.closeDlg();
   };
 
   render() {
@@ -43,7 +52,7 @@ export default class ParticipantsDlg extends React.Component {
         autoScrollBodyContent={true}
       >
         <Row>
-          {this.props.users.map(user => (
+          {this.state.users.map(user => (
             <Col key={user.id} xs={6} sm={3} md={2} lg={2}>
               <Link
                 to={{

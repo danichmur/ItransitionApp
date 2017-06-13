@@ -3,9 +3,7 @@ import ProjectInfo from './ProjectInfo/ProjectInfo'
 import Participants from './Users/Participants'
 import Discussions from './Discussions/AllDiscussions'
 import Files from './Files/AllFiles'
-import ParticipantsDlg from './Dialogs/ParticipantsDlg'
 import { Grid, Row, Col } from 'react-flexbox-grid';
-
 import ApiQueries from '../ApiQueries';
 import './Project.scss';
 
@@ -15,7 +13,7 @@ export default class AllProjects extends React.Component {
     super(props);
     this.state = {
       project: {
-        id: 1,
+        id: 45,
         name: 'Project',
         author: 'Manager',
         active: true,
@@ -52,7 +50,6 @@ export default class AllProjects extends React.Component {
           { id: 5, name: 'discussions1', url: 'dwdwadwad', updated_at: '23.04.2015'},
         ],
       },
-      participantsOpen: false,
     }
   };
 
@@ -62,31 +59,22 @@ export default class AllProjects extends React.Component {
     }));
   };
 
-  openParticipantsDlg() {
-    this.setState({participantsOpen: !this.state.participantsOpen});
-  };
 
   render() {
 		return (
       <Grid fluid>
-        <ParticipantsDlg
-          open={this.state.participantsOpen}
-          users={this.state.project.users}
-          openDlg={this.openParticipantsDlg.bind(this)}
-        />
         <Row>
           <ProjectInfo
             project={this.state.project}
           />
           <Participants
             users={this.state.project.users}
-            openDlg={this.openParticipantsDlg.bind(this)}
           />
         </Row>
         {this.state.project.active ?
           <Row>
             <Files documents={this.state.project.documents}/>
-            <Discussions discussions={this.state.project.discussions}/>
+            <Discussions users={this.state.project.users} discussions={this.state.project.discussions}/>
           </Row> : null}
       </Grid>
     );

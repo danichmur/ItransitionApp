@@ -7,7 +7,7 @@ import LogInForm from './logIn/LogInForm';
 import LogUpForm from './logUp/LogUpForm';
 import AllProjects from './Projects/AllProjects';
 import Project from './SomeProject/Project';
-
+import SomeDiscussion from './Discussion/SomeDiscussion';
 import News from './news/News';
 import {
   BrowserRouter as Router,
@@ -35,11 +35,12 @@ export default class Content extends React.Component {
             <Drawer drawerState={this.drawerState} />
             <Route path='/main' component={Main} />
             <Route path='/profile/:id' component={Profile} />
-            <Route path='/projects' component={AllProjects}/>
+            <Route path='/projects' component={AllProjects} />
             <Route path='/logIn' component={LogInForm} />
             <Route path='/logUp' component={LogUpForm} />
             <Route path='/news' component={News} />
-            <Route path='/project/:id' component={Project}/>
+            <Route path='/project/:id' component={Project} />
+            <Route path='/discussion/:id' component={SomeDiscussion} />
         </div>
       </Router>
     );

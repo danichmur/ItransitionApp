@@ -8,6 +8,8 @@ import {
   RaisedButton,
   AutoComplete,
   Chip,
+  Divider,
+  FloatingActionButton,
 }  from 'material-ui';
 import { Row,Col } from 'react-flexbox-grid';
 import { ValidatorForm, TextValidator, SelectValidator} from 'react-material-ui-form-validator';
@@ -21,11 +23,14 @@ export default class EditInfoDlg extends React.Component {
       participants: {
         marginTop:10,
         marginBottom:10,
+      },
+      errorText: {
+        zIndex:1000,
       }
     }
     this.state = {
-      projectName: this.props.projectInfo.name,
-      projectDescription: this.props.projectInfo.description,
+      projectName: '',
+      projectDescription: '',
       autoComlete: [
         "java",
         "C#",
@@ -53,6 +58,10 @@ export default class EditInfoDlg extends React.Component {
       )
     :
       (
+        this.setState({
+          projectName: this.props.projectInfo.name,
+          projectDescription: this.props.projectInfo.description
+        }),
         console.log("get data")
       )
 
@@ -96,72 +105,76 @@ export default class EditInfoDlg extends React.Component {
   };
 
   render() {
-    const actions = [
-      <RaisedButton
-        label="Edit"
-        primary={true}
-        type="submit"
-        onTouchTap={this.handleSubmit.bind(this)}
-      />,
-      <FlatButton
-        label="Close"
-        primary={true}
-        onTouchTap={this.handleCloseEditInfo.bind(this)}
-      />
-    ];
+
 		return (
       <Dialog
         title="Edit project data"
-        actions={actions}
         modal={false}
+        autoDetectWindowHeight={true}
         open={this.props.open}
         onRequestClose={this.handleCloseEditInfo.bind(this)}
         autoScrollBodyContent={true}
       >
-        <Row center="xs">
+        <Row>
           <Col xs={12}>
             <ValidatorForm onSubmit={this.handleSubmit.bind(this)}>
-              <Row>
-                <TextValidator
-                  floatingLabelText="Project name"
-                  onChange={this.handleInputProjectName.bind(this)}
-                  name="projectName"
-                  fullWidth={true}
-                  value={this.state.projectName}
-                  validators={['required']}
-                  errorMessages={['this field is required']}
-                />
-              </Row>
+              <TextValidator
+                floatingLabelText="Project name"
+                style={this.styles.errorText}
+                onChange={this.handleInputProjectName.bind(this)}
+                name="projectName"
+                fullWidth={true}
+                value={this.state.projectName}
+                validators={['required']}
+                errorMessages={['this field is required']}
+              />
+              <Divider />
               <Chips
                 deleteTag={this.deleteTag.bind(this)}
                 tags={this.state.chips}
                 edit={true}
               />
-              <Row>
+              <Divider />
+              <Row bottom="xs">
+                <Col xs={6}>
                   <AutoComplete
                     floatingLabelText="Input tag"
                     filter={AutoComplete.fuzzyFilter}
                     dataSource={this.state.autoComlete}
                     onUpdateInput={this.handleInputTags.bind(this)}
                   />
+                </Col>
+                <Col xs={6}>
                   <RaisedButton
-                    label="Addtag"
+                    label="add tag"
                     primary={true}
                     onTouchTap={this.addNewTag.bind(this)}
                   />
+                </Col>
               </Row>
-              <Row>
-                <TextValidator
-                  floatingLabelText="Description"
-                  multiLine={true}
-                  fullWidth={true}
-                  onChange={this.handleInputDescription.bind(this)}
-                  name="description"
-                  value={this.state.projectDescription}
-                  validators={['required']}
-                  errorMessages={['this field is required']}
-                />
-              </Row>
+              <TextValidator
+                floatingLabelText="Description"
+                multiLine={true}
+                fullWidth={true}
+                style={this.styles.errorText}
+                onChange={this.handleInputDescription.bind(this)}
+                name="description"
+                value={this.state.projectDescription}
+                validators={['required']}
+                errorMessages={['this field is required']}
+              />
+              <RaisedButton
+                label="Edit"
+                disableTouchRipple={true}
+                disableFocusRipple={true}
+                primary={true}
+                type="submit"
+              />
+              <FlatButton
+                label="Close"
+                primary={true}
+                onTouchTap={this.handleCloseEditInfo.bind(this)}
+              />
             </ValidatorForm>
           </Col>
         </Row>

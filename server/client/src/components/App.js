@@ -52,7 +52,6 @@ const lightBaseTheme = {
     pickerHeaderColor: cyan500,
     clockCircleColor: fade(darkBlack, 0.07),
     shadowColor: fullBlack,
-    aColor: cyan700,
   },
 };
 const THEME = getMuiTheme(lightBaseTheme);

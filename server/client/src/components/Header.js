@@ -11,6 +11,10 @@ export default class Header extends React.Component {
   render() {
     return (
         <AppBar
+          style={{
+            position:'fixed',
+             top: 0,
+          }}
           title="Project-Manager"
           onLeftIconButtonTouchTap={this.leftButtonTouch.bind(this)}
         />
