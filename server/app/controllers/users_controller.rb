@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   
   
   def index
-    render status: 200, json: User.all.to_json
+    render status: 200, json: User.all.to_json(:only => [:name, :nickname, :email, :position, :photo])
   end
   
   def show

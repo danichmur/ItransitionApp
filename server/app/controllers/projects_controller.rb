@@ -17,7 +17,12 @@ class ProjectsController < ApplicationController
           {:only => [:value, :id]}
         }
     )
-    
+  end
+  
+  def users
+    project = Project.find(params[:project_id])
+    render status: 200, json: project.users.
+      to_json(:only => [:name, :nickname, :email, :position, :photo])
   end
   
   def project_params
