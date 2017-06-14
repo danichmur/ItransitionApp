@@ -11,6 +11,20 @@ Rails.application.routes.draw do
   
   resources :projects do
     get 'users', to: :users, controller: 'projects'
+    get 'tags_on_project', to: :tags, controller: 'tags'
+    resources :discussions do
+      resources :comments
+    end
+    
+    collection do
+      put :update
+    end
+    
+    resources :tags do
+      collection do
+        put :tags_on_project
+      end
+    end
   end
   
 end
