@@ -18,7 +18,7 @@ export default class Files extends React.Component {
 
   render() {
 		return (
-      <Col className="backgroundStyle" xs={12} sm={6} md={6} lg={5}>
+      <Col className="backgroundStyle" xs={12} sm={6} md={6} lg={6}>
         <List>
           <Row>
             <Col xs={10}>

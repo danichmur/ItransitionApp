@@ -17,34 +17,14 @@ import { ValidatorForm, TextValidator, SelectValidator} from 'react-material-ui-
 import {Link } from 'react-router-dom';
 import Chips from '../ProjectInfo/Chips';
 import {List, ListItem} from 'material-ui/List';
+import ApiQueries from '../../ApiQueries';
 
 export default class AddUsersDlg extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      oldUsers: [
-        {id:34, name: 'Name1', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:35, name: 'Ekaterina', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:27, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:58, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:36, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:45, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:55, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:65, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:75, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:85, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:91, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:92, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:93, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:94, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:95, name: 'Жевняк Владислав', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:96, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:97, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:98, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:99, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:52, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-      ],
+      allUser: [],
       newUsers:[],
     }
   }
@@ -53,7 +33,8 @@ export default class AddUsersDlg extends React.Component {
     this.props.closeDlg();
   }
   handleSubmit() {
-    console.log(3423);
+    this.props.sendSnangeUsers(this.state.newUsers);
+    this.handleCloseDlg();
   }
   componentWillReceiveProps() {
     this.props.open ?
@@ -62,15 +43,25 @@ export default class AddUsersDlg extends React.Component {
       )
     :
       (
-        console.log('open'),
-        this.state.newUsers = []
+        console.log("delete"),
+        this.state.newUsers = [],
+        console.log("reu"),
+        ApiQueries.getAllUser((data => {
+          this.setState({allUser: data});
+        }))
+          ,
+          console.log("add"),
+        this.props.oldUsers.map(user =>(
+            this.state.newUsers.push(user)
+        )),
+        console.log(this.state.newUsers)
+
       )
   }
-
   editCheckArray(e, isChecked) {
     const userId = e.target.value;
-    let user = this.state.oldUsers.find(person => person.id == userId);
-    let indexOfUser = this.state.oldUsers.map((user) => user.id).indexOf(user.id);
+    let user = this.state.allUser.find(person => person.id == userId);
+    let indexOfUser = this.state.newUsers.map((user) => user.id).indexOf(user.id);
     console.log(indexOfUser);
     isChecked ?
       (
@@ -80,21 +71,15 @@ export default class AddUsersDlg extends React.Component {
       (
         this.state.newUsers.splice(indexOfUser, 1)
       )
-      console.log(this.state.newUsers)
-  }
-
-  editCheckBox() {
-
   }
 
   isPresent(user) {
-    var isPresent = this.props.users.find(person => person.id == user.id);
+    var isPresent = this.props.oldUsers.find(person => person.id == user.id);
     return isPresent = !!isPresent;
   };
 
   renderUser(user) {
-    var isChecked = this.isPresent(user);
-     isChecked ? this.state.newUsers.push(user) : null;
+    let isChecked = this.isPresent(user);
     return(
       <Row middle="xs" key={user.id}>
         <Col xs={1}>
@@ -114,10 +99,10 @@ export default class AddUsersDlg extends React.Component {
 
               </Col>
               <Col>
-                <Avatar size={55} src={user.avatar} />
+                <Avatar size={55} src={user.photo} />
               </Col>
               <Col xsOffset={1}>
-                {user.name}
+                {user.nickname}
               </Col>
             </Row>
           </ListItem>
@@ -134,6 +119,7 @@ export default class AddUsersDlg extends React.Component {
           <Row end="xs">
             <RaisedButton
               label="Add"
+              onTouchTap={this.handleSubmit.bind(this)}
               primary={true}
             />
             <FlatButton
@@ -153,7 +139,7 @@ export default class AddUsersDlg extends React.Component {
           <Col xs={12}>
             <ValidatorForm onSubmit={this.handleSubmit.bind(this)}>
               <List>
-                  {this.state.oldUsers.map(this.renderUser, this)},
+                  {this.state.allUser.map(this.renderUser, this)},
               </List>
             </ValidatorForm>
           </Col>

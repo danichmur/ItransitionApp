@@ -32,7 +32,12 @@ export default class Participants extends React.Component {
   };
 
   handleOpenAddUser(){
-    this.setState({addUserDlgOpen: !this.state.addUserDlgOpen});
+    var newState = !this.state.addUserDlgOpen;
+    this.setState({addUserDlgOpen: newState});
+  };
+
+  sendUser(data) {
+    this.props.newUsers(data);
   };
 
   render() {
@@ -61,17 +66,17 @@ export default class Participants extends React.Component {
         </Row>
         <Row>
           {this.props.users.map(user => (
-            <Col key={user.id} xs={4}>
+            <Col key={user.id} xs={6}>
               <Link
                 to={{
                   pathname:`/profile/${user.id}`
                 }}
               >
                 <Row center="xs">
-                  <Avatar size={60} src={user.avatar} />
+                  <Avatar size={60} src={user.photo} />
                 </Row>
                 <Row style={this.styles.participants} center="xs">
-                  {user.name}
+                  {user.nickname}
                 </Row>
               </Link>
             </Col>
@@ -80,11 +85,13 @@ export default class Participants extends React.Component {
         <ParticipantsDlg
           open={this.state.participantsDlgOpen}
           closeDlg={this.handleOpenParticipants.bind(this)}
+          users={this.props.users}
         />
         <AddUsersDlg
-          users={this.props.users}
           open={this.state.addUserDlgOpen}
           closeDlg={this.handleOpenAddUser.bind(this)}
+          sendSnangeUsers={this.sendUser.bind(this)}
+          oldUsers={this.props.users}
         />
       </Col>
     );

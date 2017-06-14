@@ -35,12 +35,12 @@ export default class Content extends React.Component {
             <Drawer drawerState={this.drawerState} />
             <Route path='/main' component={Main} />
             <Route path='/profile/:id' component={Profile} />
-            <Route path='/projects' component={AllProjects} />
+            <Route path='/allprojects' component={AllProjects} />
             <Route path='/logIn' component={LogInForm} />
             <Route path='/logUp' component={LogUpForm} />
             <Route path='/news' component={News} />
-            <Route path='/project/:id' component={Project} />
-            <Route path='/discussion/:id' component={SomeDiscussion} />
+            <Route path='/projects/:id' component={Project} />
+            <Route path='/discussion/:id/project/:id' component={SomeDiscussion} />
         </div>
       </Router>
     );

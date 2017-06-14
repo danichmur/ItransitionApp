@@ -13,68 +13,94 @@ export default class AllProjects extends React.Component {
     super(props);
     this.state = {
       project: {
-        id: 45,
-        name: 'Project',
-        author: 'Manager',
+        id: null,
+        name: '',
+        author: '',
         active: true,
-        description: 'Sporem ipsum dolor sit amet, consectetuer dsdsdsds dsds d adipiscing elit, sed diem nonummy nibh euismod tincidunt ut lacreet dolore magna aliguam erat volutpat.  Ut wisis enim ad minim veniam, quis nostrud exerci tution ullamcorper suscipit  obortis nisl ut aliquip ex ea commodo consequat',
-        created_at: '23.04.1997',
-        updated_at: '23.04.2015',
-        users: [
-          {id:25, name: 'Name1', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-          {id:26, name: 'Ekaterina', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-          {id:27, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-          {id:28, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-          {id:29, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        ],
-        tags: [
-          {id:1, value: 'Java'},
-          {id:2, value: 'C#'},
-          {id:3, value: 'C#'},
-          {id:4, value: 'C#'},
-          {id:5, value: 'C#'},
-          {id:6, value: 'C#'}
-        ],
-        documents: [
-          { id: 1, name: 'documeф вывыф ывфвыв вфы вфыв фывфыв ыфв фывыф вnt1 выфвфы выфв фы', url: 'dwdwadwad', updated_at: '23.04.2015'},
-          { id: 2, name: 'document1', url: 'dwdwadwad', updated_at: '23.04.2015'},
-          { id: 3, name: 'document1', url: 'dwdwadwad', updated_at: '23.04.2015'},
-          { id: 4, name: 'document1', url: 'dwdwadwad', updated_at: '23.04.2015'},
-          { id: 5, name: 'document1', url: 'dwdwadwad', updated_at: '23.04.2015'},
-        ],
-        discussions: [
-          { id: 1, name: 'discussions1', url: 'dwdwadwad', updated_at: '23.04.2015'},
-          { id: 2, name: 'discussions1', url: 'dwdwadwad', updated_at: '23.04.2015'},
-          { id: 3, name: 'discussions1', url: 'dwdwadwad', updated_at: '23.04.2015'},
-          { id: 4, name: 'discussions1', url: 'dwdwadwad', updated_at: '23.04.2015'},
-          { id: 5, name: 'discussions1', url: 'dwdwadwad', updated_at: '23.04.2015'},
-        ],
+        description: '',
+        created_at: null,
+        updated_at: null,
+        users: [],
+        tags: [],
+        documents: [],
+        discussions: [],
       },
     }
   };
 
-  componentDidMount(){
+  componentDidMount() {
     ApiQueries.getOneProject(this.props.match.params.id, (data => {
-      this.setState({ projects: data });
+      this.setState({
+        project: data});
     }));
   };
 
+  changeData(data) {
+    console.log(data)
+    var updatedProject = {
+      id: this.state.project.id,
+      name: data.name,
+      author: this.state.project.author,
+      active: this.state.project.active,
+      description: data.description,
+      created_at: this.state.project.created_at,
+      updated_at: this.state.project.updated_at,
+      users: this.state.project.users,
+      tags: data.tags,
+      documents: this.state.project.documents,
+      discussions: this.state.project.discussions,
+    }
+    this.setState({ project: updatedProject });
+
+    var a = ApiQueries.updateProject(this.state.project.id, {
+      name: data.name,
+      active: this.state.project.active,
+      description: data.description
+    });
+    console.log(a);
+    ApiQueries.sendNewTags(this.state.project.id, {
+      tags: data.tags,
+    });
+  }
+
+
+  changeUsers(data) {
+    var updatedProject = {
+      id: this.state.project.id,
+      name: this.state.project.name,
+      author: this.state.project.author,
+      active: this.state.project.author,
+      description: this.state.project.description,
+      created_at: this.state.project.created_at,
+      updated_at: this.state.project.updated_at,
+      users: data,
+      tags: this.state.project.tags,
+      documents: this.state.project.documents,
+      discussions: this.state.project.discussions,
+    }
+    this.setState({ project: updatedProject})
+  }
 
   render() {
 		return (
       <Grid fluid>
         <Row>
           <ProjectInfo
+            sendChangedData={this.changeData.bind(this)}
             project={this.state.project}
           />
           <Participants
+            newUsers={this.changeUsers.bind(this)}
             users={this.state.project.users}
           />
         </Row>
         {this.state.project.active ?
           <Row>
             <Files documents={this.state.project.documents}/>
-            <Discussions users={this.state.project.users} discussions={this.state.project.discussions}/>
+            <Discussions
+              discussions={this.state.project.discussions}
+              idProject ={this.state.project.id}
+            />
           </Row> : null}
       </Grid>
     );

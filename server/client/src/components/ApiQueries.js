@@ -1,3 +1,5 @@
+const proxy = 'http://cebed67a.ngrok.io';
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -14,24 +16,76 @@ function parseJSON(response) {
 };
 
 function getFewProjects(fun) {
-  return fetch('http://localhost:3001/project')
+  return fetch(proxy+'/projects')
     .then(checkStatus)
     .then(parseJSON)
     .then(fun);
 };
 
 function getOneProject(id,fun){
-  return fetch('http://localhost:3001/project/'+id)
+
+  return fetch(proxy + '/projects/'+id)
     .then(checkStatus)
     .then(parseJSON)
     .then(fun);
 };
 
 function getOneDiscussion(id,fun){
-  return fetch('http://localhost:3001/discussion/'+id)
+  var path = id.split('/');
+  return fetch(proxy +'/projects/' + path[4] + '/discussions/'+ path[2])
     .then(checkStatus)
     .then(parseJSON)
     .then(fun);
 };
-const ApiQueries = { getFewProjects, getOneProject, getOneDiscussion};
+
+function getAllProjectUser(id,fun) {
+  return fetch(proxy+'/projects/'+id+'/users')
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(fun);
+};
+
+function getAllUser(fun) {
+  return fetch(proxy+'/users')
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(fun);
+};
+
+function updateProject(id, value) {
+  var data= {
+      project: value
+  }
+  return fetch(proxy+'/projects/'+ id, {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body:  JSON.stringify(data),
+  })
+  .then(checkStatus);
+
+}
+
+function sendNewTags(id, tags) {
+  return fetch(proxy+'/projects/'+ id + '/tags', {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body:  JSON.stringify(tags),
+  })
+  .then(checkStatus);
+}
+const ApiQueries = {
+  getFewProjects,
+  getOneProject,
+  getOneDiscussion,
+  getAllProjectUser,
+  getAllUser,
+  updateProject,
+  sendNewTags,
+};
 export default ApiQueries;

@@ -8,6 +8,7 @@ import {
 }  from 'material-ui';
 import { Row,Col } from 'react-flexbox-grid';
 import {Link } from 'react-router-dom';
+import ApiQueries from '../../ApiQueries';
 
 export default class ParticipantsDlg extends React.Component {
 
@@ -20,19 +21,15 @@ export default class ParticipantsDlg extends React.Component {
       }
     }
     this.state = {
-      users: [
-        {id:25, name: 'Name1', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:26, name: 'Ekaterina', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:27, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:28, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        {id:29, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-      ],
+      users: [],
     }
   };
-  
+
   handleCloseParticipants() {
     this.props.closeDlg();
   };
+
+  
 
   render() {
     const actions = [
@@ -52,7 +49,7 @@ export default class ParticipantsDlg extends React.Component {
         autoScrollBodyContent={true}
       >
         <Row>
-          {this.state.users.map(user => (
+          {this.props.users.map(user => (
             <Col key={user.id} xs={6} sm={3} md={2} lg={2}>
               <Link
                 to={{
@@ -60,10 +57,10 @@ export default class ParticipantsDlg extends React.Component {
                 }}
               >
                 <Row center="xs">
-                  <Avatar size={100} src={user.avatar} />
+                  <Avatar size={100} src={user.photo} />
                 </Row>
                 <Row style={this.styles.participants} center="xs">
-                  {user.name}
+                  {user.nickname}
                 </Row>
               </Link>
             </Col>

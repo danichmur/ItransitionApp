@@ -17,21 +17,16 @@ export default class ProjectInfo extends React.Component {
     super(props);
     this.state = {
       project: {
-        name: this.props.project.name,
-        description: this.props.project.description,
-        tags:this.props.project.tags,
+        name: '',
+        description: '',
+        tags: [],
       },
       editInfoOpen:false,
     }
   };
 
   getChangedData(data){
-    this.setState({project:{
-      name: data.name,
-      description: data.description,
-      tags: data.tags,
-    }});
-
+    this.props.sendChangedData(data);  
   };
 
   openEditInfoDlg(){
@@ -43,13 +38,13 @@ export default class ProjectInfo extends React.Component {
       <Col className="backgroundStyle" xs={12} sm={7} md={8} lg={8}>
         <EditInfoDlg
           open={this.state.editInfoOpen}
-          projectInfo={this.state.project}
+          projectInfo={this.props.project}
           openDlg={this.openEditInfoDlg.bind(this)}
           sendData={this.getChangedData.bind(this)}
         />
         <Row>
           <Col xs={10} sm={11}>
-            <h1>{this.state.project.name}</h1>
+            <h1>{this.props.project.name}</h1>
           </Col>
           <Col xs={2} sm={1}>
             {this.props.project.active ?
@@ -78,9 +73,9 @@ export default class ProjectInfo extends React.Component {
             }
           </Col>
         </Row>
-          <Chips tags={this.state.project.tags}/>
+          <Chips tags={this.props.project.tags}/>
         <Row>
-          <p>{this.state.project.description}</p>
+          <p>{this.props.project.description}</p>
         </Row>
       </Col>
     );

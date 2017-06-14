@@ -36,7 +36,7 @@ export default class Discussion extends React.Component {
             <Link
               key={discussion.id}
               to={{
-                pathname:`/discussion/${discussion.id}`
+                pathname:`/discussion/${discussion.id}/project/${this.props.idProject}`
               }}
             >
             <ListItem

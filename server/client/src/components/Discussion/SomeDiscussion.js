@@ -19,26 +19,22 @@ export default class Discussions extends React.Component {
     super(props);
     this.state = {
       discussion: {
-        id: 4,
-        title:"Present for director",
-        messages: [
-          { id:1, user_id: 25, created_at:"26.06.2014", text:"A custom handlerfor the click event. Works justA custom handlerfor the click event. Works just like a handler on an <a> tag - calling e.pA custom handlerfor the click event. Works just like a handler on an <a> tag - calling e.pA custom handlerfor the click event. Works just like a handler on an <a> tag - calling e.pA custom handlerfor the click event. Works just like a handler on an <a> tag - calling e.pA custom handlerfor the click event. Works just like a handler on an <a> tag - calling e.pA custom handlerfor the click event. Works just like a handler on an <a> tag - calling e.pA custom handlerfor the click event. Works just like a handler on an <a> tag - calling e.pA custom handlerfor the click event. Works just like a handler on an <a> tag - calling e.p like a handler on an <a> tag - calling e.preventDefault() will prevent the transition from firing, while e.stopPropagation() will prevent the event from bubbling."},
-          { id:2, user_id: 26, created_at:"26.06.2014", text:"A custom handler for the click event. Works just like a handler on an <a> tag - calling e.preventDefault() will prevent the transition from firing, while e.stopPropagation() will prevent the event from bubbling."},
-          { id:3, user_id: 27, created_at:"26.06.2014", text:"A custom handler for the click event. Works just like a handler on an <a> tag - calling e.preventDefault() will prevent the transition from firing, while e.stopPropagation() will prevent the event from bubbling."},
-        ],
-        users: [
-          {id:25, name: 'Name1', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-          {id:26, name: 'Ekaterina', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-          {id:27, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-          {id:28, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-          {id:29, name: 'Name3', avatar: 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'},
-        ],
+        id: null,
+        name: '',
+        project_id: null,
+        published_at: null,
+        created_at: null,
+        updated_at: null,
+        comments: [],
       },
+      users: [],
       newMessage: {
-        id:null,
+        id: null,
+        body: '',
         user_id: null,
         created_at:null,
-        text:'',
+        updated_at: null,
+        user_name:'',
       }
     }
     this.style = {
@@ -49,15 +45,21 @@ export default class Discussions extends React.Component {
   };
 
   componentDidMount(){
-    ApiQueries.getOneDiscussion(this.props.match.params.id, (data => {
+    ApiQueries.getAllProjectUser(this.props.match.params.id, (data => {
+      this.setState({
+        users: data});
+    }))
+    ApiQueries.getOneDiscussion(this.props.match.url, (data => {
       this.setState({ discussion: data });
     }));
+
+
   };
 
-  renderMessage(message){
-    var user = this.state.discussion.users[this.state.discussion.users.map((user) => user.id).indexOf(message.user_id)];
+  renderMessage(comment){
+    var user = this.state.users[this.state.users.map((user) => user.id).indexOf(comment.user_id)];
     return(
-      <div className="news" key={message.id}>
+      <div className="news" key={comment.id}>
         <Row>
           <Col xs={3} sm={3} md={2} lg={2}>
             <Link
@@ -65,7 +67,7 @@ export default class Discussions extends React.Component {
                 pathname:`/profile/${user.id}`
               }}
             >
-              <Avatar size={55} src={user.avatar}/>
+              <Avatar size={55} src={user.photo}/>
             </Link>
           </Col>
           <Col xs={9} sm={9} md={10} lg={10}>
@@ -77,10 +79,10 @@ export default class Discussions extends React.Component {
               >
                 {user.name},
               </Link>
-              {"" + message.created_at}
+              {"" + comment.created_at}
             </Row>
             <Row start="xs">
-              {message.text}
+              {comment.body}
             </Row>
           </Col>
         </Row>
@@ -94,18 +96,23 @@ export default class Discussions extends React.Component {
     this.setState({
       newMessage: {
         id: null,
+        body: value,
         user_id: null,
-        created_at: null,
-        text: value,
+        created_at:null,
+        updated_at: null,
+        user_name:null,
       }
     });
   }
 
   handleSubmit() {
-    this.state.discussion.messages.unshift({
-      id: null,
-      user_id: 26,
-      text: this.state.newMessage.text,
+    this.state.discussion.comments.push({
+        id: this.state.discussion.comments.length + 1,
+        body:  this.state.newMessage.body,
+        user_id: 4,
+        created_at:null,
+        updated_at: null,
+        user_name: 'adwwd',
     });
     this.setState({messages: this.state.discussion.messages});
   }
@@ -116,10 +123,10 @@ export default class Discussions extends React.Component {
         <Row center="xs">
           <Col className="backgroundStyle" xs={12} sm={10} md={10} lg={10}>
             <Row top="xs">
-              <h1>{this.state.discussion.title}</h1>
+              <h1>{this.state.discussion.name}</h1>
             </Row>
             <Divider />
-            {this.state.discussion.messages.map(this.renderMessage, this)}
+            {this.state.discussion.comments.map(this.renderMessage, this)}
             <Row start="xs">
               <Col xs={12}>
               <Divider />
@@ -131,7 +138,7 @@ export default class Discussions extends React.Component {
                     fullWidth={true}
                     name="text"
                     onChange={this.handleInputNews.bind(this)}
-                    value={this.state.newMessage.text}
+                    value={this.state.newMessage.body}
                     validators={['required']}
                     errorMessages={['this field is required']}
 
