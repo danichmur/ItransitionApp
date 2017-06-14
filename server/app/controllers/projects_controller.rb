@@ -12,11 +12,11 @@ class ProjectsController < ApplicationController
     project = Project.find(params[:id])
     render status: 200, json: project.to_json(:include => {
       :six_users => 
-        { :only => [:nickname, :id]},
+        { :only => [:nickname, :id, :photo]},
       :tags => 
         {:only => [:value, :id]},
       :documents => 
-        {:only => [:name, :url]},
+        {:only => [:id, :name, :url]},
       :discussions =>
         {:only => [:id, :name]}
       }
