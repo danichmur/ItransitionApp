@@ -69,7 +69,7 @@ function updateProject(id, value) {
 }
 
 function sendNewTags(id, tags) {
-  return fetch(proxy+'/projects/'+ id + '/tags', {
+  return fetch(proxy+'/projects/'+ id + '/tags/tags_on_project', {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -79,6 +79,14 @@ function sendNewTags(id, tags) {
   })
   .then(checkStatus);
 }
+
+function getAllTags(fun) {
+  return fetch(proxy+'/tags')
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(fun);
+};
+
 const ApiQueries = {
   getFewProjects,
   getOneProject,
@@ -87,5 +95,6 @@ const ApiQueries = {
   getAllUser,
   updateProject,
   sendNewTags,
+  getAllTags,
 };
 export default ApiQueries;

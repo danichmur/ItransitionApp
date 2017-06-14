@@ -52,12 +52,6 @@ export default class AllProjects extends React.Component {
     }
     this.setState({ project: updatedProject });
 
-    var a = ApiQueries.updateProject(this.state.project.id, {
-      name: data.name,
-      active: this.state.project.active,
-      description: data.description
-    });
-    console.log(a);
     ApiQueries.sendNewTags(this.state.project.id, {
       tags: data.tags,
     });

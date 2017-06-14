@@ -15,6 +15,7 @@ import { Row,Col } from 'react-flexbox-grid';
 import { ValidatorForm, TextValidator, SelectValidator} from 'react-material-ui-form-validator';
 import {Link } from 'react-router-dom';
 import Chips from '../ProjectInfo/Chips';
+import ApiQueries from '../../ApiQueries';
 
 export default class EditInfoDlg extends React.Component {
   constructor(props) {
@@ -31,12 +32,7 @@ export default class EditInfoDlg extends React.Component {
     this.state = {
       projectName: '',
       projectDescription: '',
-      autoComlete: [
-        "java",
-        "C#",
-        "Ruby",
-        "Python",
-      ],
+      autoComlete: [],
       chips: [],
       newTag: null,
     }
@@ -53,18 +49,21 @@ export default class EditInfoDlg extends React.Component {
     }
     this.props.open ?
       (
-        console.log("dont get data"),
         this.state.chips = []
       )
     :
       (
+        this.state.autoComlete = [],
         this.setState({
           projectName: this.props.projectInfo.name,
           projectDescription: this.props.projectInfo.description
         }),
-        console.log("get data")
+        ApiQueries.getAllTags(data => {
+          data.map(tag => (
+            this.state.autoComlete.push(tag.value)
+          ))
+        })
       )
-
   };
 
   handleInputProjectName(e) {
@@ -88,6 +87,11 @@ export default class EditInfoDlg extends React.Component {
       description: this.state.projectDescription,
       tags: this.state.chips,
     }
+    var a = ApiQueries.updateProject(this.props.projectInfo.id, {
+      name: this.state.projectName,
+      description: this.state.projectDescription,
+      tags: this.state.chips});
+      console.log(a.status, 'here');
     this.props.sendData(data);
     this.handleCloseEditInfo();
   };
