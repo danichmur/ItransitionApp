@@ -75,6 +75,10 @@ export default class AllProjects extends React.Component {
     this.setState({ project: updatedProject})
   }
 
+  changeDiscussion(data) {
+    console.log(data);
+  }
+
   render() {
 		return (
       <Grid fluid>
@@ -94,6 +98,7 @@ export default class AllProjects extends React.Component {
             <Discussions
               discussions={this.state.project.discussions}
               idProject ={this.state.project.id}
+              changeDiscussion={this.changeDiscussion.bind(this)}
             />
           </Row> : null}
       </Grid>

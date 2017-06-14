@@ -11,11 +11,23 @@ import { Row,Col } from 'react-flexbox-grid';
 import {List, ListItem} from 'material-ui/List';
 import {Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
+import AddDiscussionDlg from '../Dialogs/AddDiscussionDlg';
 
 export default class Discussion extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      addDiscussionOpen: false,
+    }
+  };
+
+  handleOpenAddDiscussion() {
+    this.setState({addDiscussionOpen: !this.state.addDiscussionOpen});
+  }
+
+  addDiscussion(data) {
+    this.props.changeDiscussion(data);
   };
 
   render() {
@@ -27,7 +39,10 @@ export default class Discussion extends React.Component {
               <p>Discussion</p>
             </Col>
             <Col xs={2}>
-              <IconButton tooltip="Add discussion" >
+              <IconButton
+                onTouchTap={this.handleOpenAddDiscussion.bind(this)}
+                touch={true}
+                tooltip="Add discussion" >
                 <AddFile />
               </IconButton>
             </Col>
@@ -58,6 +73,11 @@ export default class Discussion extends React.Component {
             </Link>
           ))}
         </List>
+        <AddDiscussionDlg
+          open={this.state.addDiscussionOpen}
+          closeDlg={this.handleOpenAddDiscussion.bind(this)}
+          addDiscussion={this.addDiscussion.bind(this)}
+        />
       </Col>
     );
   }

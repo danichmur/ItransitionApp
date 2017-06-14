@@ -96,9 +96,6 @@ export default class AddUsersDlg extends React.Component {
           >
             <Row middle="xs">
               <Col>
-
-              </Col>
-              <Col>
                 <Avatar size={55} src={user.photo} />
               </Col>
               <Col xsOffset={1}>
@@ -139,7 +136,7 @@ export default class AddUsersDlg extends React.Component {
           <Col xs={12}>
             <ValidatorForm onSubmit={this.handleSubmit.bind(this)}>
               <List>
-                  {this.state.allUser.map(this.renderUser, this)},
+                  {this.state.allUser.map(this.renderUser, this)}
               </List>
             </ValidatorForm>
           </Col>

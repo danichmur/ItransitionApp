@@ -35,7 +35,7 @@ export default class AllProjects extends React.Component {
                   <Link
                     key={project.id}
                     to={{
-                      pathname:`/project/${project.id}`
+                      pathname:`/projects/${project.id}`
                     }}
                   >
                     <ListItem
