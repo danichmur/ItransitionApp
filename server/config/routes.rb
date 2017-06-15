@@ -1,19 +1,24 @@
 Rails.application.routes.draw do
-  #get 'tags/index'
-
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
- # scope '/api' do
-   # get :project, to: 'project#index'
-    #get :show, to: 'project#show'
- # end
   
-  resources :users, :news, :tags
+  resources :news, :tags
+  resources :users do
+    collection do
+      put :sign_up
+    end
+  end
   
   resources :projects do
-    get 'users', to: :users, controller: 'projects'
-    get 'tags_on_project', to: :tags, controller: 'tags'
+    resources :users do
+      collection do
+        put :users_on_project
+      end
+    end
+
     resources :discussions do
       resources :comments
+      collection do
+        put :discussions_on_project
+      end
     end
     
     collection do

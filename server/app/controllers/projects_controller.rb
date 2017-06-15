@@ -9,11 +9,6 @@ class ProjectsController < ApplicationController
   end
   
   def update
-   # redirect_to :controller => 'tags', :action => 'update'
-  #  p "USERS", params[:project][:users]
-  #  p "DOC", params[:project][:documents]
-  #  p "DIS", params[:project][:discussions]
-    
     if @project.update(project_params)
       render status: :ok
     else 
@@ -28,9 +23,9 @@ class ProjectsController < ApplicationController
       :tags => 
         {:only => [:value, :id]},
       :documents => 
-        {:only => [:id, :name, :url]},
+        {:only => [:id, :name, :url, :updated_at]},
       :discussions =>
-        {:only => [:id, :name]}
+        {:only => [:id, :name, :updated_at]}
       }
     )
   end
