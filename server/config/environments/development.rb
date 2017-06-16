@@ -26,7 +26,6 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
   # Don't care if the mailer can't send.
 
@@ -38,18 +37,19 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
-  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.delivery_method = :smtp
   
-  ActionMailer::Base.sendmail_settings = {
-    :address              => "smtp.gmail.com",
-    :port                 => "587",
-    :domain               => "gmail.com",
-    :user_name            => ENV['gmail_username'],
-    :password             => ENV['gmail_password'],
-    :authentication       => "plain",
+  config.action_mailer.raise_delivery_errors = true
+
+  ActionMailer::Base.smtp_settings = {
+    :address        => 'smtp.gmail.com',
+    :domain         => 'mail.google.com',
+    :port           => 587,
+    :user_name      => 'daniil.muraveyko@gmail.com',
+    :password       => '12Danich',
+    :authentication => :plain,
     :enable_starttls_auto => true
   }
-
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 

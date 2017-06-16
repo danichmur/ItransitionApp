@@ -8,7 +8,6 @@ class UsersController < ApplicationController
 
   def create
     render json: User.registration(registrations_params)
-    
   end
   
   def show

@@ -1,9 +1,12 @@
-class UserMailer < ApplicationMailer
-  default from: 'daniil.muraveyko@gmail.com'
+require 'securerandom'
+
+class UserMailer < ActionMailer::Base
+  
+  default from: 'project.manager@email.com'
  
    def confirmation_email(user)
-     p "A"
      @user = user
+     @secret_code = SecureRandom.urlsafe_base64(10)
      mail(to: @user.email, subject: 'Welcome to My Awesome Site')
    end
 end
