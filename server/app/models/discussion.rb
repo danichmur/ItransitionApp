@@ -6,10 +6,12 @@ class Discussion < ApplicationRecord
     hash = discussions_params
     project = Project.find(hash[:project_id])
     if(hash[:id] == -1)
-      d = Discussion.create(name: hash[:name])
-      project.discussions << d
+      discussion = Discussion.create(name: hash[:name])
+      project.discussions << discussion
+      return discussion
     else
       project.discussions.delete(hash[:id])
+      return nil
     end
   end
 end

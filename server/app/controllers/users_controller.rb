@@ -15,6 +15,17 @@ class UsersController < ApplicationController
     render status: 200, json: user.to_json(:except => :password)
   end
   
+  def confirm_email
+    user = User.find_by(email_code: params[:email_code])
+    if user
+      user.email_confirmed = true
+      user.save
+      render json: {:message => "Email confirmed"}, status: 200
+    else
+      render json: {:message => "Incorrect code"}, status: 406
+    end
+  end
+  
   def sign_up
     user = User.find(1)
     render json: user.as_json
