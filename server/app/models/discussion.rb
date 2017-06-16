@@ -5,13 +5,13 @@ class Discussion < ApplicationRecord
   def self.on_project(discussions_params)
     hash = discussions_params
     project = Project.find(hash[:project_id])
-    if(hash[:id] == -1)
+    if(hash[:id].to_i == -1)
       discussion = Discussion.create(name: hash[:name])
       project.discussions << discussion
-      return discussion
+      return discussion.id
     else
       project.discussions.delete(hash[:id])
-      return nil
+      return -1
     end
   end
 end

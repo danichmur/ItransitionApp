@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   
-  
   def index
     render status: 200, json: 
       User.all.to_json(:except => [:password, :created_at, :updated_at])

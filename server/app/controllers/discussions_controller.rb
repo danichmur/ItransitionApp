@@ -14,9 +14,9 @@ class DiscussionsController < ApplicationController
   end
   
   def discussions_on_project
-    discussion = Discussion.on_project(discussions_params)
-    if discussion
-      render json: discussion.as_json(only: :id), status: :ok
+    discussion_id = Discussion.on_project(discussions_params)
+    if discussion_id != -1
+      render json: {:id => discussion_id}, status: :ok
     else
       render status: :ok
     end 
