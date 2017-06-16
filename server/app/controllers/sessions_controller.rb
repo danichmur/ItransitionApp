@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     user = User.where(email: params[:email]).first
     if user&.valid_password?(params[:password])
       session[:user_id] = user.id
-      render json: user.as_json(only: [:id, :email, :authentication_token]), status: :created
+      render json: user.as_json(only: [:id, :authentication_token, :position]), status: :created
     else
       head(:unauthorized)
     end
@@ -19,6 +19,7 @@ class SessionsController < ApplicationController
   end
   
   def destroy
-    session[:user_id] = nil
+    session[:id] = nil
+    render status: :ok
   end
 end

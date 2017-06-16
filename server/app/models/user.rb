@@ -16,4 +16,22 @@ class User < ApplicationRecord
     end
     project.users = users
   end
+  
+  def self.registration(registrations_params)
+    user = User.new(registrations_params)
+    @user = user
+    p "send"
+    UserMailer.confirmation_email(@user).deliver_now
+    begin
+      user.save
+    rescue
+      return {:message => "Nickname has already been taken"}, status: 406
+    end
+    p user
+    if user.id
+      return user.as_json(only: [:id, :authentication_token]), status: :created
+    else
+      return {:message => "Email has already been taken"}, status: 406
+    end
+  end
 end

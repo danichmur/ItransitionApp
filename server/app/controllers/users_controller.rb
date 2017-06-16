@@ -6,6 +6,11 @@ class UsersController < ApplicationController
       User.all.to_json(:except => [:password, :created_at, :updated_at])
   end
 
+  def create
+    render json: User.registration(registrations_params)
+    
+  end
+  
   def show
     user = User.find(params[:id])
     render status: 200, json: user.to_json(:except => :password)
@@ -23,5 +28,9 @@ class UsersController < ApplicationController
   
   def users_params
     params.permit(:project_id, users:[])
+  end
+  
+  def registrations_params
+    params.permit(:email, :password, :password_confirmation, :name, :nickname)
   end
 end
