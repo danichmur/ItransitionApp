@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
    before_action :find_project, only: [:update, :show]
+   
   def index
     render status: 200, json: Project.all.to_json(:include => 
       {:tags => 

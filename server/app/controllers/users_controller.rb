@@ -12,7 +12,8 @@ class UsersController < ApplicationController
   end
   
   def sign_up
-  
+    user = User.find(1)
+    render json: user.as_json
   end
   
   def users_on_project

@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
-  
+
   resources :news, :tags
+  
+  resources :sessions do
+    put 'check'
+   end
+  
   resources :users do
     collection do
       put :sign_up
