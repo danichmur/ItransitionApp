@@ -7,8 +7,7 @@ import './Drawer.scss';
 export default class DrawerSimpleExample extends React.Component {
 
   handleClose() {
-    this.setState({open: false});
-    this.props.drawerState.open = !this.props.drawerState.open;
+    this.props.drawerClose();
   }
   render() {
     var imageStyle = {
@@ -18,7 +17,7 @@ export default class DrawerSimpleExample extends React.Component {
       <div>
           <Drawer
             docked={false}
-            open={this.props.drawerState.open}
+            open={this.props.drawerState}
             onRequestChange={this.handleClose.bind(this)}
             >
             <List>

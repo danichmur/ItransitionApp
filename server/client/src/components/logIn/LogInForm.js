@@ -5,16 +5,20 @@ import {Grid,Row,Col} from 'react-flexbox-grid';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import {Link } from 'react-router-dom';
 import './LogInForm.scss';
+import ApiQueries from '../ApiQueries';
+import { Redirect } from 'react-router-dom';
 
 export default class LogInForm extends React.Component {
   constructor(props){
     super(props);
     this.errors  = {};
+
     this.state = {
       user: {
         email:'',
         password:'',
-      }
+      },
+      redirectTo: false,
     }
   };
 
@@ -33,15 +37,19 @@ export default class LogInForm extends React.Component {
   };
 
   handleSubmit(e) {
-    e.preventDefault();
-    this.props.actions.logInUser(this.state.user);
+     ApiQueries.login(this.state.user)
+    .then(value => {
+      localStorage.setItem('token', value.authentication_token);
+      localStorage.setItem('user_id', value.id);
+      window.location.reload();
+    });
   }
 
   render() {
     return (
       <Grid fluid>
         <Row center="xs">
-          <Col xs={10} sm={6} md={4} lg={4} >
+          <Col xs={10} sm={6} md={5} lg={4} >
             <ValidatorForm onSubmit={this.handleSubmit.bind(this)}>
               <Row>
                 <TextValidator

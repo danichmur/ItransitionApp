@@ -3,6 +3,7 @@ import {
   IconButton,
   Avatar,
   IconMenu,
+  FlatButton,
 }  from 'material-ui';
 import ChatIcon from 'material-ui/svg-icons/communication/chat';
 import AddFile from 'material-ui/svg-icons/content/add-circle-outline';
@@ -21,11 +22,14 @@ export default class Discussion extends React.Component {
       addDiscussionOpen: false,
     }
   };
+
   handleDeleteDiscussion(e) {
-  }
+    console.log(e.target);
+  };
+
   handleOpenAddDiscussion() {
     this.setState({addDiscussionOpen: !this.state.addDiscussionOpen});
-  }
+  };
 
   addDiscussion(data) {
     this.props.changeDiscussion(data);
@@ -74,13 +78,6 @@ export default class Discussion extends React.Component {
                   </Link>
                 </Col>
                 <Col xs={1}>
-                  <IconButton
-                    touch={true}
-                    tooltip="Delete"
-                    onTouchTap={this.handleDeleteDiscussion.bind(this)}
-                  >
-                    <RemovefileIcon />
-                  </IconButton>
                 </Col>
               </Row>
           ))}

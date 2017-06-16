@@ -21,34 +21,27 @@ export default class AuthComponents extends React.Component {
 
   constructor(props){
 		super(props);
-	}
+ }
 
-  drawerState() {
-		this.props.drawerState();
-	}
+  renderForAuth() {
+    return(
+      <div>
+        <Drawer drawerState={this.props.drawerState} />
+        <Route path='/profile/:id' component={Profile} />
+        <Route path='/allprojects' component={AllProjects} />
+        <Route path='/projects/:id' component={Project} />
+        <Route path='/news' component={News} />
+        <Route path='/discussion/:id/project/:id' component={SomeDiscussion} />
+        <Route component={NoMatch} />
+      </div>
+    );
+  }
 
   render() {
 		return (
       <div>
-        {this.props.isAuthenticated ?
-          (
-            <div>
-              <Drawer drawerState={this.props.drawerState} />
-              <Route path='/profile/:id' component={Profile} />
-              <Route path='/allprojects' component={AllProjects} />
-              <Route path='/projects/:id' component={Project} />
-              <Route path='/news' component={News} />
-              <Route path='/discussion/:id/project/:id' component={SomeDiscussion} />
-              <Route component={NoMatch} />
-            </div>
-          ): (
-            <Redirect
-              to={{
-                pathname: '/logIn',
-              }}/>
-          )
-        }
-        </div>
+        { this.props.isAuthenticated ? this.renderForAuth() : null }
+      </div>
     );
   }
 }

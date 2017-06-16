@@ -9,44 +9,103 @@ import AllProjects from './Projects/AllProjects';
 import Project from './SomeProject/Project';
 import SomeDiscussion from './Discussion/SomeDiscussion';
 import News from './news/News';
+import ApiQueries from './ApiQueries';
 import AuthComponents from './AuthComponents';
+import NoMatch from './NoMatch';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
   IndexRoute,
+  Redirect
 } from 'react-router-dom';
 
 export default class Content extends React.Component {
 
   constructor(props) {
 		super(props);
-		this.drawerState = {open:false};
     this.state = {
-      isAuthenticated: true
-	   }
+      isAuthenticated: null,
+      drawerState: false
+    }
    }
 
   leftButtonTouch() {
-		this.setState({open: !this.drawerState.open});
-    this.drawerState.open = !this.drawerState.open;
+		this.setState({drawerState: !this.state.drawerState});
 	}
 
-  render() {
-		return (
-      <Router>
-        <div>
-          <Header showDrawer={this.leftButtonTouch.bind(this)}/>
-          <Route path='/' component={Main} />
+  checkStatus() {
+     var response = ApiQueries.checkSession(localStorage.getItem("token"))
+     .then(value => (
+       console.log("status"),
+       value.status ? (
+         this.setState({isAuthenticated: !this.state.isAuthenticated})
+       ): (
+         this.setState({isAuthenticated: false})
+       )
+     ))
+     console.log(response);
+
+  }
+
+  logOut(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_id');
+    this.setState({isAuthenticated: !this.state.isAuthenticated});
+  }
+
+  componentDidMount() {
+    this.checkStatus();
+  }
+
+  renderPublicRoute() {
+    return(
+      <div>
+        <Switch>
           <Route path='/logIn' component={LogInForm} />
           <Route path='/logUp' component={LogUpForm} />
-          <Switch>
-            <AuthComponents
-              drawerState={this.drawerState}
-              isAuthenticated={this.state.isAuthenticated} />
-          </Switch>
-        </div>
+          <Redirect from="*" to='/logIn' />
+        </Switch>
+      </div>
+    );
+  }
+  renderPrivateRoute() {
+    return(
+      <div>
+        <Drawer
+        drawerClose={this.leftButtonTouch.bind(this)}
+        drawerState={this.state.drawerState} />
+        <Switch>
+          <Route path='/profile/:id' component={Profile} />
+          <Route path='/allprojects' component={AllProjects} />
+          <Route path='/projects/:id' component={Project} />
+          <Route path='/projects/:id' component={Project} />
+          <Route path='/news' component={News} />
+          <Route path='/discussion/:id/project/:id' component={SomeDiscussion} />
+          <Redirect from="*" to='/main' />
+        </Switch>
+      </div>
+    );
+  }
+  renderContent() {
+    return(
+      <div>
+        <Header
+          isAuthenticated={this.state.isAuthenticated}
+          logOut={this.logOut.bind(this)}
+          showDrawer={this.leftButtonTouch.bind(this)}
+        />
+        <Route path='/main'  component={Main} />
+          { this.state.isAuthenticated ? this.renderPrivateRoute() : this.renderPublicRoute() }
+      </div>
+    )
+  }
+  render() {
+    console.log(this.state.isAuthenticated)
+		return (
+      <Router>
+        { this.state.isAuthenticated != null ? this.renderContent() : null }
       </Router>
     );
   }

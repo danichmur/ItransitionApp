@@ -10,6 +10,7 @@ import { RaisedButton,
          MenuItem,
          SelectField} from 'material-ui';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import ApiQueries from '../ApiQueries';
 import './LogUpForm.scss';
 
 export default class LogUpForm extends React.Component {
@@ -98,14 +99,18 @@ renderStepActions(step) {
 
   handleSubmitUser() {
     let user = {
-      nickName: this.state.nickName,
-      fullName: this.state.fullName,
+      nickname: this.state.nickName,
+      name: this.state.fullName,
       email: this.state.email,
       password: this.state.password,
     }
-    console.log(user);
-
-    this.handleNext();
+    ApiQueries.logup(user).then(value => {
+      if(value[1].status == 406){
+        alert(value[0].message);
+      } else {
+        this.handleNext();
+      }
+    });
   };
   handleSubmitCode() {
     this.handleNext();

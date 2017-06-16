@@ -13,7 +13,10 @@ export default class Main extends React.Component {
       <Grid fluid>
         <Row>
           <Col md={6}>
-          awdwadwad
+            <h1>where</h1>
+            <h1>where</h1>
+            <h1>where</h1>
+            <h1>where</h1>
           </Col>
         </Row>
       </Grid>

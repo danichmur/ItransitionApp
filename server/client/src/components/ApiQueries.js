@@ -1,8 +1,10 @@
-const proxy = 'http://localhost:4000';
+const proxy = 'http://04955435.ngrok.io';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
+  } else if (response.status == 401){
+    return response.status;
   }
   const error = new Error(`HTTP Error ${response.statusText}`);
   error.status = response.statusText;
@@ -11,8 +13,10 @@ function checkStatus(response) {
 };
 
 function parseJSON(response) {
+  if(response == 401) {
+    return response;
+  }
   return response.json();
-
 };
 
 function getFewProjects(fun) {
@@ -69,7 +73,50 @@ function updateProject(id, value) {
 }
 
 function login(user) {
-  return fetch(proxy+'/projects/'+ id)
+  return fetch(proxy+'/sessions', {
+    method:'post',
+    body:JSON.stringify(user),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
+function logup(user) {
+  return fetch(proxy+'/users', {
+    method:'post',
+    body:JSON.stringify(user),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
+function checkSession(token) {
+  let data = {
+    authentication_token : token
+  }
+  return fetch(proxy+'/sessions/1/check', {
+    method:'put',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
+function logout(user_id) {
+  return fetch(proxy+'/sessions/' + user_id, {
+    method: 'DELETE',
+  })
     .then(checkStatus)
     .then(parseJSON);
 }
@@ -117,6 +164,18 @@ function sendNewDiscussion(id, value) {
   .then(checkStatus);
 }
 
+function deleteDiscussion(id, value) {
+  return fetch(proxy+'/projects/'+ id + '/discussions/discussions_on_project', {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body:  JSON.stringify(value),
+  })
+  .then(checkStatus);
+}
+
 function getAllTags(fun) {
   return fetch(proxy+'/tags')
     .then(checkStatus)
@@ -135,5 +194,10 @@ const ApiQueries = {
   getAllTags,
   sendNewUsers,
   sendNewDiscussion,
+  login,
+  checkSession,
+  logout,
+  logup,
+  deleteDiscussion,
 };
 export default ApiQueries;
