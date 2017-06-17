@@ -21,7 +21,9 @@ Rails.application.routes.draw do
         put :users_on_project
       end
     end
-
+    
+    resources :documents
+    
     resources :discussions do
       resources :comments
       collection do
