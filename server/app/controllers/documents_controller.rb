@@ -1,17 +1,17 @@
 class DocumentsController < ApplicationController
   
   def create
-    documents = Documents.on_project(discussions_params)
-    render status: 200, json: documents.to_json(:only => :id)
+    document = Document.on_project(doc_params)
+    render status: 200, json: document.to_json(:only => :id)
   end
   
   def destroy
-    project = Project.find(hash[:project_id])
-    project.documents.delete(hash[:id])
+    project = Project.find(doc_params[:project_id])
+    project.documents.delete(doc_params[:id])
     render status: 200
   end
   
-  def documents_params
+  def doc_params
     params.permit(:project_id, :id, :name, :url)
   end
 end
