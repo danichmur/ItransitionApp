@@ -26,9 +26,6 @@ Rails.application.routes.draw do
     
     resources :discussions do
       resources :comments
-      collection do
-        put :discussions_on_project
-      end
     end
     
     collection do
