@@ -15,10 +15,8 @@ class UsersController < ApplicationController
   end
   
   def confirm_email
-    user = User.find_by(email_code: params[:email_code])
-    if user
-      user.email_confirmed = true
-      user.save
+    if $email_code == params[:email_code]
+      User.where(email: params[:email]).update(email_confirmed: true)
       render json: {:message => "Email confirmed"}, status: 200
     else
       render json: {:message => "Incorrect code"}, status: 406

@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
     render status: 200, json: Project.all.to_json(:include => 
       {:tags => 
           {:only => [:value, :id]}
-        }
+      }
     )
   end
   
@@ -16,17 +16,14 @@ class ProjectsController < ApplicationController
       render status: :unprocessable_entity
     end
   end
-  
+
   def show
-    render status: 200, json: @project.to_json(:include => {
-      :users => 
-        {:only => [:nickname, :id, :photo]},
-      :tags => 
-        {:only => [:value, :id]},
-      :documents => 
-        {:only => [:id, :name, :url, :updated_at]},
-      :discussions =>
-        {:only => [:id, :name, :updated_at]}
+    render status: 200, json: @project.to_json(:include => 
+      {
+        :users       => {:only => [:nickname, :id, :photo]},
+        :tags        => {:only => [:value, :id]},
+        :documents   => {:only => [:id, :name, :url, :updated_at]},
+        :discussions => {:only => [:id, :name, :updated_at]}
       }
     )
   end
@@ -42,6 +39,6 @@ class ProjectsController < ApplicationController
   end
   
   def project_params
-    params.require(:project).permit(:name, :active, :description)
+    params.require(:project).permit(:name, :active, :description, :active)
   end
 end

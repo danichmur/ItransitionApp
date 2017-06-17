@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   resources :news, :tags
   
   resources :sessions do
-    put 'check'
+    collection do
+      put :check
+    end
    end
   
   resources :users do
@@ -28,7 +30,7 @@ Rails.application.routes.draw do
     end
     
     collection do
-      put :update
+      put :update  
     end
     
     resources :tags do

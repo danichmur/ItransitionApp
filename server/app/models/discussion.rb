@@ -4,14 +4,14 @@ class Discussion < ApplicationRecord
   
   def self.on_project(discussions_params)
     hash = discussions_params
-    project = Project.find(hash[:project_id])
+      project = Project.find(hash[:project_id])
     if(hash[:id].to_i == -1)
-      discussion = Discussion.create(name: hash[:name])
+      discussion = Discussion.new(name: hash[:name])
       project.discussions << discussion
-      return discussion.id
+      return discussion
     else
       project.discussions.delete(hash[:id])
-      return -1
+      return nil
     end
   end
 end
