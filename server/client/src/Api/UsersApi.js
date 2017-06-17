@@ -27,10 +27,18 @@ function sendNewUsers(projectId, value) {
     body:  JSON.stringify(data),
   })
   .then(Path.checkStatus);
-}
+};
+
+function getOneUser(userId) {
+  return fetch(proxy + '/users' + userId)
+    .then(Path.checkStatus)
+    .then(Path.parseJSON);
+};
+
 const UsersApi = {
   getAllProjectUser,
   getAllUser,
-  sendNewUsers
+  sendNewUsers,
+  getOneUser
 }
 export default UsersApi;

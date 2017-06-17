@@ -103,7 +103,12 @@ export default class LogUpForm extends React.Component {
     ApiQueries.login(user)
    .then(value => {
      localStorage.setItem('token', value.authentication_token);
-     localStorage.setItem('user_id', value.id);
+     this.props.setUser({
+       id:value.id,
+       name: value.name,
+       nickName: value.nickname,
+       position: value.position,
+     });
      window.location.reload();
    });
   }

@@ -8,7 +8,7 @@ import {
 }  from 'material-ui';
 import { Row,Col } from 'react-flexbox-grid';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import Chips from '../ProjectInfo/Chips';
+import Chips from '../../Chips/Chips';
 import TagsApi from '../../../Api/TagsApi';
 import ProjectApi from '../../../Api/ProjectApi';
 
@@ -98,7 +98,7 @@ export default class EditInfoDlg extends React.Component {
   addNewTag() {
     if (this.state.newTag != '') {
       this.state.chips.push({
-        id: this.state.autoComlete.length + 20,
+        id: this.state.autoComlete.length ,
         value: this.state.newTag
       });
       this.state.autoComlete.push(this.state.newTag);
@@ -107,17 +107,7 @@ export default class EditInfoDlg extends React.Component {
         newTag: ''})
     } else {
       this.setState({errorText: 'input value'})
-
     }
-    // (this.state.newTag != '') ? (
-    //   this.state.chips.push({ id: this.state.autoComlete.length + 20, value: this.state.newTag}),
-    //   this.state.autoComlete.push(this.state.newTag),
-    //   this.setState({
-    //     chips: this.state.chips,
-    //     newTag: ''})
-    // ) : (
-    //   this.setState({errorText: 'input value'})
-    // )
   };
 
   deleteTag(id) {

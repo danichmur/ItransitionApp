@@ -32,11 +32,25 @@ function deleteDiscussion(projectId, value) {
   })
   .then(Path.checkStatus)
   .then(Path.parseJSON);
+};
+
+function sendNewComment(discussionsID) {
+  return fetch(proxy + '/projects/'+ projectId + '/discussions', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(discussionsID),
+  })
+  .then(Path.checkStatus)
+  .then(Path.parseJSON);
 }
 
 const DiscussionApi = {
   getOneDiscussion,
   sendNewDiscussion,
   deleteDiscussion,
+  sendNewComment
 }
 export default DiscussionApi;

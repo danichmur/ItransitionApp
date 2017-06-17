@@ -39,19 +39,19 @@ export default class AllProjects extends React.Component {
 
   changeData() {
     this.setState({ project: this.projectData });
-  }
+  };
 
   changeInfo(data) {
     this.projectData.name = data.name;
     this.projectData.description = data.description;
     this.projectData.tags = data.tags;
     this.changeData();
-  }
+  };
 
   changeUsers(data) {
     this.projectData.users = data;
     this.changeData();
-  }
+  };
 
   addDiscussion(data) {
     this.projectData.discussions.push({
@@ -60,13 +60,14 @@ export default class AllProjects extends React.Component {
       updated_at: data.updated_at
     })
     this.changeData();
-  }
+  };
 
   removeDiscuddion(data) {
     const index = this.projectData.discussions
       .map(discussion => discussion.id)
       .indexOf(parseInt(data.id));
     this.projectData.discussions.splice(index,1);
+    console.log('delete dis')
     this.changeData();
   }
 
@@ -80,8 +81,9 @@ export default class AllProjects extends React.Component {
       .map(doc => doc.id)
       .indexOf(parseInt(data.id));
     console.log(index);
-    this.projectData.discussions.splice(index,1);
+    this.projectData.documents.splice(index,1);
     this.changeData();
+
   }
 
   changeActive() {

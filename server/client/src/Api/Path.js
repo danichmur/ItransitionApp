@@ -6,7 +6,6 @@ function checkStatus(response) {
   } else if (response.status == 401){
     return response.status;
   }
-  consolr.log('error')
   const error = new Error(`HTTP Error ${response.statusText}`);
   error.status = response.statusText;
   error.response = response;
@@ -14,11 +13,11 @@ function checkStatus(response) {
 };
 
 function parseJSON(response) {
-  console.log(response,"response")
   if(response == 401) {
     return response;
   }
-  return response.json();
+  let data = response.json();
+  return data;
 };
 
 const Path = {

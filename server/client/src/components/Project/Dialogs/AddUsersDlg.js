@@ -19,43 +19,39 @@ export default class AddUsersDlg extends React.Component {
     this.state = {
       allUser: [],
       newUsers:[],
-    }
-  }
+    };
+  };
 
   handleCloseDlg() {
     this.props.closeDlg();
-  }
-  handleSubmit() {
+  };
 
+  handleSubmit() {
     UsersApi.sendNewUsers(this.props.projectId,this.state.newUsers);
     this.props.sendSnangeUsers(this.state.newUsers);
     this.handleCloseDlg();
-  }
-  componentWillReceiveProps() {
-    this.props.open ? null : (
-        this.state.newUsers = [],
-        UsersApi.getAllUser((data => {
-          this.setState({allUser: data});
-        }))
-          ,
-        this.props.oldUsers.map(user =>(
-            this.state.newUsers.push(user)
-        ))
+  };
 
-      )
-  }
+  componentWillReceiveProps() {
+    if (!this.props.open) {
+      this.state.newUsers = [];
+      UsersApi.getAllUser()
+        .then(data =>this.setState({allUser: data}));
+      this.props.oldUsers
+        .map(user =>(this.state.newUsers.push(user)));
+      }
+  };
+
   editCheckArray(e, isChecked) {
     const userId = e.target.value;
     let user = this.state.allUser.find(person => person.id == userId);
-    let indexOfUser = this.state.newUsers.map((user) => user.id).indexOf(user.id);
-    isChecked ?
-      (
-        this.state.newUsers.push(user)
-      )
-    :
-      (
-        this.state.newUsers.splice(indexOfUser, 1)
-      )
+    let indexOfUser = this.state.newUsers
+      .map((user) => user.id).indexOf(user.id);
+    if (isChecked) {
+      this.state.newUsers.push(user);
+    } else {
+      this.state.newUsers.splice(indexOfUser, 1);
+    }
   }
 
   isPresent(user) {

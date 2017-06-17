@@ -10,9 +10,6 @@ export default class DrawerSimpleExample extends React.Component {
     this.props.drawerClose();
   }
   render() {
-    var imageStyle = {
-      backgroundImage: 'url(' + 'https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg' + ')'
-    };
     return (
       <div>
           <Drawer
@@ -21,12 +18,16 @@ export default class DrawerSimpleExample extends React.Component {
             onRequestChange={this.handleClose.bind(this)}
             >
             <List>
-              <Link to={'/profile/2'}>
+              <Link
+                to={{
+                  pathname:`/profile/${this.props.user.id}`
+                }}
+              >
                 <ListItem className="menu-link"
                           onTouchTap={this.handleClose.bind(this)}>
                       <Row middle="xs">
-                        <Col xs={4}><Avatar size={60} src='https://pp.userapi.com/c637921/v637921451/4afed/YQLjcdSzWyU.jpg'/></Col>
-                        <Col xs={8}>Владислав Жевняк</Col>
+                        <Col xs={4}><Avatar size={60} src={this.props.user.photo}/></Col>
+                        <Col xs={8}>{this.props.user.name}</Col>
                       </Row>
                 </ListItem>
               </Link>

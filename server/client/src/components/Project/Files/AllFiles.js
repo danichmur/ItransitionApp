@@ -30,13 +30,8 @@ export default class Files extends React.Component {
   }
 
   deleteFile(e) {
-    console.log(1)
-    FileApi.deleteFile(this.props.projectId, e.target.value)
-      .then(data => console.log(data))
-      .then((data) => {
-        console.log(data);
-        console.log(this.props.removeFile({ id: e.target.value }));
-      });
+    FileApi.deleteFile(this.props.projectId,e.target.value)
+      .then(this.props.removeFile({ id:e.target.value }));
   }
 
   downLoadFile(e) {

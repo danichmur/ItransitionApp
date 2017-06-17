@@ -5,8 +5,9 @@ import Main from './main/Main';
 import Profile from './profile/Profile';
 import LogInForm from './logIn/LogInForm';
 import LogUpForm from './logUp/LogUpForm';
-import AllProjects from './Projects/AllProjects';
-import Project from './SomeProject/Project';
+import AllProjects from './AllProjects/AllProjects';
+import FewProjects from './FewProjects/FewProjects';
+import Project from './Project/Project';
 import SomeDiscussion from './Discussion/SomeDiscussion';
 import News from './news/News';
 import AccessApi from '../Api/AccessApi';
@@ -27,8 +28,10 @@ export default class Content extends React.Component {
 		super(props);
     this.state = {
       isAuthenticated: null,
-      drawerState: false
+      drawerState: false,
+      user: ''
     }
+    this.user = null;
    }
 
   leftButtonTouch() {
@@ -37,21 +40,23 @@ export default class Content extends React.Component {
 
   checkStatus() {
      var response = AccessApi.checkSession(localStorage.getItem("token"))
-     .then(value => (
-       value.status ? (
-         this.setState({isAuthenticated: !this.state.isAuthenticated})
-       ): (
+     .then(value => {
+       if (value == 401) {
          this.setState({isAuthenticated: false})
-       )
-     ))
+       } else {
+         this.setState({isAuthenticated: true, user:value})
+       }});
+  };
 
-  }
+  setUser(data) {
+    this.user = data;
+  };
 
   logOut(){
     localStorage.removeItem('token');
     localStorage.removeItem('user_id');
     this.setState({isAuthenticated: !this.state.isAuthenticated});
-  }
+  };
 
   componentDidMount() {
     this.checkStatus();
@@ -61,8 +66,10 @@ export default class Content extends React.Component {
     return(
       <div>
         <Switch>
-          <Route path='/logIn' component={LogInForm} />
-          <Route path='/logUp' component={LogUpForm} />
+          <Route path='/logIn' component={LogInForm}
+          />
+          <Route path='/logUp' component={LogUpForm}
+          />
           <Redirect from="*" to='/logIn' />
         </Switch>
       </div>
@@ -72,21 +79,27 @@ export default class Content extends React.Component {
     return(
       <div>
         <Drawer
-        drawerClose={this.leftButtonTouch.bind(this)}
-        drawerState={this.state.drawerState} />
+          user={this.state.user}
+          drawerClose={this.leftButtonTouch.bind(this)}
+          drawerState={this.state.drawerState}
+        />
         <Switch>
-          <Route path='/profile/:id' component={Profile} />
+          <Route
+            path='/profile/:id'
+            component={() => (<Profile currentUser={this.user} />)}
+          />
           <Route path='/allprojects' component={AllProjects} />
-          <Route path='/projects/:id' component={Project} />
           <Route path='/projects/:id' component={Project} />
           <Route path='/news' component={News} />
           <Route path='/discussion/:id/project/:id' component={SomeDiscussion} />
+          <Route path='/tags/:id/allprojects' component={FewProjects} />
           <Redirect from="*" to='/main' />
         </Switch>
       </div>
     );
   }
   renderContent() {
+    console.log(this.state.isAuthenticated)
     return(
       <div>
         <Header

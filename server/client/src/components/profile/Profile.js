@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { List, ListItem } from 'material-ui/List';
 import {FlatButton, TextField} from 'material-ui';
+import UsersApi from '../../Api/UsersApi';
 import './Profile.scss';
 
 const headerStyle = {
@@ -14,7 +15,18 @@ const nameStyle = {
   lineHeight: 'normal',
 }
 
+
+
 export default class Main extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    UsersApi.getOneUser(2)
+    .then(data => console.log(data));
+  }
 
   render() {
     var sectionStyle = {

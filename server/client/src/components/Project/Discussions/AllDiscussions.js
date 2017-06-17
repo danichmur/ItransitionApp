@@ -22,10 +22,8 @@ export default class Discussion extends React.Component {
   };
 
   deleteDiscussion(e) {
-    DiscussionApi.deleteDiscussion(
-      this.props.projectId,
-      e.target.value
-    ).then(this.props.removeDiscuddion({ id:e.target.value }));
+    DiscussionApi.deleteDiscussion(this.props.projectId,e.target.value)
+      .then(this.props.removeDiscuddion({ id:e.target.value }));
   };
 
   handleOpenAddDiscussion() {

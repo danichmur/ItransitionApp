@@ -38,11 +38,10 @@ export default class LogInForm extends React.Component {
   };
 
   handleSubmit(e) {
-     AccessApi.login(this.state.user)
-    .then(value => {
-      localStorage.setItem('token', value.authentication_token);
-      localStorage.setItem('user_id', value.id);
-      window.location.reload();
+    AccessApi.login(this.state.user)
+      .then(value => {
+        localStorage.setItem('token', value.authentication_token);
+        window.location.reload();
     });
   }
 

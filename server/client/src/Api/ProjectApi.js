@@ -2,14 +2,19 @@ import Path from './Path.js'
 
 const proxy = Path.proxy;
 
-function getFewProjects() {
+function getAllProjects() {
   return fetch(proxy+'/projects')
     .then(Path.checkStatus)
     .then(Path.parseJSON);
 };
 
-function getOneProject(projectId){
+function getFewProjects(tagId) {
+  return fetch(proxy+'/tags/' + tagId + '/projects')
+    .then(Path.checkStatus)
+    .then(Path.parseJSON);
+}
 
+function getOneProject(projectId){
   return fetch(proxy + '/projects/' + projectId)
     .then(Path.checkStatus)
     .then(Path.parseJSON)
@@ -33,6 +38,7 @@ function updateProject(projectId, value) {
 const ProjectApi = {
   updateProject,
   getOneProject,
+  getAllProjects,
   getFewProjects
 }
 export default ProjectApi;

@@ -9,7 +9,7 @@ import {
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { Grid,Row,Col } from 'react-flexbox-grid';
 import EditInfoDlg from '../Dialogs/EditInfoDlg'
-import Chips from './Chips';
+import Chips from '../../Chips/Chips';
 import ProjectApi from '../../../Api/ProjectApi';
 
 export default class ProjectInfo extends React.Component {
