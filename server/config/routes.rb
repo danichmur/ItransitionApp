@@ -2,11 +2,7 @@ Rails.application.routes.draw do
 
   resources :news, :tags
   
-  resources :sessions do
-    collection do
-      put :check
-    end
-   end
+  resources :sessions
   
   resources :users do
     collection do

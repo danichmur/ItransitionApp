@@ -6,6 +6,6 @@ class Document < ApplicationRecord
     documents = Document.new(name: doc_params[:name],
        url: doc_params[:url])
     project.documents << documents
-    return documents
+    return documents.id
   end
 end

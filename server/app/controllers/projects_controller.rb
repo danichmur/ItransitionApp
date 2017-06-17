@@ -1,12 +1,10 @@
 class ProjectsController < ApplicationController
-   before_action :find_project, only: [:update, :show]
-   
+  
+  skip_before_action :check_token, only: [:index]
+  before_action :find_project, only: [:update, :show]
+  
   def index
-    render status: 200, json: Project.all.to_json(:include => 
-      {:tags => 
-          {:only => [:value, :id]}
-      }
-    )
+    render status: 200, json: Project.eager_load(:tags).all.to_json
   end
   
   def update

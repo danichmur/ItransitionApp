@@ -13,7 +13,8 @@ class DiscussionsController < ApplicationController
   
   def create
     discussion = Discussion.on_project(dis_params)
-    render status: 200, json: discussion.to_json(:only => :id)
+    render json: {:id => discussion.id, 
+      :updated_at => discussion.updated_at}, status: 200
   end
   
   def destroy

@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
+  skip_before_action :check_token, only: [:sign_up, :create]
   
   def index
     render status: 200, json: 
-      User.all.to_json(:except => [:password, :created_at, :updated_at])
+    User.all.to_json(:except => [:password, :created_at, :updated_at])
   end
 
   def create
