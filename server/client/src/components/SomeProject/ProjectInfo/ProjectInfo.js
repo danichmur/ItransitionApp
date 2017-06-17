@@ -10,7 +10,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { Grid,Row,Col } from 'react-flexbox-grid';
 import EditInfoDlg from '../Dialogs/EditInfoDlg'
 import Chips from './Chips';
-import ApiQueries from '../../ApiQueries';
+import ProjectApi from '../../../Api/ProjectApi';
 
 export default class ProjectInfo extends React.Component {
 
@@ -35,7 +35,7 @@ export default class ProjectInfo extends React.Component {
   };
 
   changeActive() {
-    ApiQueries.updateProject(this.props.project.id, {
+    ProjectApi.updateProject(this.props.project.id, {
       name: this.props.project.name,
       description: this.props.project.description,
       active: !this.props.project.active

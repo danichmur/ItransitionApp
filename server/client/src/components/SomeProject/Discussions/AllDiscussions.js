@@ -10,7 +10,7 @@ import {List, ListItem} from 'material-ui/List';
 import {Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import AddDiscussionDlg from '../Dialogs/AddDiscussionDlg';
-import ApiQueries from '../../ApiQueries';
+import DiscussionApi from '../../../Api/DiscussionApi';
 
 export default class Discussion extends React.Component {
 
@@ -21,12 +21,11 @@ export default class Discussion extends React.Component {
     }
   };
 
-  handleDeleteDiscussion(e) {
-    ApiQueries.sendNewDiscussion(
+  deleteDiscussion(e) {
+    DiscussionApi.deleteDiscussion(
       this.props.projectId,
-      { project_id: this.props.projectId,name:this.state.name, id: e.target.value }
+      e.target.value
     ).then(this.props.removeDiscuddion({ id:e.target.value }));
-
   };
 
   handleOpenAddDiscussion() {
@@ -88,7 +87,7 @@ export default class Discussion extends React.Component {
                       backgroundRepeat: 'no-repeat',
                       backgroundPosition: 'center',
                     }}
-                    onTouchTap={this.handleDeleteDiscussion.bind(this)}
+                    onTouchTap={this.deleteDiscussion.bind(this)}
 
                   >
                   </IconButton>

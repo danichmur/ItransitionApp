@@ -9,8 +9,8 @@ import AllProjects from './Projects/AllProjects';
 import Project from './SomeProject/Project';
 import SomeDiscussion from './Discussion/SomeDiscussion';
 import News from './news/News';
-import ApiQueries from './ApiQueries';
-import AuthComponents from './AuthComponents';
+import AccessApi from '../Api/AccessApi';
+
 import NoMatch from './NoMatch';
 import {
   BrowserRouter as Router,
@@ -36,16 +36,14 @@ export default class Content extends React.Component {
 	}
 
   checkStatus() {
-     var response = ApiQueries.checkSession(localStorage.getItem("token"))
+     var response = AccessApi.checkSession(localStorage.getItem("token"))
      .then(value => (
-       console.log("status"),
        value.status ? (
          this.setState({isAuthenticated: !this.state.isAuthenticated})
        ): (
          this.setState({isAuthenticated: false})
        )
      ))
-     console.log(response);
 
   }
 
@@ -102,7 +100,6 @@ export default class Content extends React.Component {
     )
   }
   render() {
-    console.log(this.state.isAuthenticated)
 		return (
       <Router>
         { this.state.isAuthenticated != null ? this.renderContent() : null }

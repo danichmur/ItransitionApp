@@ -9,7 +9,8 @@ import {
 import { Row,Col } from 'react-flexbox-grid';
 import {List, ListItem} from 'material-ui/List';
 import { ValidatorForm } from 'react-material-ui-form-validator';
-import ApiQueries from '../../ApiQueries';
+import UsersApi from '../../../Api/UsersApi';
+
 
 export default class AddUsersDlg extends React.Component {
 
@@ -26,18 +27,17 @@ export default class AddUsersDlg extends React.Component {
   }
   handleSubmit() {
 
-    ApiQueries.sendNewUsers(this.props.projectId,this.state.newUsers);
+    UsersApi.sendNewUsers(this.props.projectId,this.state.newUsers);
     this.props.sendSnangeUsers(this.state.newUsers);
     this.handleCloseDlg();
   }
   componentWillReceiveProps() {
     this.props.open ? null : (
         this.state.newUsers = [],
-        ApiQueries.getAllUser((data => {
+        UsersApi.getAllUser((data => {
           this.setState({allUser: data});
         }))
           ,
-          console.log("add"),
         this.props.oldUsers.map(user =>(
             this.state.newUsers.push(user)
         ))
@@ -48,7 +48,6 @@ export default class AddUsersDlg extends React.Component {
     const userId = e.target.value;
     let user = this.state.allUser.find(person => person.id == userId);
     let indexOfUser = this.state.newUsers.map((user) => user.id).indexOf(user.id);
-    console.log(indexOfUser);
     isChecked ?
       (
         this.state.newUsers.push(user)

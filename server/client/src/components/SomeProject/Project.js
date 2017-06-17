@@ -4,7 +4,7 @@ import Participants from './Users/Participants'
 import Discussions from './Discussions/AllDiscussions'
 import Files from './Files/AllFiles'
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import ApiQueries from '../ApiQueries';
+import ProjectApi from '../../Api/ProjectApi';
 import './Project.scss';
 
 export default class AllProjects extends React.Component {
@@ -30,11 +30,10 @@ export default class AllProjects extends React.Component {
   };
 
   componentDidMount() {
-    ApiQueries.getOneProject(this.props.match.params.id, (data => {
-      this.projectData = data;
-      this.setState({
-        project: this.projectData});
-    }));
+    ProjectApi.getOneProject(this.props.match.params.id).then(data => {
+        this.projectData = data;
+        this.setState({ project: this.projectData });
+    });
   };
 
 
@@ -49,31 +48,40 @@ export default class AllProjects extends React.Component {
     this.changeData();
   }
 
-
   changeUsers(data) {
     this.projectData.users = data;
     this.changeData();
   }
 
   addDiscussion(data) {
-    this.projectData.discussions.push({id:data.id, name: data.name,})
+    this.projectData.discussions.push({
+      id:data.id,
+      name: data.name,
+      updated_at: data.updated_at
+    })
     this.changeData();
   }
 
   removeDiscuddion(data) {
-    const index = this.projectData.discussions.map((discussion) =>
-      discussion.id).indexOf(data.id);
+    const index = this.projectData.discussions
+      .map(discussion => discussion.id)
+      .indexOf(parseInt(data.id));
     this.projectData.discussions.splice(index,1);
-    console.log(index)
     this.changeData();
   }
 
   addFile(data) {
-
+      this.projectData.documents.push({id:data.id, name: data.name,})
+      this.changeData();
   }
 
   removeFile(data) {
-
+    const index = this.projectData.documents
+      .map(doc => doc.id)
+      .indexOf(parseInt(data.id));
+    console.log(index);
+    this.projectData.discussions.splice(index,1);
+    this.changeData();
   }
 
   changeActive() {
@@ -87,7 +95,7 @@ export default class AllProjects extends React.Component {
         <Row>
           <ProjectInfo
             changeActive={this.changeActive.bind(this)}
-            sendChangedData={this.changeData.bind(this)}
+            sendChangedData={this.changeInfo.bind(this)}
             project={this.state.project}
           />
           <Participants

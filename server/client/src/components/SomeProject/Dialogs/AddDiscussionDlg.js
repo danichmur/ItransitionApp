@@ -6,7 +6,7 @@ import {
 }  from 'material-ui';
 import { Row,Col } from 'react-flexbox-grid';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import ApiQueries from '../../ApiQueries';
+import DiscussionApi from '../../../Api/DiscussionApi';
 
 export default class AddDiscussionDlg extends React.Component {
 
@@ -27,14 +27,19 @@ export default class AddDiscussionDlg extends React.Component {
   }
 
   handleSubmit() {
-    var status = ApiQueries.sendNewDiscussion(
+    DiscussionApi.sendNewDiscussion(
       this.props.projectId, {
-        project_id: this.props.projectId,name:this.state.name, id:-1
+      name:this.state.name
       })
       .then(value  => {
         console.log(value)
-        this.props.addDiscussion({id:value.id, name:this.state.name})
+        this.props.addDiscussion({
+          id:value.id,
+          name:this.state.name,
+          updated_at: value.updated_at
+        })
         this.handleCloseDlg();
+        this.setState({name:''});
       });
   }
 

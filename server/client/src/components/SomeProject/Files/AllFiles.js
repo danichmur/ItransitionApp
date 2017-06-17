@@ -10,6 +10,7 @@ import DownLoadFileIcon from 'material-ui/svg-icons/file/file-download';
 import { Row,Col } from 'react-flexbox-grid';
 import {List, ListItem} from 'material-ui/List';
 import AddFileDlg from '../Dialogs/AddFileDlg';
+import FileApi from '../../../Api/FileApi';
 
 export default class Files extends React.Component {
 
@@ -24,9 +25,23 @@ export default class Files extends React.Component {
     this.setState({addFileOpen: !this.state.addFileOpen});
   };
 
-  addDiscussion(data) {
-    this.props.addDiscussion(data);
-  };
+  addFile(data) {
+    this.props.addFile(data);
+  }
+
+  deleteFile(e) {
+    console.log(1)
+    FileApi.deleteFile(this.props.projectId, e.target.value)
+      .then(data => console.log(data))
+      .then((data) => {
+        console.log(data);
+        console.log(this.props.removeFile({ id: e.target.value }));
+      });
+  }
+
+  downLoadFile(e) {
+
+  }
 
   render() {
 		return (
@@ -66,10 +81,11 @@ export default class Files extends React.Component {
                   value={document.id}
                   style={{
                     backgroundColor: 'inherit',
-                    backgroundImage: 'url(' + 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-24.png' + ')',
+                    backgroundImage: 'url(' + 'https://cdn1.iconfinder.com/data/icons/material-core/24/cloud-download-24.png' + ')',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                   }}
+                  onTouchTap={this.downLoadFile.bind(this)}
 
                 >
                 </IconButton>
@@ -83,7 +99,7 @@ export default class Files extends React.Component {
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                   }}
-
+                  onTouchTap={this.deleteFile.bind(this)}
                 >
                 </IconButton>
               </Col>
@@ -94,7 +110,7 @@ export default class Files extends React.Component {
           projectId={this.props.projectId}
           open={this.state.addFileOpen}
           closeDlg={this.openAddFileDlg.bind(this)}
-          addfile={this.addDiscussion.bind(this)}
+          addFile={this.addFile.bind(this)}
         />
     </Col>
     );

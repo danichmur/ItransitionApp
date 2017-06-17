@@ -4,7 +4,7 @@ import { Grid,Row,Col } from 'react-flexbox-grid';
 import {List, ListItem} from 'material-ui/List';
 import { Route, Link } from 'react-router-dom';
 import './AllProjects.scss';
-import ApiQueries from '../ApiQueries';
+import ProjectApi from '../../Api/ProjectApi';
 import Main from '../main/Main';
 
 export default class AllProjects extends React.Component {
@@ -13,14 +13,12 @@ export default class AllProjects extends React.Component {
     super(props);
     this.state = {
       projects: [],
-      linkTo:'',
     }
   };
 
   componentDidMount(){
-    ApiQueries.getFewProjects((allProjects => {
-      this.setState({ projects: allProjects });
-    }));
+    ProjectApi.getFewProjects()
+      .then(data => this.setState({ projects: data }));
   };
 
   render() {

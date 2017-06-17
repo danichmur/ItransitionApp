@@ -10,7 +10,7 @@ import {
   StepContent,
 } from 'material-ui';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import ApiQueries from '../ApiQueries';
+import AccessApi from '../../Api/AccessApi';
 import './LogUpForm.scss';
 
 export default class LogUpForm extends React.Component {

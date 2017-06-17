@@ -7,7 +7,8 @@ import {
 import { Grid,Row,Col } from 'react-flexbox-grid';
 import { Link } from 'react-router-dom';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import ApiQueries from '../ApiQueries';
+import DiscussionApi from '../../Api/DiscussionApi';
+import UsersApi from '../../Api/UsersApi';
 import './SomeDiscussion.scss';
 
 export default class Discussions extends React.Component {
@@ -42,13 +43,10 @@ export default class Discussions extends React.Component {
   };
 
   componentDidMount(){
-    ApiQueries.getAllProjectUser(this.props.match.params.id, (data => {
-      this.setState({
-        users: data});
-    }))
-    ApiQueries.getOneDiscussion(this.props.match.url, (data => {
-      this.setState({ discussion: data });
-    }));
+    UsersApi.getAllProjectUser(this.props.match.params.id)
+      .then(data =>   this.setState({users: data}));
+    DiscussionApi.getOneDiscussion(this.props.match.url)
+    .then(data =>  is.setState({ discussion: data }));
   };
 
   renderComment(comment){
@@ -92,7 +90,7 @@ export default class Discussions extends React.Component {
       newComment: {
         id: null,
         body: value,
-        user_id: null,
+        user_id: 200,
         created_at:null,
         updated_at: null,
         user_name:null,
@@ -103,7 +101,7 @@ export default class Discussions extends React.Component {
   handleSubmit() {
     this.state.discussion.comments.push({
         id: this.state.discussion.comments.length + 1,
-        body:  this.state.newMessage.body,
+        body:  this.state.newComment.body,
         user_id: 4,
         created_at:null,
         updated_at: null,

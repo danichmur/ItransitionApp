@@ -9,7 +9,8 @@ import {
 import { Row,Col } from 'react-flexbox-grid';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Chips from '../ProjectInfo/Chips';
-import ApiQueries from '../../ApiQueries';
+import TagsApi from '../../../Api/TagsApi';
+import ProjectApi from '../../../Api/ProjectApi';
 
 export default class EditInfoDlg extends React.Component {
   constructor(props) {
@@ -49,7 +50,7 @@ export default class EditInfoDlg extends React.Component {
         projectName: this.props.projectInfo.name,
         projectDescription: this.props.projectInfo.description,
       });
-      ApiQueries.getAllTags(data => {
+      TagsApi.getAllTags(data => {
         data.map(tag => (
           this.state.autoComlete.push(tag.value)
         ))
@@ -84,13 +85,13 @@ export default class EditInfoDlg extends React.Component {
       active:this.props.projectInfo.active,
       tags: this.state.chips
     }
-    ApiQueries.updateProject(this.props.projectInfo.id, {
+    ProjectApi.updateProject(this.props.projectInfo.id, {
       name: data.name,
       description: data.description,
       active:data.active
     })
     .then(this.props.sendData(data));
-    ApiQueries.sendNewTags(this.props.projectInfo.id, data.tags);
+    TagsApi.sendNewTags(this.props.projectInfo.id, data.tags);
     this.handleCloseEditInfo();
   };
 

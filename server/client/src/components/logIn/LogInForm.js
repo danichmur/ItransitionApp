@@ -5,7 +5,8 @@ import {Grid,Row,Col} from 'react-flexbox-grid';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import {Link } from 'react-router-dom';
 import './LogInForm.scss';
-import ApiQueries from '../ApiQueries';
+import AccessApi from '../../Api/AccessApi';
+
 import { Redirect } from 'react-router-dom';
 
 export default class LogInForm extends React.Component {
@@ -37,7 +38,7 @@ export default class LogInForm extends React.Component {
   };
 
   handleSubmit(e) {
-     ApiQueries.login(this.state.user)
+     AccessApi.login(this.state.user)
     .then(value => {
       localStorage.setItem('token', value.authentication_token);
       localStorage.setItem('user_id', value.id);
