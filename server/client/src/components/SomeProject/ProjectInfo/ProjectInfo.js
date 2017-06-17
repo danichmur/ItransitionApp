@@ -10,6 +10,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { Grid,Row,Col } from 'react-flexbox-grid';
 import EditInfoDlg from '../Dialogs/EditInfoDlg'
 import Chips from './Chips';
+import ApiQueries from '../../ApiQueries';
 
 export default class ProjectInfo extends React.Component {
 
@@ -25,13 +26,22 @@ export default class ProjectInfo extends React.Component {
     }
   };
 
-  getChangedData(data){
-    this.props.sendChangedData(data);  
+  getChangedData(data) {
+    this.props.sendChangedData(data);
   };
 
-  openEditInfoDlg(){
+  openEditInfoDlg() {
     this.setState({editInfoOpen: !this.state.editInfoOpen});
   };
+
+  changeActive() {
+    ApiQueries.updateProject(this.props.project.id, {
+      name: this.props.project.name,
+      description: this.props.project.description,
+      active: !this.props.project.active
+    }).then(this.props.changeActive());
+
+  }
 
   render() {
 		return (
@@ -49,26 +59,31 @@ export default class ProjectInfo extends React.Component {
           <Col xs={2} sm={1}>
             {this.props.project.active ?
               <IconMenu
-                 iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                 anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-                 targetOrigin={{horizontal: 'right', vertical: 'top'}}
-               >
-                <MenuItem primaryText="Freeze" />
-                 <Divider />
-                 <MenuItem
-                   primaryText="Edit"
-                   onTouchTap={this.openEditInfoDlg.bind(this)}
-                 />
-                 <Divider />
-                 <MenuItem primaryText="Delete" />
+                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                targetOrigin={{horizontal: 'right', vertical: 'top'}}
+              >
+                <MenuItem
+                  primaryText="Freeze"
+                  onTouchTap={this.changeActive.bind(this)}
+                />
+                <Divider />
+                <MenuItem
+                  primaryText="Edit"
+                  onTouchTap={this.openEditInfoDlg.bind(this)}
+                />
+                <Divider />
+                <MenuItem primaryText="Delete" />
               </IconMenu>
-            :
-            <IconMenu
+            : <IconMenu
                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                targetOrigin={{horizontal: 'right', vertical: 'top'}}
              >
-               <MenuItem primaryText="Unfreeze" />
+               <MenuItem
+                 onTouchTap={this.changeActive.bind(this)}
+                 primaryText="Unfreeze"
+               />
             </IconMenu>
             }
           </Col>

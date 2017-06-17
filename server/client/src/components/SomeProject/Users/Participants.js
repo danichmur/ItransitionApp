@@ -6,7 +6,7 @@ import {
   Subheader,
 }  from 'material-ui';
 import {List, ListItem} from 'material-ui/List';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AddFile from 'material-ui/svg-icons/content/add-circle-outline';
 import ParticipantsDlg from '../Dialogs/ParticipantsDlg';
 import AddUsersDlg from '../Dialogs/AddUsersDlg';
@@ -54,15 +54,17 @@ export default class Participants extends React.Component {
               Previous
             </p>
           </Col>
-          <Col xs={2}>
-            <IconButton
-              tooltip="add users"
-              touch={true}
-              onTouchTap={this.handleOpenAddUser.bind(this)}
-              >
-              <AddFile />
-            </IconButton>
-          </Col>
+          {!this.props.projectActive ? null : (
+            <Col xs={2}>
+              <IconButton
+                tooltip="add users"
+                touch={true}
+                onTouchTap={this.handleOpenAddUser.bind(this)}
+                >
+                <AddFile />
+              </IconButton>
+            </Col>
+          )}
         </Row>
         <Row>
           {this.props.users.map(user => (

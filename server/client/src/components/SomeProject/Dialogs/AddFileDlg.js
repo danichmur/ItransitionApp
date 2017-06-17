@@ -6,9 +6,14 @@ import {
 }  from 'material-ui';
 import { Row,Col } from 'react-flexbox-grid';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Dropzone from 'react-dropzone';
+import request from 'superagent';
 import ApiQueries from '../../ApiQueries';
 
-export default class AddDiscussionDlg extends React.Component {
+const CLOUDINARY_UPLOAD_PRESET = '531764713868471';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/luxorik/upload';
+
+export default class AddFileDlg extends React.Component {
 
   constructor(props) {
     super(props);
@@ -18,8 +23,8 @@ export default class AddDiscussionDlg extends React.Component {
       }
     }
     this.state = {
-        name: '',
-    }
+      uploadedFileCloudinaryUrl: ''
+    };
   };
 
   handleCloseDlg() {
@@ -27,21 +32,49 @@ export default class AddDiscussionDlg extends React.Component {
   }
 
   handleSubmit() {
-    var status = ApiQueries.sendNewDiscussion(
-      this.props.projectId, {
-        project_id: this.props.projectId,name:this.state.name, id:-1
-      })
-      .then(value  => {
-        console.log(value)
-        this.props.addDiscussion({id:value.id, name:this.state.name})
-        this.handleCloseDlg();
-      });
+    // var status = ApiQueries.sendNewDiscussion(
+    //   this.props.projectId, {
+    //     project_id: this.props.projectId,name:this.state.name, id:-1
+    //   })
+    //   .then(value  => {
+    //     console.log(value)
+    //     this.props.addDiscussion({id:value.id, name:this.state.name})
+    //     this.handleCloseDlg();
+    //   });
   }
 
   handleInputDiscussionName(e) {
     const value = e.target.value;
     this.setState({ name: value });
   }
+
+  onImageDrop(files) {
+    this.setState({
+      uploadedFile: files[0]
+    });
+
+    this.handleImageUpload(files[0]);
+  }
+
+  handleImageUpload(file) {
+    let upload = request.post(CLOUDINARY_UPLOAD_URL)
+                        .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+                        .field('file', file);
+    console.log(upload)
+    upload.end((err, response) => {
+      console.error(response);
+      if (err) {
+        console.error(err);
+      }
+
+      if (response.body.secure_url !== '') {
+        this.setState({
+          uploadedFileCloudinaryUrl: response.body.secure_url
+        });
+      }
+    });
+  }
+
 
   render() {
 		return (
@@ -66,6 +99,20 @@ export default class AddDiscussionDlg extends React.Component {
                 validators={['required']}
                 errorMessages={['this field is required']}
               />
+              <Row center='xs'>
+              {this.state.uploadedFileCloudinaryUrl === '' ? null :
+                <div>
+                  <p>{this.state.uploadedFile.name}</p>
+                  <img src={this.state.uploadedFileCloudinaryUrl} />
+                </div>
+              }
+                <Dropzone
+                  multiple={true}
+                  accept="image/*"
+                  onDrop={this.onImageDrop.bind(this)}>
+                  <p>Drop an image or click to select a file to upload.</p>
+                </Dropzone>
+              </Row>
             <Row end="xs">
               <RaisedButton
                 label="Add"

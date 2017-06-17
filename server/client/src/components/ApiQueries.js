@@ -1,4 +1,4 @@
-const proxy = 'http://04955435.ngrok.io';
+const proxy = 'http://05d675ac.ngrok.io';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -98,11 +98,28 @@ function logup(user) {
     .then(parseJSON);
 }
 
+function sendSecretCode(code, email_value) {
+  let data = {
+    email_code: code,
+    email: email_value
+  }
+  return fetch(proxy+ '/users/confirm_email', {
+    method:'put',
+    body:JSON.stringify(data),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
 function checkSession(token) {
   let data = {
     authentication_token : token
   }
-  return fetch(proxy+'/sessions/1/check', {
+  return fetch(proxy+'/sessions/check', {
     method:'put',
     body: JSON.stringify(data),
     headers: {
@@ -152,14 +169,13 @@ function sendNewUsers(id, value) {
 }
 
 function sendNewDiscussion(id, value) {
-
   return fetch(proxy+'/projects/'+ id + '/discussions/discussions_on_project', {
     method: 'put',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body:  JSON.stringify(value),
+    body: JSON.stringify(value),
   })
   .then(checkStatus);
 }
@@ -173,7 +189,8 @@ function deleteDiscussion(id, value) {
     },
     body:  JSON.stringify(value),
   })
-  .then(checkStatus);
+  .then(checkStatus)
+  .then(parseJSON);
 }
 
 function getAllTags(fun) {
@@ -199,5 +216,6 @@ const ApiQueries = {
   logout,
   logup,
   deleteDiscussion,
+  sendSecretCode,
 };
 export default ApiQueries;

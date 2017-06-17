@@ -16,7 +16,7 @@ export default class AllProjects extends React.Component {
         id: null,
         name: '',
         author: '',
-        active: true,
+        active: null,
         description: '',
         created_at: null,
         updated_at: null,
@@ -26,66 +26,59 @@ export default class AllProjects extends React.Component {
         discussions: [],
       },
     }
+    this.projectData = null;
   };
 
   componentDidMount() {
     ApiQueries.getOneProject(this.props.match.params.id, (data => {
+      this.projectData = data;
       this.setState({
-        project: data});
+        project: this.projectData});
     }));
   };
 
-  changeData(data) {
-    console.log(data)
-    var updatedProject = {
-      id: this.state.project.id,
-      name: data.name,
-      author: this.state.project.author,
-      active: this.state.project.active,
-      description: data.description,
-      created_at: this.state.project.created_at,
-      updated_at: this.state.project.updated_at,
-      users: this.state.project.users,
-      tags: data.tags,
-      documents: this.state.project.documents,
-      discussions: this.state.project.discussions,
-    }
-    this.setState({ project: updatedProject });
+
+  changeData() {
+    this.setState({ project: this.projectData });
+  }
+
+  changeInfo(data) {
+    this.projectData.name = data.name;
+    this.projectData.description = data.description;
+    this.projectData.tags = data.tags;
+    this.changeData();
   }
 
 
   changeUsers(data) {
-    var updatedProject = {
-      id: this.state.project.id,
-      name: this.state.project.name,
-      author: this.state.project.author,
-      active: this.state.project.author,
-      description: this.state.project.description,
-      created_at: this.state.project.created_at,
-      updated_at: this.state.project.updated_at,
-      users: data,
-      tags: this.state.project.tags,
-      documents: this.state.project.documents,
-      discussions: this.state.project.discussions,
-    }
-    this.setState({ project: updatedProject})
+    this.projectData.users = data;
+    this.changeData();
   }
 
-  changeDiscussion(data) {
-    var updatedProject = {
-      id: this.state.project.id,
-      name: this.state.project.name,
-      author: this.state.project.author,
-      active: this.state.project.author,
-      description: this.state.project.description,
-      created_at: this.state.project.created_at,
-      updated_at: this.state.project.updated_at,
-      users: this.state.project.users,
-      tags: this.state.project.tags,
-      documents: this.state.project.documents,
-          // add discussion
-    }
-    this.setState({ project: updatedProject})
+  addDiscussion(data) {
+    this.projectData.discussions.push({id:data.id, name: data.name,})
+    this.changeData();
+  }
+
+  removeDiscuddion(data) {
+    const index = this.projectData.discussions.map((discussion) =>
+      discussion.id).indexOf(data.id);
+    this.projectData.discussions.splice(index,1);
+    console.log(index)
+    this.changeData();
+  }
+
+  addFile(data) {
+
+  }
+
+  removeFile(data) {
+
+  }
+
+  changeActive() {
+    this.projectData.active = !this.projectData.active;
+    this.changeData();
   }
 
   render() {
@@ -93,22 +86,31 @@ export default class AllProjects extends React.Component {
       <Grid fluid>
         <Row>
           <ProjectInfo
+            changeActive={this.changeActive.bind(this)}
             sendChangedData={this.changeData.bind(this)}
             project={this.state.project}
           />
           <Participants
             newUsers={this.changeUsers.bind(this)}
             users={this.state.project.users}
+            projectActive ={this.state.project.active}
             projectId={this.state.project.id}
           />
         </Row>
         {this.state.project.active ?
           <Row>
-            <Files documents={this.state.project.documents}/>
+            <Files
+              projectId ={this.state.project.id}
+              documents={this.state.project.documents}
+              addFile={this.addFile.bind(this)}
+              removeFile={this.removeFile.bind(this)}
+            />
             <Discussions
               discussions={this.state.project.discussions}
               projectId ={this.state.project.id}
-              changeDiscussion={this.changeDiscussion.bind(this)}
+              addDiscussion={this.addDiscussion.bind(this)}
+              removeDiscuddion={this.removeDiscuddion.bind(this)}
+
             />
           </Row> : null}
       </Grid>

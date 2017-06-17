@@ -1,14 +1,11 @@
 import React from 'react';
 import {
-  IconButton,
   Avatar,
-  IconMenu,
   Dialog,
   FlatButton,
 }  from 'material-ui';
 import { Row,Col } from 'react-flexbox-grid';
-import {Link } from 'react-router-dom';
-import ApiQueries from '../../ApiQueries';
+import { Link } from 'react-router-dom';
 
 export default class ParticipantsDlg extends React.Component {
 
@@ -28,8 +25,6 @@ export default class ParticipantsDlg extends React.Component {
   handleCloseParticipants() {
     this.props.closeDlg();
   };
-
-  
 
   render() {
     const actions = [

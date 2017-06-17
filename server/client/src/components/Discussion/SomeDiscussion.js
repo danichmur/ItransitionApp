@@ -1,18 +1,15 @@
 import React from 'react';
 import {
-  Paper,
   Divider,
-  Chip,
-  MenuItem,
   Avatar,
   RaisedButton,
 }  from 'material-ui';
 import { Grid,Row,Col } from 'react-flexbox-grid';
-import {List, ListItem} from 'material-ui/List';
-import { Route, Link } from 'react-router-dom';
-import { ValidatorForm, TextValidator, SelectValidator} from 'react-material-ui-form-validator';
+import { Link } from 'react-router-dom';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import ApiQueries from '../ApiQueries';
 import './SomeDiscussion.scss';
+
 export default class Discussions extends React.Component {
 
   constructor(props){
@@ -28,7 +25,7 @@ export default class Discussions extends React.Component {
         comments: [],
       },
       users: [],
-      newMessage: {
+      newComment: {
         id: null,
         body: '',
         user_id: null,
@@ -52,11 +49,9 @@ export default class Discussions extends React.Component {
     ApiQueries.getOneDiscussion(this.props.match.url, (data => {
       this.setState({ discussion: data });
     }));
-
-
   };
 
-  renderMessage(comment){
+  renderComment(comment){
     var user = this.state.users[this.state.users.map((user) => user.id).indexOf(comment.user_id)];
     return(
       <div className="news" key={comment.id}>
@@ -94,7 +89,7 @@ export default class Discussions extends React.Component {
   handleInputNews(e) {
     const value = e.target.value;
     this.setState({
-      newMessage: {
+      newComment: {
         id: null,
         body: value,
         user_id: null,
@@ -103,7 +98,7 @@ export default class Discussions extends React.Component {
         user_name:null,
       }
     });
-  }
+  };
 
   handleSubmit() {
     this.state.discussion.comments.push({
@@ -115,7 +110,8 @@ export default class Discussions extends React.Component {
         user_name: 'adwwd',
     });
     this.setState({messages: this.state.discussion.messages});
-  }
+  };
+
   render() {
     const { projects } = this.state;
 		return (
@@ -126,7 +122,7 @@ export default class Discussions extends React.Component {
               <h1>{this.state.discussion.name}</h1>
             </Row>
             <Divider />
-            {this.state.discussion.comments.map(this.renderMessage, this)}
+            {this.state.discussion.comments.map(this.renderComment, this)}
             <Row start="xs">
               <Col xs={12}>
               <Divider />
@@ -138,7 +134,7 @@ export default class Discussions extends React.Component {
                     fullWidth={true}
                     name="text"
                     onChange={this.handleInputNews.bind(this)}
-                    value={this.state.newMessage.body}
+                    value={this.state.newComment.body}
                     validators={['required']}
                     errorMessages={['this field is required']}
 

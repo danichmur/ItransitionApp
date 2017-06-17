@@ -1,14 +1,14 @@
 import React from 'react';
 import {Grid,Row,Col} from 'react-flexbox-grid';
 import { Link } from 'react-router-dom';
-import { RaisedButton,
-         FlatButton,
-         Step,
-         Stepper,
-         StepLabel,
-         StepContent,
-         MenuItem,
-         SelectField} from 'material-ui';
+import {
+  RaisedButton,
+  FlatButton,
+  Step,
+  Stepper,
+  StepLabel,
+  StepContent,
+} from 'material-ui';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import ApiQueries from '../ApiQueries';
 import './LogUpForm.scss';
@@ -64,38 +64,14 @@ export default class LogUpForm extends React.Component {
      stepIndex: this.state.stepIndex + 1,
      finished: this.state.stepIndex >= 2,
    });
- };
+  };
 
- handlePrev() {
-   const stepIndex = this.state.stepIndex;
-   if (stepIndex > 0) {
-     this.setState({stepIndex: stepIndex - 1});
-   }
- };
-renderStepActions(step) {
+  handlePrev() {
     const stepIndex = this.state.stepIndex;
-    return (
-      <div >
-        <RaisedButton
-          label={stepIndex === 2 ? 'Finish' : 'Next'}
-          disableTouchRipple={true}
-          disableFocusRipple={true}
-          primary={true}
-          type="submit"
-        />
-        {step > 0  && step < 2 && (
-          <FlatButton
-            label="Back"
-            disabled={stepIndex === 0}
-            disableTouchRipple={true}
-            disableFocusRipple={true}
-            onTouchTap={this.handlePrev.bind(this)}
-          />
-        )}
-      </div>
-    );
-  }
-
+    if (stepIndex > 0) {
+      this.setState({stepIndex: stepIndex - 1});
+    }
+  };
 
   handleSubmitUser() {
     let user = {
@@ -105,16 +81,33 @@ renderStepActions(step) {
       password: this.state.password,
     }
     ApiQueries.logup(user).then(value => {
+      console.log(value);
       if(value[1].status == 406){
         alert(value[0].message);
       } else {
         this.handleNext();
       }
-    });
+    }).then(value => console.log(value));
   };
+
   handleSubmitCode() {
-    this.handleNext();
+    ApiQueries.sendSecretCode(this.state.code, this.state.email)
+      .then(this.handleNext());
   }
+
+  finishedLogUp() {
+    let user = {
+      email: this.state.email,
+      password: this.state.password
+    }
+    ApiQueries.login(user)
+   .then(value => {
+     localStorage.setItem('token', value.authentication_token);
+     localStorage.setItem('user_id', value.id);
+     window.location.reload();
+   });
+  }
+
   componentWillMount() {
         ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
             if (value !== this.state.password) {
@@ -123,6 +116,42 @@ renderStepActions(step) {
             return true;
         });
   };
+
+  renderStepActions(step) {
+      const stepIndex = this.state.stepIndex;
+      return (
+
+        <div >
+        {stepIndex == 2 ? (
+          <RaisedButton
+            label= 'Finish'
+            disableTouchRipple={true}
+            disableFocusRipple={true}
+            primary={true}
+            type="submit"
+            onTouchTap={this.finishedLogUp.bind(this)}
+          />
+        ):(
+          <RaisedButton
+            label='Next'
+            disableTouchRipple={true}
+            disableFocusRipple={true}
+            primary={true}
+            type="submit"
+          />
+        )}
+          {step  === 1 && (
+            <FlatButton
+              label="Back"
+              disabled={stepIndex === 0}
+              disableTouchRipple={true}
+              disableFocusRipple={true}
+              onTouchTap={this.handlePrev.bind(this)}
+            />
+          )}
+        </div>
+      );
+    }
 
   render() {
     return (
@@ -182,8 +211,8 @@ renderStepActions(step) {
                           onChange={this.handleInputCode.bind(this)}
                           name="code"
                           value={this.state.code}
-                          validators={['required', 'isNumber']}
-                          errorMessages={['this field is required', 'is not a number']}
+                          validators={['required']}
+                          errorMessages={['this field is required']}
                         />
                         {this.renderStepActions(1)}
                       </ValidatorForm>

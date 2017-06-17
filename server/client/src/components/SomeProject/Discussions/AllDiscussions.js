@@ -2,17 +2,15 @@ import React from 'react';
 import {
   IconButton,
   Avatar,
-  IconMenu,
-  FlatButton,
 }  from 'material-ui';
 import ChatIcon from 'material-ui/svg-icons/communication/chat';
 import AddFile from 'material-ui/svg-icons/content/add-circle-outline';
-import RemovefileIcon from 'material-ui/svg-icons/action/delete';
 import { Row,Col } from 'react-flexbox-grid';
 import {List, ListItem} from 'material-ui/List';
 import {Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import AddDiscussionDlg from '../Dialogs/AddDiscussionDlg';
+import ApiQueries from '../../ApiQueries';
 
 export default class Discussion extends React.Component {
 
@@ -24,7 +22,11 @@ export default class Discussion extends React.Component {
   };
 
   handleDeleteDiscussion(e) {
-    console.log(e.target);
+    ApiQueries.sendNewDiscussion(
+      this.props.projectId,
+      { project_id: this.props.projectId,name:this.state.name, id: e.target.value }
+    ).then(this.props.removeDiscuddion({ id:e.target.value }));
+
   };
 
   handleOpenAddDiscussion() {
@@ -32,7 +34,7 @@ export default class Discussion extends React.Component {
   };
 
   addDiscussion(data) {
-    this.props.changeDiscussion(data);
+    this.props.addDiscussion(data);
   };
 
   render() {
@@ -49,7 +51,7 @@ export default class Discussion extends React.Component {
                 touch={true}
                 disableTouchRipple={true}
                 tooltip="Add discussion" >
-                <AddFile value={23}/>
+                <AddFile/>
               </IconButton>
             </Col>
           </Row>
@@ -78,6 +80,18 @@ export default class Discussion extends React.Component {
                   </Link>
                 </Col>
                 <Col xs={1}>
+                  <IconButton
+                    value={discussion.id}
+                    style={{
+                      backgroundColor: 'inherit',
+                      backgroundImage: 'url(' + 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-24.png' + ')',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center',
+                    }}
+                    onTouchTap={this.handleDeleteDiscussion.bind(this)}
+
+                  >
+                  </IconButton>
                 </Col>
               </Row>
           ))}

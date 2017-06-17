@@ -9,11 +9,23 @@ import RemovefileIcon from 'material-ui/svg-icons/action/delete';
 import DownLoadFileIcon from 'material-ui/svg-icons/file/file-download';
 import { Row,Col } from 'react-flexbox-grid';
 import {List, ListItem} from 'material-ui/List';
+import AddFileDlg from '../Dialogs/AddFileDlg';
 
 export default class Files extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      addFileOpen: false,
+    }
+  };
+
+  openAddFileDlg() {
+    this.setState({addFileOpen: !this.state.addFileOpen});
+  };
+
+  addDiscussion(data) {
+    this.props.addDiscussion(data);
   };
 
   render() {
@@ -25,37 +37,65 @@ export default class Files extends React.Component {
               <p>Files</p>
             </Col>
             <Col xs={2}>
-              <IconButton tooltip="add file" touch={true}>
+              <IconButton
+                onClick={this.openAddFileDlg.bind(this)}
+                tooltip="add file"
+                touch={true}
+              >
                 <AddFile />
               </IconButton>
             </Col>
           </Row>
           {this.props.documents.map(document => (
-            <ListItem
-              key={document.id}
-              leftAvatar={<Avatar icon={<FileIcon />} />}
-              primaryText={
-                <Row>
-                  <Col xs={8}>
-                    {document.name}
-                  </Col>
-                  <Col xs={2}>
-                    <IconButton tooltip="add file" touch={true}>
-                      <DownLoadFileIcon />
-                    </IconButton>
-                  </Col>
-                  <Col xs={2}>
-                    <IconButton tooltip="add file" touch={true}>
-                      <RemovefileIcon />
-                    </IconButton>
-                  </Col>
-                </Row>
-              }
-              secondaryText={document.updated_at}
-            >
-            </ListItem>
+            <Row key={document.id} >
+              <Col xs={10}>
+                <ListItem
+                  key={document.id}
+                  leftAvatar={<Avatar icon={<FileIcon />} />}
+                  primaryText={
+                    <Row>
+                      <Col xs={10}>
+                        {document.name}
+                      </Col>
+                    </Row>
+                  }
+                />
+              </Col>
+              <Col xs={1}>
+                <IconButton
+                  value={document.id}
+                  style={{
+                    backgroundColor: 'inherit',
+                    backgroundImage: 'url(' + 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-24.png' + ')',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                  }}
+
+                >
+                </IconButton>
+              </Col>
+              <Col xs={1}>
+                <IconButton
+                  value={document.id}
+                  style={{
+                    backgroundColor: 'inherit',
+                    backgroundImage: 'url(' + 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-24.png' + ')',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                  }}
+
+                >
+                </IconButton>
+              </Col>
+            </Row>
           ))}
         </List>
+        <AddFileDlg
+          projectId={this.props.projectId}
+          open={this.state.addFileOpen}
+          closeDlg={this.openAddFileDlg.bind(this)}
+          addfile={this.addDiscussion.bind(this)}
+        />
     </Col>
     );
   }

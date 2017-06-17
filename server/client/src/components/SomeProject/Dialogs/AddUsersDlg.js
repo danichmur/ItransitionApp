@@ -1,21 +1,14 @@
 import React from 'react';
 import {
-  IconButton,
   Avatar,
-  IconMenu,
-  MenuItem,
   Dialog,
   FlatButton,
   RaisedButton,
-  AutoComplete,
-  Chip,
-  Divider,
   Checkbox,
 }  from 'material-ui';
 import { Row,Col } from 'react-flexbox-grid';
-import { ValidatorForm, TextValidator, SelectValidator} from 'react-material-ui-form-validator';
-import Chips from '../ProjectInfo/Chips';
 import {List, ListItem} from 'material-ui/List';
+import { ValidatorForm } from 'react-material-ui-form-validator';
 import ApiQueries from '../../ApiQueries';
 
 export default class AddUsersDlg extends React.Component {
@@ -38,15 +31,8 @@ export default class AddUsersDlg extends React.Component {
     this.handleCloseDlg();
   }
   componentWillReceiveProps() {
-    this.props.open ?
-      (
-        null
-      )
-    :
-      (
-        console.log("delete"),
+    this.props.open ? null : (
         this.state.newUsers = [],
-        console.log("reu"),
         ApiQueries.getAllUser((data => {
           this.setState({allUser: data});
         }))
@@ -54,8 +40,7 @@ export default class AddUsersDlg extends React.Component {
           console.log("add"),
         this.props.oldUsers.map(user =>(
             this.state.newUsers.push(user)
-        )),
-        console.log(this.state.newUsers)
+        ))
 
       )
   }
