@@ -35,10 +35,24 @@ function getOneUser(userId) {
     .then(Path.parseJSON);
 };
 
+function updateUser(userId, data) {
+  return fetch(proxy + '/users/' + userId,{
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body:  JSON.stringify(data),
+  })
+    .then(Path.checkStatus)
+    .then(Path.parseJSON);
+}
+
 const UsersApi = {
   getAllProjectUser,
   getAllUser,
   sendNewUsers,
-  getOneUser
+  getOneUser,
+  updateUser
 }
 export default UsersApi;

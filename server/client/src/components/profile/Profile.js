@@ -33,20 +33,25 @@ export default class Profile extends React.Component {
   componentDidMount() {
     UsersApi.getOneUser(this.props.match.params.id)
     .then((data) => {
-      this.setState({user:data})
+      this.setState({ user: data} );
     });
   }
 
-openChangePhotoDlg(){
-}
+  openChangePhotoDlg(){
+    this.setState({  isDlgOpen: !this.state.isDlgOpen })
+  }
 
+  updateUser(data) {
+    data.email = this.state.user.email;
+    data.projects = this.state.user.projects;
+    this.setState({ user: data })
+  }
 
   render() {
     var sectionStyle = {
       backgroundImage: 'url(' + this.state.user.photo + ')',
       height:"200px"
     };
-
     return (
       <Grid fluid>
         <Row center="xs">
@@ -55,6 +60,7 @@ openChangePhotoDlg(){
             <Row center="xs">
               <FlatButton
                 label="Change photo"
+                onTouchTap={this.openChangePhotoDlg.bind(this)}
               />
             </Row>
           </Col>
@@ -90,6 +96,9 @@ openChangePhotoDlg(){
         <ChangePhotoDlg
           open={this.state.isDlgOpen}
           closeDlg={this.openChangePhotoDlg.bind(this)}
+          userInfo={this.state.user}
+          match={this.props.match}
+          sendData={this.updateUser.bind(this)}
         />
       </Grid>
     );
