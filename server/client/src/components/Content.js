@@ -45,6 +45,7 @@ export default class Content extends React.Component {
          this.setState({isAuthenticated: false})
        } else {
          this.setState({isAuthenticated: true, user:value})
+         localStorage.setItem('userId', value.id);
        }});
   };
 
@@ -66,6 +67,7 @@ export default class Content extends React.Component {
     return(
       <div>
         <Switch>
+          <Route path='/main'  component={Main} />
           <Route path='/logIn' component={LogInForm}
           />
           <Route path='/logUp' component={LogUpForm}
@@ -84,10 +86,8 @@ export default class Content extends React.Component {
           drawerState={this.state.drawerState}
         />
         <Switch>
-          <Route
-            path='/profile/:id'
-            component={() => (<Profile currentUser={this.user} />)}
-          />
+          <Route path='/main'  component={Main} />
+          <Route path='/profile/:id' component={Profile} />
           <Route path='/allprojects' component={AllProjects} />
           <Route path='/projects/:id' component={Project} />
           <Route path='/news' component={News} />
@@ -107,7 +107,6 @@ export default class Content extends React.Component {
           logOut={this.logOut.bind(this)}
           showDrawer={this.leftButtonTouch.bind(this)}
         />
-        <Route path='/main'  component={Main} />
           { this.state.isAuthenticated ? this.renderPrivateRoute() : this.renderPublicRoute() }
       </div>
     )

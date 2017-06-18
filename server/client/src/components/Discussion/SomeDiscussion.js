@@ -26,31 +26,61 @@ export default class Discussions extends React.Component {
         comments: [],
       },
       users: [],
-      newComment: {
-        id: null,
-        body: '',
-        user_id: null,
-        created_at:null,
-        updated_at: null,
-        user_name:'',
+      newComment : {
+        body:'',
       }
     }
+
     this.style = {
       errorText: {
         zIndex:1000,
       }
     }
+    this.user = {};
   };
 
   componentDidMount(){
     UsersApi.getAllProjectUser(this.props.match.params.id)
-      .then(data =>   this.setState({users: data}));
+      .then(data => {
+        let id = parseInt(localStorage.getItem('userId'));
+        this.user = data.find(user => user.id == id);
+        this.setState({users: data});
+      });
     DiscussionApi.getOneDiscussion(this.props.match.url)
-    .then(data =>  is.setState({ discussion: data }));
+    .then(data => this.setState({ discussion: data }));
+  };
+
+
+  handleInputNews(e) {
+    const value = e.target.value;
+    this.setState({
+      newComment: {
+        body: value,
+      }
+    });
+  };
+
+  handleSubmit() {
+    DiscussionApi.sendNewComment(
+      this.props.match.params.id,
+      this.state.discussion.id,
+      {body: this.state.newComment.body,user_id: localStorage.getItem('userId')}
+    ).then(data => {
+      this.state.discussion.comments.push({
+          id:data.id,
+          body: this.state.newComment.body,
+          user_id:this.user.id,
+          updated_at: data.updated_at,
+          userName: this.user.name,
+      });
+
+      this.setState({messages: this.state.discussion.messages, newComment:{body:''}});
+    });
+
   };
 
   renderComment(comment){
-    var user = this.state.users[this.state.users.map((user) => user.id).indexOf(comment.user_id)];
+    var user = this.state.users.find(user => user.id == comment.user_id);
     return(
       <div className="news" key={comment.id}>
         <Row>
@@ -60,7 +90,10 @@ export default class Discussions extends React.Component {
                 pathname:`/profile/${user.id}`
               }}
             >
-              <Avatar size={55} src={user.photo}/>
+              <Avatar
+                size={55}
+                src={user.photo}
+              />
             </Link>
           </Col>
           <Col xs={9} sm={9} md={10} lg={10}>
@@ -72,7 +105,7 @@ export default class Discussions extends React.Component {
               >
                 {user.name},
               </Link>
-              {"" + comment.created_at}
+              {" " + comment.updated_at.split('T')[0]}
             </Row>
             <Row start="xs">
               {comment.body}
@@ -84,34 +117,7 @@ export default class Discussions extends React.Component {
     );
   };
 
-  handleInputNews(e) {
-    const value = e.target.value;
-    this.setState({
-      newComment: {
-        id: null,
-        body: value,
-        user_id: 200,
-        created_at:null,
-        updated_at: null,
-        user_name:null,
-      }
-    });
-  };
-
-  handleSubmit() {
-    this.state.discussion.comments.push({
-        id: this.state.discussion.comments.length + 1,
-        body:  this.state.newComment.body,
-        user_id: 4,
-        created_at:null,
-        updated_at: null,
-        user_name: 'adwwd',
-    });
-    this.setState({messages: this.state.discussion.messages});
-  };
-
   render() {
-    const { projects } = this.state;
 		return (
       <Grid fluid>
         <Row center="xs">

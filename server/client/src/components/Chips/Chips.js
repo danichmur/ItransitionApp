@@ -30,10 +30,15 @@ export default class Chips extends React.Component {
   }
 
   render() {
-    console.log(this.state.redirect);
     if (this.state.redirect) {
       this.state.redirect = false;
-      return <Redirect to={{ pathname:`/tags/${this.state.tagId}/allprojects` }} />;
+      return <Redirect push to={{
+        pathname:`/tags/${this.state.tagId}/allprojects`,
+        state: this.state.redirect
+
+      }}
+
+      />;
     } else {
       const edit = this.props.edit;
       return (

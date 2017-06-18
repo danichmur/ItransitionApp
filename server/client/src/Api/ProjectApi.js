@@ -13,16 +13,21 @@ function getFewProjects(tagId) {
     .then(Path.checkStatus)
     .then(Path.parseJSON);
 }
-
+function getFewActiveProjects() {
+  return fetch(proxy+'/projects/limit_index')
+    .then(Path.checkStatus)
+    .then(Path.parseJSON);
+}
 function getOneProject(projectId){
   return fetch(proxy + '/projects/' + projectId)
     .then(Path.checkStatus)
-    .then(Path.parseJSON)
+    .then(Path.parseJSON);
 };
 
-function updateProject(projectId, value) {
+function updateProject(projectId,value,userId) {
   var data= {
-      project: value
+      project: value,
+      user_id: userId
   }
   return fetch(proxy + '/projects/' + projectId, {
     method: 'put',
@@ -32,13 +37,28 @@ function updateProject(projectId, value) {
     },
     body:  JSON.stringify(data),
   })
-  .then(Path.checkStatus);
+  .then(Path.checkStatus)
+  .then(Path.parseJSON);
 };
+
+function deleteProject(projectId) {
+  return fetch(proxy + '/projects/' + projectId, {
+    method: 'delete',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  })
+  .then(Path.checkStatus)
+  .then(Path.parseJSON);
+}
 
 const ProjectApi = {
   updateProject,
+  getFewActiveProjects,
   getOneProject,
   getAllProjects,
-  getFewProjects
+  getFewProjects,
+  deleteProject
 }
 export default ProjectApi;

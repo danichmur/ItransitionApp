@@ -51,9 +51,10 @@ export default class EditInfoDlg extends React.Component {
         projectDescription: this.props.projectInfo.description,
       });
       TagsApi.getAllTags(data => {
-        data.map(tag => (
-          this.state.autoComlete.push(tag.value)
-        ))
+        data.map(tag => {
+          console.log(data);
+          this.state.autoComlete.push(tag.value);
+        })
       })
     } else {
       this.state.chips = [];
@@ -85,20 +86,22 @@ export default class EditInfoDlg extends React.Component {
       active:this.props.projectInfo.active,
       tags: this.state.chips
     }
+    TagsApi.sendNewTags(this.props.projectInfo.id, data.tags);
     ProjectApi.updateProject(this.props.projectInfo.id, {
       name: data.name,
       description: data.description,
-      active:data.active
-    })
+      active:data.active,
+
+    },parseInt(localStorage.getItem('userId')))
     .then(this.props.sendData(data));
-    TagsApi.sendNewTags(this.props.projectInfo.id, data.tags);
     this.handleCloseEditInfo();
+
   };
 
   addNewTag() {
     if (this.state.newTag != '') {
       this.state.chips.push({
-        id: this.state.autoComlete.length ,
+        id: -1 - this.state.autoComlete.length ,
         value: this.state.newTag
       });
       this.state.autoComlete.push(this.state.newTag);

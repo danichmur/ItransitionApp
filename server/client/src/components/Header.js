@@ -15,6 +15,7 @@ export default class Header extends React.Component {
       appBar:{
           position:'fixed',
            top: 0,
+           color:'red'
       },
       iconStyle: {
         width: 40,
@@ -69,7 +70,7 @@ export default class Header extends React.Component {
         <AppBar
           style={style.appBar}
           title={
-            <Link to='/main'>Project-Manager</Link>
+            <Link className="title" to='/main'>Project-Manager</Link>
           }
           onLeftIconButtonTouchTap={this.leftButtonTouch.bind(this)}
           iconElementRight={

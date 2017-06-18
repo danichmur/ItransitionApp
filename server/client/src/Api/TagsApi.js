@@ -12,15 +12,16 @@ function sendNewTags(projectId, value) {
   var data = {
      tags: value.map(tag => tag.value),
   }
-  return fetch(proxy+'/projects/'+ projectId + '/tags/tags_on_project', {
-    method: 'put',
+  return fetch(proxy+'/projects/'+ projectId + '/tags', {
+    method: 'post',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body:  JSON.stringify(data),
+    body: JSON.stringify(data),
   })
-  .then(Path.checkStatus);
+  .then(Path.checkStatus)
+  .then(Path.parseJSON);
 }
 
 const TagsApi = {

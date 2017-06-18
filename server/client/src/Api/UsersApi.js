@@ -30,7 +30,7 @@ function sendNewUsers(projectId, value) {
 };
 
 function getOneUser(userId) {
-  return fetch(proxy + '/users' + userId)
+  return fetch(proxy + '/users/' + userId)
     .then(Path.checkStatus)
     .then(Path.parseJSON);
 };

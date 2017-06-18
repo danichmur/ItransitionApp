@@ -6,7 +6,7 @@ function getOneDiscussion(value){
   let path = value.split('/');
   return fetch(proxy +'/projects/' + path[4] + '/discussions/'+ path[2])
     .then(Path.checkStatus)
-    .then(parseJSON);
+    .then(Path.parseJSON);
 };
 
 function sendNewDiscussion(projectId, value) {
@@ -34,14 +34,14 @@ function deleteDiscussion(projectId, value) {
   .then(Path.parseJSON);
 };
 
-function sendNewComment(discussionsID) {
-  return fetch(proxy + '/projects/'+ projectId + '/discussions', {
+function sendNewComment(projectId, discussionsID, data) {
+  return fetch(proxy + '/projects/'+ projectId + '/discussions/' + discussionsID + '/comments' , {
     method: 'post',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(discussionsID),
+    body: JSON.stringify(data),
   })
   .then(Path.checkStatus)
   .then(Path.parseJSON);

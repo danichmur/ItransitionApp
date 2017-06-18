@@ -20,6 +20,7 @@ export default class LogInForm extends React.Component {
         password:'',
       },
       redirectTo: false,
+      errorStatus: false,
     }
   };
 
@@ -40,14 +41,19 @@ export default class LogInForm extends React.Component {
   handleSubmit(e) {
     AccessApi.login(this.state.user)
       .then(value => {
-        localStorage.setItem('token', value.authentication_token);
-        window.location.reload();
-    });
+        if(value == 401) {
+          this.setState({errorStatus:true})
+        } else {
+          localStorage.setItem('token', value.authentication_token);
+          window.location.reload();
+        }
+      });
   }
 
   render() {
     return (
       <Grid fluid>
+        {}
         <Row center="xs">
           <Col xs={10} sm={6} md={5} lg={4} >
             <ValidatorForm onSubmit={this.handleSubmit.bind(this)}>

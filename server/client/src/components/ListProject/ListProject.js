@@ -11,28 +11,38 @@ export default class ListProject extends React.Component {
     super(props);
     this.state = {
       projects:[],
-      currentUrs: this.props.match,
+      currentUrl: this.props.match,
     }
   };
 
   componentWillReceiveProps() {
-    console.log(this.props.match);
-    console.log(this.state.currentUrs);
+    // if(this.state.currentUrl != this.props.match.params.url)
+
   }
   render() {
 		return (
       <List>
         {this.props.projects.map((project) => (
-          <ListItem
+          <Paper
+            zDepth={2}
             key={project.id}
-            secondaryText={
-              <Row end="xs">
-                Created by {project.author},{" " + project.created_at.split('T')[0]}
-              </Row>
-            }
+            style={{margin:10}}
           >
-            <Row>
-              <Col xs={12}>
+            <ListItem
+              secondaryText={
+                <Row end="xs">
+                  Created by &nbsp;
+                  <Link
+                    to={{
+                      pathname:`/profile/${project.author}`
+                    }}
+                  >{project.author }
+                  </Link>,
+                  {" " + project.created_at.split('T')[0]}
+                </Row>
+              }
+            >
+              <Row>
                 <Link
                   key={project.id}
                   to={{
@@ -41,16 +51,20 @@ export default class ListProject extends React.Component {
                 >
                   <h3>{project.name}</h3>
                 </Link>
-              </Col>
-            </Row>
-            <Divider />
-            <Chips
-                tags={project.tags}
-                edit={false}
-            />
-            <p>{project.description}</p>
-            <Divider />
-          </ListItem>
+              </Row>
+              <Divider />
+              <Row>
+                  <p>{project.description}</p>
+              </Row>
+              <Row>
+               <Chips
+                    tags={project.tags}
+                    edit={false}
+                />
+              </Row>
+              <Divider />
+            </ListItem>
+          </Paper>
         ))}
       </List>
     );

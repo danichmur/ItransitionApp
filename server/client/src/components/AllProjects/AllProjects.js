@@ -26,9 +26,7 @@ export default class AllProjects extends React.Component {
       <Grid fluid>
         <Row>
           <Col xs={12} smOffset={2} sm={8} md={8} mdOffset={2} lgOffset={3} lg={6}>
-            <Paper zDepth={2}>
-              <ListProject projects={this.state.projects} />
-            </Paper>
+            <ListProject projects={this.state.projects} />
           </Col>
         </Row>
       </Grid>
