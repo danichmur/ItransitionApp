@@ -32,7 +32,6 @@ export default class AddDiscussionDlg extends React.Component {
       name:this.state.name
       })
       .then(value  => {
-        console.log(value)
         this.props.addDiscussion({
           id:value.id,
           name:this.state.name,

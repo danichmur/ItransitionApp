@@ -41,14 +41,6 @@ export default class Files extends React.Component {
   render() {
 		return (
       <Col className="backgroundStyle" xs={12} sm={6} md={6} lg={6}>
-      <IconButton
-        tooltip="add file"
-        touch={true}
-
-
-      >
-      <AddFile />
-      </IconButton>
         <List>
           <Row>
             <Col xs={10}>
@@ -66,7 +58,7 @@ export default class Files extends React.Component {
           </Row>
           {this.props.documents.map(document => (
             <Row key={document.id} >
-              <Col xs={10}>
+              <Col xs={9}>
                 <ListItem
                   key={document.id}
                   leftAvatar={<Avatar icon={<FileIcon />} />}
@@ -79,34 +71,40 @@ export default class Files extends React.Component {
                   }
                 />
               </Col>
-              <Col xs={1}>
-                <IconButton
-                  value={document.id}
-                  style={{
-                    backgroundColor: 'inherit',
-                    backgroundImage: 'url(' + 'https://cdn1.iconfinder.com/data/icons/material-core/24/cloud-download-24.png' + ')',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                  }}
-                  onTouchTap={this.downLoadFile.bind(this)}
-                  href="http://res.cloudinary.com/luxorik/raw/upload/v1497775991/mtlgzxken4jdg8nnykoo.js"
-                  download="fesfse"
-                >
-                </IconButton>
-              </Col>
-              <Col xs={1}>
-                <IconButton
-                  value={document.id}
-                  style={{
-                    backgroundColor: 'inherit',
-                    backgroundImage: 'url(' + 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-24.png' + ')',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                  }}
-                  onTouchTap={this.deleteFile.bind(this)}
-                >
-                </IconButton>
-              </Col>
+              {(this.props.userPosition == 0 || this.props.userPosition == 1) ? (
+                <Col xs={3}>
+                  <Row>
+                    <Col xs={6}>
+                      <IconButton
+                        value={document.id}
+                        style={{
+                          backgroundColor: 'inherit',
+                          backgroundImage: 'url(' + 'https://cdn1.iconfinder.com/data/icons/material-core/24/cloud-download-24.png' + ')',
+                          backgroundRepeat: 'no-repeat',
+                          backgroundPosition: 'center',
+                        }}
+                        onTouchTap={this.downLoadFile.bind(this)}
+                        href="http://res.cloudinary.com/luxorik/raw/upload/v1497775991/mtlgzxken4jdg8nnykoo.js"
+                        download="fesfse"
+                      >
+                      </IconButton>
+                    </Col>
+                    <Col xs={6}>
+                      <IconButton
+                        value={document.id}
+                        style={{
+                          backgroundColor: 'inherit',
+                          backgroundImage: 'url(' + 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-24.png' + ')',
+                          backgroundRepeat: 'no-repeat',
+                          backgroundPosition: 'center',
+                        }}
+                        onTouchTap={this.deleteFile.bind(this)}
+                      >
+                      </IconButton>
+                    </Col>
+                    </Row>
+                </Col>
+              ):null}
             </Row>
           ))}
         </List>

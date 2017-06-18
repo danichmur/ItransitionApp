@@ -80,7 +80,7 @@ export default class LogUpForm extends React.Component {
       email: this.state.email,
       password: this.state.password,
     }
-    ApiQueries.logup(user).then(value => {
+    AccessApi.logup(user).then(value => {
       console.log(value);
       if(value[1].status == 406){
         alert(value[0].message);
@@ -91,7 +91,7 @@ export default class LogUpForm extends React.Component {
   };
 
   handleSubmitCode() {
-    ApiQueries.sendSecretCode(this.state.code, this.state.email)
+    AccessApi.sendSecretCode(this.state.code, this.state.email)
       .then(this.handleNext());
   }
 
@@ -100,7 +100,7 @@ export default class LogUpForm extends React.Component {
       email: this.state.email,
       password: this.state.password
     }
-    ApiQueries.login(user)
+    AccessApi.login(user)
    .then(value => {
      localStorage.setItem('token', value.authentication_token);
      this.props.setUser({

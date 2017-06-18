@@ -11,7 +11,6 @@ import Dropzone from 'react-dropzone';
 import request from 'superagent';
 import UsersApi from '../../../Api/UsersApi';
 
-
 const CLOUDINARY_UPLOAD_PRESET = 'jqeq6aiv';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/luxorik/upload';
 
@@ -27,16 +26,18 @@ export default class ChangePhotoDlg extends React.Component {
     this.state = {
       uploadedFile: null,
       uploadedFileCloudinaryUrl: '',
+      name: '',
+      nickname: '',
     };
     this.user = {
-      name: '',
-      nickname: ''
+
     };
   };
 
   componentWillReceiveProps() {
     if (!this.props.open) {
-      this.user = this.props.userInfo;
+      this.state.name = this.props.userInfo.name;
+      this.state.nickname = this.props.userInfo.nickname;
     } else {
       this.user = {
         name: '',
@@ -90,7 +91,10 @@ export default class ChangePhotoDlg extends React.Component {
       position: this.props.userInfo.position,
     };
     UsersApi.updateUser(this.props.match.params.id, user)
-    .then(value => this.props.sendData(user));
+    .then(value => {
+      this.props.sendData(user);
+      this.handleCloseDlg();
+    });
   }
 
   render() {

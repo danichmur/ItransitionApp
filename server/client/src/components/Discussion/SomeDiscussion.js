@@ -10,6 +10,7 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import DiscussionApi from '../../Api/DiscussionApi';
 import UsersApi from '../../Api/UsersApi';
 import './SomeDiscussion.scss';
+import { Redirect } from 'react-router-dom';
 
 export default class Discussions extends React.Component {
 
@@ -28,7 +29,20 @@ export default class Discussions extends React.Component {
       users: [],
       newComment : {
         body:'',
-      }
+      },
+      access: false,
+    }
+    if(!position) {
+      this.userPosition = false
+    }
+    else {
+      this.userPosition = cryptlib.decrypt(position, '10', '10');
+    }
+    let id = localStorage.getItem('userId');
+    if(!id) {
+      this.userId = false
+    } else {
+      this.userId = cryptlib.decrypt(id, '10', '10');
     }
 
     this.style = {
@@ -42,9 +56,10 @@ export default class Discussions extends React.Component {
   componentDidMount(){
     UsersApi.getAllProjectUser(this.props.match.params.id)
       .then(data => {
-        let id = parseInt(localStorage.getItem('userId'));
+        ;
         this.user = data.find(user => user.id == id);
-        this.setState({users: data});
+        let user = !!data.find(user => user.id == this.userId)
+        this.setState({ users: data, access: user });
       });
     DiscussionApi.getOneDiscussion(this.props.match.url)
     .then(data => this.setState({ discussion: data }));
@@ -117,44 +132,50 @@ export default class Discussions extends React.Component {
   };
 
   render() {
-		return (
-      <Grid fluid>
-        <Row center="xs">
-          <Col className="backgroundStyle" xs={12} sm={10} md={10} lg={10}>
-            <Row top="xs">
-              <h1>{this.state.discussion.name}</h1>
-            </Row>
-            <Divider />
-            {this.state.discussion.comments.map(this.renderComment, this)}
-            <Row start="xs">
-              <Col xs={12}>
+    if (this.state.access || this.userPosition == 0) {
+  		return (
+        <Grid fluid>
+          <Row center="xs">
+            <Col className="backgroundStyle" xs={12} sm={10} md={10} lg={10}>
+              <Row top="xs">
+                <h1>{this.state.discussion.name}</h1>
+              </Row>
               <Divider />
-                <ValidatorForm onSubmit={this.handleSubmit.bind(this)}>
-                  <TextValidator
-                    style={this.style.errorText}
-                    floatingLabelText="Messages text"
-                    multiLine={true}
-                    fullWidth={true}
-                    name="text"
-                    onChange={this.handleInputNews.bind(this)}
-                    value={this.state.newComment.body}
-                    validators={['required']}
-                    errorMessages={['this field is required']}
+              {this.state.discussion.comments.map(this.renderComment, this)}
+              <Row start="xs">
+                <Col xs={12}>
+                <Divider />
+                  <ValidatorForm onSubmit={this.handleSubmit.bind(this)}>
+                    <TextValidator
+                      style={this.style.errorText}
+                      floatingLabelText="Messages text"
+                      multiLine={true}
+                      fullWidth={true}
+                      name="text"
+                      onChange={this.handleInputNews.bind(this)}
+                      value={this.state.newComment.body}
+                      validators={['required']}
+                      errorMessages={['this field is required']}
 
-                  />
-                  <RaisedButton
-                    label="Send"
-                    disableTouchRipple={true}
-                    disableFocusRipple={true}
-                    primary={true}
-                    type="submit"
-                  />
-                </ValidatorForm>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Grid>
-    );
+                    />
+                    <RaisedButton
+                      label="Send"
+                      disableTouchRipple={true}
+                      disableFocusRipple={true}
+                      primary={true}
+                      type="submit"
+                    />
+                  </ValidatorForm>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Grid>
+      );
+    } else {
+      return(
+        <Redirect to='/main'/>
+      )
+    }
   }
 }

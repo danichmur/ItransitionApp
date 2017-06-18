@@ -28,21 +28,21 @@ export default class LogInForm extends React.Component {
     const email = e.target.value;
     var user = this.state.user;
     user.email = email;
-    this.setState({ user: user })
+    this.setState({ user: user, errorStatus: false })
   };
 
   handleInputPassword(e) {
     const password = e.target.value;
     var user = this.state.user;
     user.password = password;
-    this.setState({ user: user })
+    this.setState({ user: user, errorStatus: false  })
   };
 
   handleSubmit(e) {
     AccessApi.login(this.state.user)
       .then(value => {
         if(value == 401) {
-          this.setState({errorStatus:true})
+          this.setState({ errorStatus: true })
         } else {
           localStorage.setItem('token', value.authentication_token);
           window.location.reload();
@@ -50,12 +50,22 @@ export default class LogInForm extends React.Component {
       });
   }
 
+  renderError() {
+    if (this.state.errorStatus) {
+      return(
+        <p>Wrong login or password</p>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     return (
       <Grid fluid>
-        {}
+        {this.renderError()}
         <Row center="xs">
-          <Col xs={10} sm={6} md={5} lg={4} >
+          <Col xs={10} sm={6} md={4} lg={4} >
             <ValidatorForm onSubmit={this.handleSubmit.bind(this)}>
               <Row>
                 <TextValidator

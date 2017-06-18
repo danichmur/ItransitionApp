@@ -12,14 +12,10 @@ import Chips from '../../Chips/Chips';
 import TagsApi from '../../../Api/TagsApi';
 import ProjectApi from '../../../Api/ProjectApi';
 
-export default class EditInfoDlg extends React.Component {
+export default class AddProjectDlg extends React.Component {
   constructor(props) {
     super(props);
     this.styles = {
-      participants: {
-        marginTop:10,
-        marginBottom:10,
-      },
       errorText: {
         zIndex:1000,
       }
@@ -28,32 +24,21 @@ export default class EditInfoDlg extends React.Component {
       projectName: '',
       projectDescription: '',
       autoComlete: [],
-      chips: [],
+      tags:[],
       newTag: '',
       errorText:'',
     }
-
   };
 
-  handleCloseEditInfo() {
-    this.state.chips = [];
-    this.props.openDlg();
+  handleCloseDlg() {
+    this.props.changeState();
   };
 
   componentWillReceiveProps() {
-    for (var i = 0; i < this.props.projectInfo.tags.length; i++) {
-      this.state.chips[i] = this.props.projectInfo.tags[i];
-    }
     if (!this.props.open) {
       this.state.autoComlete = [];
-      this.setState({
-        projectName: this.props.projectInfo.name,
-        projectDescription: this.props.projectInfo.description,
-      });
       TagsApi.getAllTags()
       .then(data => data.map(tag => this.state.autoComlete.push(tag.value)));
-    } else {
-      this.state.chips = [];
     }
   };
 
@@ -76,37 +61,38 @@ export default class EditInfoDlg extends React.Component {
   };
 
   handleSubmit() {
-    let data = {
+    ProjectApi.sendNewProject({
       name: this.state.projectName,
       description: this.state.projectDescription,
-      active:this.props.projectInfo.active,
-      tags: this.state.chips
-    }
-    TagsApi.sendNewTags(this.props.projectInfo.id, data.tags)
-    .then(tags => {
-      data.tags = tags;
-      ProjectApi.updateProject(this.props.projectInfo.id, {
-        name: data.name,
-        description: data.description,
-        active:data.active,
-      }, parseInt(localStorage.getItem('userId')))
-      .then(value => this.props.sendData(data));
-      this.handleCloseEditInfo();
+      user_id: thip.props.userId,
+    }).then(value => {
+      console.log(value);
+      TagsApi.sendNewTags(value.id, this.state.tags)
+      .then(tags => {
+        this.props.sendData({
+          id: value.id,
+          name: this.state.projectName,
+          description: this.state.projectDescription,
+          tags: tags,
+          active: false,
+          created_at: value.created_at,
+          user_id: thip.props.userId,
+        })
+        this.handleCloseEditInfo();
+      });
     });
-
   };
 
   addNewTag() {
     if (this.state.newTag != '') {
-      let tags = !!this.state.chips.find(tag => tag.value == this.state.newTag);
+      let tags = !!this.state.tags.find(tag => tag.value == this.state.newTag);
       if (!tags) {
         this.state.tags.push({
-          id: -1 - this.state.autoComlete.length ,
+          id:this.state.tags + 10000000,
           value: this.state.newTag
         });
-        this.state.autoComlete.push(this.state.newTag);
         this.setState({
-          chips: this.state.chips,
+          tags: this.state.tags,
           newTag: ''})
         } else {
           this.setState({errorText: 'already exist'})
@@ -117,20 +103,19 @@ export default class EditInfoDlg extends React.Component {
   };
 
   deleteTag(id) {
-    const tagsToDelete = this.state.chips.map((chip) => chip.id).indexOf(id);
-    this.state.chips.splice(tagsToDelete, 1);
-    this.setState({chips: this.state.chips});
+    const tagsToDelete = this.state.tag.map((chip) => chip.id).indexOf(id);
+    this.state.tags.splice(tagsToDelete, 1);
+    this.setState({chips: this.state.tags});
   };
 
   render() {
-
 		return (
       <Dialog
         title="Edit project data"
         modal={false}
         autoDetectWindowHeight={true}
-        open={this.props.open}
-        onRequestClose={this.handleCloseEditInfo.bind(this)}
+        open={this.props.state}
+        onRequestClose={this.handleCloseDlg.bind(this)}
         autoScrollBodyContent={true}
       >
         <Row>
@@ -149,7 +134,7 @@ export default class EditInfoDlg extends React.Component {
               <Divider />
               <Chips
                 deleteTag={this.deleteTag.bind(this)}
-                tags={this.state.chips}
+                tags={this.state.tags}
                 edit={true}
               />
               <Divider />
@@ -193,7 +178,7 @@ export default class EditInfoDlg extends React.Component {
               <FlatButton
                 label="Close"
                 primary={true}
-                onTouchTap={this.handleCloseEditInfo.bind(this)}
+                onTouchTap={this.handleCloseDlg.bind(this)}
               />
             </ValidatorForm>
           </Col>

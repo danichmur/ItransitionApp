@@ -54,7 +54,9 @@ export default class Participants extends React.Component {
               Previous
             </p>
           </Col>
-          {!this.props.projectActive ? null : (
+          {(this.props.userPosition == 0 || this.props.userPosition == 1) ? (
+
+          !this.props.projectActive  ? null : (
             <Col xs={2}>
               <IconButton
                 tooltip="add users"
@@ -64,7 +66,7 @@ export default class Participants extends React.Component {
                 <AddFile />
               </IconButton>
             </Col>
-          )}
+          )): null}
         </Row>
         <Row>
           {this.props.users.map(user => (

@@ -1,4 +1,5 @@
 import React from 'react';
+import Hash from 'sha256';
 import {
   Divider,
   Chip,
@@ -67,7 +68,8 @@ export default class ProjectInfo extends React.Component {
               <h1>{this.props.project.name}</h1>
             </Col>
             <Col xs={2} sm={1}>
-              {this.props.project.active ?
+            {(this.props.userPosition == 0 || this.props.userPosition == 1) ? (
+              this.props.project.active ?
                 <IconMenu
                   iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                   anchorOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -98,7 +100,7 @@ export default class ProjectInfo extends React.Component {
                    primaryText="Unfreeze"
                  />
               </IconMenu>
-              }
+            ): null}
             </Col>
           </Row>
             <Chips tags={this.props.project.tags}/>

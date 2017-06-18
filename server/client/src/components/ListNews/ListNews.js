@@ -8,7 +8,8 @@ export default class ListNews extends React.Component {
 
   constructor(props){
     super(props);
-  }
+  };
+
   render() {
 		return (
       <List>
@@ -19,7 +20,6 @@ export default class ListNews extends React.Component {
             style={{margin:10}}
           >
             <ListItem
-            key={news.id}
             secondaryText={
               <Row end="xs">
                 Created by &nbsp;

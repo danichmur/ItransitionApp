@@ -42,15 +42,17 @@ export default class Discussion extends React.Component {
             <Col xs={10}>
               <p>Discussion</p>
             </Col>
-            <Col xs={2}>
-              <IconButton
-                onClick={this.handleOpenAddDiscussion.bind(this)}
-                touch={true}
-                disableTouchRipple={true}
-                tooltip="Add discussion" >
-                <AddFile/>
-              </IconButton>
-            </Col>
+            {(this.props.userPosition == 0 || this.props.userPosition == 1) ? (
+              <Col xs={2}>
+                <IconButton
+                  onClick={this.handleOpenAddDiscussion.bind(this)}
+                  touch={true}
+                  disableTouchRipple={true}
+                  tooltip="Add discussion" >
+                  <AddFile/>
+                </IconButton>
+              </Col>
+            ): null}
           </Row>
           {this.props.discussions.map(discussion => (
 
@@ -76,20 +78,22 @@ export default class Discussion extends React.Component {
                   />
                   </Link>
                 </Col>
-                <Col xs={1}>
-                  <IconButton
-                    value={discussion.id}
-                    style={{
-                      backgroundColor: 'inherit',
-                      backgroundImage: 'url(' + 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-24.png' + ')',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'center',
-                    }}
-                    onTouchTap={this.deleteDiscussion.bind(this)}
+                {(this.props.userPosition == 0 || this.props.userPosition == 1) ?  (
+                  <Col xs={1}>
+                    <IconButton
+                      value={discussion.id}
+                      style={{
+                        backgroundColor: 'inherit',
+                        backgroundImage: 'url(' + 'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_delete_48px-24.png' + ')',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                      }}
+                      onTouchTap={this.deleteDiscussion.bind(this)}
 
-                  >
-                  </IconButton>
-                </Col>
+                    >
+                    </IconButton>
+                  </Col>
+                ): null}
               </Row>
           ))}
         </List>

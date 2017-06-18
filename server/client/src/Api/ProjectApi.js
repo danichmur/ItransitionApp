@@ -40,6 +40,18 @@ function updateProject(projectId,value,userId) {
   .then(Path.checkStatus)
   .then(Path.parseJSON);
 };
+function sendNewProject(data) {
+  return fetch(proxy + '/projects/create', {
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+  })
+  .then(Path.checkStatus)
+  .then(Path.parseJSON);
+};
 
 function deleteProject(projectId) {
   return fetch(proxy + '/projects/' + projectId, {
@@ -51,7 +63,7 @@ function deleteProject(projectId) {
   })
   .then(Path.checkStatus)
   .then(Path.parseJSON);
-}
+};
 
 const ProjectApi = {
   updateProject,
@@ -59,6 +71,7 @@ const ProjectApi = {
   getOneProject,
   getAllProjects,
   getFewProjects,
-  deleteProject
+  deleteProject,
+  sendNewProject
 }
 export default ProjectApi;

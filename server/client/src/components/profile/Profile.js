@@ -1,4 +1,5 @@
 import React from 'react';
+import cryptlib from 'cryptlib';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { List, ListItem } from 'material-ui/List';
 import {FlatButton, TextField} from 'material-ui';
@@ -21,32 +22,62 @@ export default class Profile extends React.Component {
 
   constructor(props) {
     super(props);
-    this.currentUser = localStorage.getItem('userId');
+    this.currentUserId = localStorage.getItem('userId');
     this.state = {
       user: {
         projects:[]
       },
       isDlgOpen: false,
     }
+    let position = localStorage.getItem('position');
+    if(!position) {
+      this.userPosition = false
+    }
+    else {
+      this.userPosition = cryptlib.decrypt(position, '10', '10');
+    }
+    let id = localStorage.getItem('userId');
+    if(!id) {
+      this.userId = false
+    } else {
+      this.userId = cryptlib.decrypt(id, '10', '10');
+    }
   }
+
+  componentWillReceiveProps() {
+    // window.location.reload();
+  };
 
   componentDidMount() {
     UsersApi.getOneUser(this.props.match.params.id)
     .then((data) => {
       this.setState({ user: data} );
     });
-  }
+  };
 
   openChangePhotoDlg(){
     this.setState({  isDlgOpen: !this.state.isDlgOpen })
-  }
+  };
 
   updateUser(data) {
     data.email = this.state.user.email;
     data.projects = this.state.user.projects;
     this.setState({ user: data })
-  }
+  };
 
+  renderEditButton() {
+
+    if (this.props.match.params.id == this.userId || this.userPosition == 0 ) {
+      return (
+        <FlatButton
+          label="Edit profile"
+          onTouchTap={this.openChangePhotoDlg.bind(this)}
+        />
+      );
+    } else {
+      return (null);
+    }
+  }
   render() {
     var sectionStyle = {
       backgroundImage: 'url(' + this.state.user.photo + ')',
@@ -58,10 +89,7 @@ export default class Profile extends React.Component {
           <Col xs={12} sm={3} md={3} lg={3}>
             <Row  id='profile-img' style={sectionStyle}/>
             <Row center="xs">
-              <FlatButton
-                label="Change photo"
-                onTouchTap={this.openChangePhotoDlg.bind(this)}
-              />
+              {this.renderEditButton()}
             </Row>
           </Col>
           <Col xs={12} sm={8} md={6} lg={5}>
@@ -88,8 +116,8 @@ export default class Profile extends React.Component {
         <Row>
           <h1></h1>
         </Row>
-        <Row center="xs">
-          <Col xs={12} sm={11} md={9} lg={8}>
+        <Row >
+          <Col xs={12} smOffset={1} sm={10} mdOffset={2} md={8} lgOffset={2} lg={8}>
             <ListProject projects={this.state.user.projects} />
           </Col>
         </Row>

@@ -20,7 +20,8 @@ export default class DrawerSimpleExample extends React.Component {
             <List>
               <Link
                 to={{
-                  pathname:`/profile/${this.props.user.id}`
+                  pathname:`/profile/${this.props.user.id}`,
+                  state: {hash: true},
                 }}
               >
                 <ListItem className="menu-link"

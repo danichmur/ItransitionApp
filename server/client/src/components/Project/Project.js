@@ -1,4 +1,5 @@
 import React from 'react';
+import cryptlib from 'cryptlib';
 import ProjectInfo from './ProjectInfo/ProjectInfo'
 import Participants from './Users/Participants'
 import Discussions from './Discussions/AllDiscussions'
@@ -25,14 +26,29 @@ export default class AllProjects extends React.Component {
         documents: [],
         discussions: [],
       },
+      access: false,
     }
     this.projectData = null;
+    let position = localStorage.getItem('position');
+    if(!position) {
+      this.userPosition = false
+    }
+    else {
+      this.userPosition = cryptlib.decrypt(position, '10', '10');
+    }
+    let id = localStorage.getItem('userId');
+    if(!id) {
+      this.userId = false
+    } else {
+      this.userId = cryptlib.decrypt(id, '10', '10');
+    }
   };
 
   componentDidMount() {
     ProjectApi.getOneProject(this.props.match.params.id).then(data => {
         this.projectData = data;
-        this.setState({ project: this.projectData });
+        let user = !!data.users.find(user => user.id == this.userId)
+        this.setState({ project: this.projectData, access: user });
     });
   };
 
@@ -99,30 +115,34 @@ export default class AllProjects extends React.Component {
             changeActive={this.changeActive.bind(this)}
             sendChangedData={this.changeInfo.bind(this)}
             project={this.state.project}
+            userPosition={this.userPosition}
           />
           <Participants
             newUsers={this.changeUsers.bind(this)}
             users={this.state.project.users}
             projectActive ={this.state.project.active}
             projectId={this.state.project.id}
+            userPosition={this.userPosition}
           />
         </Row>
-        {this.state.project.active ?
+        {this.state.project.active  ?
+          (this.state.access || this.userPosition == 0) ?
           <Row>
             <Files
               projectId ={this.state.project.id}
               documents={this.state.project.documents}
               addFile={this.addFile.bind(this)}
               removeFile={this.removeFile.bind(this)}
+              userPosition={this.userPosition}
             />
             <Discussions
               discussions={this.state.project.discussions}
               projectId ={this.state.project.id}
               addDiscussion={this.addDiscussion.bind(this)}
               removeDiscuddion={this.removeDiscuddion.bind(this)}
-
+              userPosition={this.userPosition}
             />
-          </Row> : null}
+          </Row> : null : null}
       </Grid>
     );
   }

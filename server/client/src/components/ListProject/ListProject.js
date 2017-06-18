@@ -10,15 +10,10 @@ export default class ListProject extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      projects:[],
       currentUrl: this.props.match,
-    }
+    };
   };
 
-  componentWillReceiveProps() {
-    // if(this.state.currentUrl != this.props.match.params.url)
-
-  }
   render() {
 		return (
       <List>
@@ -29,33 +24,39 @@ export default class ListProject extends React.Component {
             style={{margin:10}}
           >
             <ListItem
+              disabled={!project.active}
               secondaryText={
                 <Row end="xs">
-                <Col xs={12}>
+                  <Col xs={12}>
                     Created by &nbsp;
                     <Link
                       to={{
                         pathname:`/profile/${project.author}`
                       }}
-                    >{project.author }
+                    >
+                      {project.author }
                     </Link>,
                     {" " + project.created_at.split('T')[0]}
                   </Col>
                 </Row>
               }
+              style = {!project.active ? {backgroundColor: '#cde4e8'} : null}
             >
-              <Row>
-                <Link
-                  key={project.id}
-                  to={{
-                    pathname:`/projects/${project.id}`
-                  }}
-                >
-                  <h3>{project.name}</h3>
-                </Link>
+              <Row start="xs">
+                <Col xs={12}>
+                  <Link
+                    key={project.id}
+                    to={{
+                      pathname:`/projects/${project.id}`
+                    }}
+                  >
+                    <h3>{project.name}</h3>
+                    {!project.active ? <p>freezed</p> : null}
+                  </Link>
+                </Col>
               </Row>
               <Divider />
-              <Row>
+              <Row start="xs">
                   <p>{project.description}</p>
               </Row>
               <Row>

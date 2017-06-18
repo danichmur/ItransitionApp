@@ -1,4 +1,5 @@
 import React from 'react';
+import cryptlib from 'cryptlib';
 import Header from './Header';
 import Drawer from './leftDrawer/Drawer';
 import Main from './main/Main';
@@ -45,7 +46,10 @@ export default class Content extends React.Component {
          this.setState({isAuthenticated: false})
        } else {
          this.setState({isAuthenticated: true, user:value})
-         localStorage.setItem('userId', value.id);
+         let userId = cryptlib.encrypt(value.id.toString(), '10', '10')
+         localStorage.setItem('userId', userId);
+         let position = cryptlib.encrypt(value.position.toString(), '10', '10')
+         localStorage.setItem('position', position);
        }});
   };
 
@@ -56,6 +60,7 @@ export default class Content extends React.Component {
   logOut(){
     localStorage.removeItem('token');
     localStorage.removeItem('user_id');
+    localStorage.removeItem('position');
     this.setState({isAuthenticated: !this.state.isAuthenticated});
   };
 
@@ -99,7 +104,6 @@ export default class Content extends React.Component {
     );
   }
   renderContent() {
-    console.log(this.state.isAuthenticated)
     return(
       <div>
         <Header
