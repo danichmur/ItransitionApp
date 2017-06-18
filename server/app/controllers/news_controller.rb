@@ -1,6 +1,10 @@
 class NewsController < ApplicationController
   def index
-    render status: 200, json: News.all.to_json
+    render status: 200, json: News.order(created_at: :desc).to_json
+  end
+  
+  def limit_index
+   render status: 200, json: News.order(created_at: :desc).limit(10).to_json
   end
   
   def show

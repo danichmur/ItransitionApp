@@ -12,5 +12,6 @@ class Tag < ApplicationRecord
       end 
     end
     project.tags = tags
+    return tags
   end
 end

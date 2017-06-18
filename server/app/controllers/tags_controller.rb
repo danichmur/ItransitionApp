@@ -4,7 +4,16 @@ class TagsController < ApplicationController
       Tag.all.to_json(:only => [:value, :id])
   end
   
-  def update
+  def create
+    tags = Tag.update_tags(tags_params)
+    render status: 200, json: tags.to_json(:only => [:value, :id])
+  end
+  
+  def projects
+    tag = Tag.eager_load(:projects).find(params[:tag_id])
+    render status: 200, json: 
+      tag.projects.to_json(
+        include: {:tags => {only: [:id, :value]}})
   end
   
   def tags_on_project

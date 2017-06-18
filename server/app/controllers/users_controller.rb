@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  skip_before_action :check_token, only: [:sign_up, :create]
   
   def index
     render status: 200, json: 
@@ -11,8 +10,9 @@ class UsersController < ApplicationController
   end
   
   def show
-    user = User.find(params[:id])
-    render status: 200, json: user.to_json(:except => :password)
+    user = User.eager_load(:projects).find(params[:id])
+    render status: 200, json: user.to_json(:except => :password, 
+      include: {:projects => {include: :tags}})
   end
   
   def confirm_email

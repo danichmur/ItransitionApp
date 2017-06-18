@@ -1,5 +1,9 @@
 class DocumentsController < ApplicationController
   
+  def index
+  
+  end
+  
   def create
     document = Document.on_project(doc_params)
     render json: {:id => document.id, 
@@ -9,7 +13,7 @@ class DocumentsController < ApplicationController
   def destroy
     project = Project.find(doc_params[:project_id])
     project.documents.delete(doc_params[:id])
-    render status: 200
+    render json: {status: :ok}
   end
   
   def doc_params

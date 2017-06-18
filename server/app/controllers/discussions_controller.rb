@@ -20,7 +20,7 @@ class DiscussionsController < ApplicationController
   def destroy
     project = Project.find(dis_params[:project_id])
     project.discussions.delete(dis_params[:id])
-    render status: 200
+    render json: {status: :ok}
   end
 
   def dis_params

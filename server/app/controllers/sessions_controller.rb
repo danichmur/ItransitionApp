@@ -11,6 +11,15 @@ class SessionsController < ApplicationController
     end
   end
   
+  def check
+    user = User.find_by(authentication_token: params[:authentication_token])
+    if user
+      render json: user.as_json(only: [:id, :position, :name, :photo]), status: :ok
+    else
+      head(:unauthorized)
+    end
+  end
+  
   def destroy
     session[:id] = nil
     render status: :ok

@@ -1,17 +1,22 @@
 class ProjectsController < ApplicationController
-  
-  skip_before_action :check_token, only: [:index]
-  before_action :find_project, only: [:update, :show]
+  before_action :find_project, only: [:update, :show, :destroy]
   
   def index
-    render status: 200, json: Project.eager_load(:tags).all.to_json
+    render status: 200, json: Project.eager_load(:tags).to_json(include: {
+    tags: {only: [:value, :id]}})
+  end
+  
+  def limit_index
+    render status: 200, json: Project.where(active: true).eager_load(:tags).limit(10).to_json(include: {
+    tags: {only: [:value, :id]}})
   end
   
   def update
     if @project.update(project_params)
-      render status: :ok
+      Project.add_news("Project #{@project.name} updated!", @project, params[:user_id])
+      render json: {status: :ok}
     else 
-      render status: :unprocessable_entity
+      render json: {status: :unprocessable_entity}
     end
   end
 
@@ -24,6 +29,12 @@ class ProjectsController < ApplicationController
         :discussions => {:only => [:id, :name, :updated_at]}
       }
     )
+  end
+  
+  def destroy
+     Project.add_news("Project #{@project.name} deleted!", @project, params[:user_id])
+     @project.delete
+     render json: {status: :ok}
   end
   
   def users

@@ -1,8 +1,20 @@
 Rails.application.routes.draw do
 
-  resources :news, :tags
+  resources :news do
+    collection do
+      get :limit_index
+    end
+  end
   
-  resources :sessions
+  resources :tags do
+    get :projects
+  end
+  
+  resources :sessions do
+    collection do
+      put :check
+    end
+  end
   
   resources :users do
     collection do
@@ -25,7 +37,8 @@ Rails.application.routes.draw do
     end
     
     collection do
-      put :update  
+      put :update
+      get :limit_index
     end
     
     resources :tags do
