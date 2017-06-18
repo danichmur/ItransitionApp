@@ -31,14 +31,16 @@ export default class ListProject extends React.Component {
             <ListItem
               secondaryText={
                 <Row end="xs">
-                  Created by &nbsp;
-                  <Link
-                    to={{
-                      pathname:`/profile/${project.author}`
-                    }}
-                  >{project.author }
-                  </Link>,
-                  {" " + project.created_at.split('T')[0]}
+                <Col xs={12}>
+                    Created by &nbsp;
+                    <Link
+                      to={{
+                        pathname:`/profile/${project.author}`
+                      }}
+                    >{project.author }
+                    </Link>,
+                    {" " + project.created_at.split('T')[0]}
+                  </Col>
                 </Row>
               }
             >

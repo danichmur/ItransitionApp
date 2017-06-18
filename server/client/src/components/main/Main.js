@@ -19,12 +19,10 @@ export default class Main extends React.Component {
   componentDidMount() {
     ProjectApi.getFewActiveProjects()
       .then(data => {
-        console.log(data);
         this.setState({projects:data})
       });
     NewsApi.getFewNews()
     .then(data => {
-      console.log(data);
       this.setState({news:data})
     });
   }

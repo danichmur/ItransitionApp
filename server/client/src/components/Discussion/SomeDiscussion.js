@@ -64,7 +64,7 @@ export default class Discussions extends React.Component {
     DiscussionApi.sendNewComment(
       this.props.match.params.id,
       this.state.discussion.id,
-      {body: this.state.newComment.body,user_id: localStorage.getItem('userId')}
+      {body: this.state.newComment.body, user_id: localStorage.getItem('userId')}
     ).then(data => {
       this.state.discussion.comments.push({
           id:data.id,
@@ -73,7 +73,6 @@ export default class Discussions extends React.Component {
           updated_at: data.updated_at,
           userName: this.user.name,
       });
-
       this.setState({messages: this.state.discussion.messages, newComment:{body:''}});
     });
 

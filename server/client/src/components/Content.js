@@ -29,7 +29,7 @@ export default class Content extends React.Component {
     this.state = {
       isAuthenticated: null,
       drawerState: false,
-      user: ''
+      user: {}
     }
     this.user = null;
    }

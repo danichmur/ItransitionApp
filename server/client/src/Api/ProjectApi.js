@@ -35,7 +35,7 @@ function updateProject(projectId,value,userId) {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body:  JSON.stringify(data),
+    body: JSON.stringify(data),
   })
   .then(Path.checkStatus)
   .then(Path.parseJSON);

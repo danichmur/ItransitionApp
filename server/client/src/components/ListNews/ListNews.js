@@ -10,7 +10,6 @@ export default class ListNews extends React.Component {
     super(props);
   }
   render() {
-    console.log(this.props.news)
 		return (
       <List>
         {this.props.news.map(news => (

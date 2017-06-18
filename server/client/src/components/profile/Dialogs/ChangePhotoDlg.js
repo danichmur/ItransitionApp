@@ -14,7 +14,7 @@ import FileApi from '../../../Api/FileApi';
 const CLOUDINARY_UPLOAD_PRESET = 'jqeq6aiv';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/luxorik/upload';
 
-export default class AddFileDlg extends React.Component {
+export default class ChangePhotoDlg extends React.Component {
 
   constructor(props) {
     super(props);
@@ -68,7 +68,7 @@ export default class AddFileDlg extends React.Component {
         }
     });
   }
-  
+
   render() {
 		return (
       <Dialog

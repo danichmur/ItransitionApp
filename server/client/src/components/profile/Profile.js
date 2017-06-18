@@ -4,7 +4,7 @@ import { List, ListItem } from 'material-ui/List';
 import {FlatButton, TextField} from 'material-ui';
 import UsersApi from '../../Api/UsersApi';
 import ListProject from '../ListProject/ListProject';
-
+import ChangePhotoDlg from './Dialogs/ChangePhotoDlg';
 import './Profile.scss';
 
 const headerStyle = {
@@ -25,7 +25,8 @@ export default class Profile extends React.Component {
     this.state = {
       user: {
         projects:[]
-      }
+      },
+      isDlgOpen: false,
     }
   }
 
@@ -35,6 +36,10 @@ export default class Profile extends React.Component {
       this.setState({user:data})
     });
   }
+
+openChangePhotoDlg(){
+}
+
 
   render() {
     var sectionStyle = {
@@ -48,36 +53,44 @@ export default class Profile extends React.Component {
           <Col xs={12} sm={3} md={3} lg={3}>
             <Row  id='profile-img' style={sectionStyle}/>
             <Row center="xs">
-              <FlatButton label="Change photo"  />
+              <FlatButton
+                label="Change photo"
+              />
             </Row>
           </Col>
-          <Col xs={12} sm={8} md={6} lg={3}>
-            <Row>
+          <Col xs={12} sm={8} md={6} lg={5}>
+            <Row center="xs" start="sm">
               <ListItem style={nameStyle} primaryText={this.state.user.name} />
             </Row>
-            <Row>
-
+            <Row center="xs" start="sm">
               <Col>
                 <ListItem primaryText={this.state.user.nickname} />
               </Col>
             </Row>
-            <Row>
+            <Row center="xs" start="sm">
               <Col>
                 <ListItem primaryText={this.state.user.email} />
               </Col>
             </Row>
-            <Row>
+            <Row center="xs" start="sm">
               <Col>
                 <ListItem primaryText={this.state.user.position} />
               </Col>
             </Row>
           </Col>
-          <Col xs={12} sm={11} md={9} lg={6}>
-            <Row start="xs">
-              <ListProject projects={this.state.user.projects} />
-            </Row>
+        </Row>
+        <Row>
+          <h1></h1>
+        </Row>
+        <Row center="xs">
+          <Col xs={12} sm={11} md={9} lg={8}>
+            <ListProject projects={this.state.user.projects} />
           </Col>
         </Row>
+        <ChangePhotoDlg
+          open={this.state.isDlgOpen}
+          closeDlg={this.openChangePhotoDlg.bind(this)}
+        />
       </Grid>
     );
   }

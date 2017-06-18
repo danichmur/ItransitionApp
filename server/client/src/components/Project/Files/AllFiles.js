@@ -41,6 +41,14 @@ export default class Files extends React.Component {
   render() {
 		return (
       <Col className="backgroundStyle" xs={12} sm={6} md={6} lg={6}>
+      <IconButton
+        tooltip="add file"
+        touch={true}
+
+
+      >
+      <AddFile />
+      </IconButton>
         <List>
           <Row>
             <Col xs={10}>
@@ -81,7 +89,8 @@ export default class Files extends React.Component {
                     backgroundPosition: 'center',
                   }}
                   onTouchTap={this.downLoadFile.bind(this)}
-
+                  href="http://res.cloudinary.com/luxorik/raw/upload/v1497775991/mtlgzxken4jdg8nnykoo.js"
+                  download="fesfse"
                 >
                 </IconButton>
               </Col>

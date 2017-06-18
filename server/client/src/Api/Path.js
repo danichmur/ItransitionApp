@@ -16,7 +16,8 @@ function parseJSON(response) {
   if(response == 401) {
     return response;
   }
-  return response.json();
+  let data = response.json()
+  return data;
 };
 
 const Path = {
