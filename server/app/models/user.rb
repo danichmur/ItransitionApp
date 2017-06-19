@@ -24,13 +24,12 @@ class User < ApplicationRecord
     begin
       user.save
     rescue
-      return {:message => "Nickname has already been taken"}, status: 406
+      return {message: "Nickname has already been taken"}, status: 406
     end
-    p user
     if user.id
-      return {:user_saved => "ok"}, status: 200
+      return {user_saved: "ok"}, status: 200
     else
-      return {:message => "Email has already been taken"}, status: 406
+      return {message: "Email has already been taken"}, status: 406
     end
   end
 end

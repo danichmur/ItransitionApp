@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170617102908) do
+ActiveRecord::Schema.define(version: 20170619093208) do
 
   create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text "body"
@@ -43,18 +43,18 @@ ActiveRecord::Schema.define(version: 20170617102908) do
   create_table "news", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "header"
     t.text "body"
-    t.string "author"
+    t.integer "author"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "projects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
-    t.string "author"
     t.boolean "active"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "author"
   end
 
   create_table "projects_tags", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -92,8 +92,8 @@ ActiveRecord::Schema.define(version: 20170617102908) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "authentication_token", limit: 30
-    t.string "photo"
-    t.integer "position"
+    t.string "photo", default: "http://res.cloudinary.com/dwnv5pfk5/image/upload/v1497449504/no-ava-300x300_ilo9ah.png"
+    t.integer "position", default: 2
     t.string "nickname"
     t.string "name"
     t.boolean "email_confirmed"

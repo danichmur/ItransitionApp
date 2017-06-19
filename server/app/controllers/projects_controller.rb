@@ -2,13 +2,19 @@ class ProjectsController < ApplicationController
   before_action :find_project, only: [:update, :show, :destroy]
   
   def index
-    render status: 200, json: Project.eager_load(:tags).to_json(include: {
+    render status: 200, json: Project.eager_load(:tags).order(created_at: :desc).to_json(include: {
     tags: {only: [:value, :id]}})
   end
   
   def limit_index
     render status: 200, json: Project.where(active: true).eager_load(:tags).limit(10).to_json(include: {
     tags: {only: [:value, :id]}})
+  end
+  
+  def create
+    project = Project.create(project_params)
+    Project.add_news("Project #{project.name} created!", project, params[:author])
+    render json: {id: project.id, created_at: project.created_at}, status: 200
   end
   
   def update
@@ -23,10 +29,10 @@ class ProjectsController < ApplicationController
   def show
     render status: 200, json: @project.to_json(:include => 
       {
-        :users       => {:only => [:nickname, :id, :photo]},
-        :tags        => {:only => [:value, :id]},
-        :documents   => {:only => [:id, :name, :url, :updated_at]},
-        :discussions => {:only => [:id, :name, :updated_at]}
+        users:       {only: [:nickname, :id, :photo]},
+        tags:        {only: [:value, :id]},
+        documents:   {only: [:id, :name, :url, :updated_at]},
+        discussions: {only: [:id, :name, :updated_at]}
       }
     )
   end
@@ -48,6 +54,6 @@ class ProjectsController < ApplicationController
   end
   
   def project_params
-    params.require(:project).permit(:name, :active, :description, :active)
+    params.require(:project).permit(:name, :active, :description, :author)
   end
 end
