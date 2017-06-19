@@ -64,7 +64,7 @@ export default class AddProjectDlg extends React.Component {
     ProjectApi.sendNewProject({
       name: this.state.projectName,
       description: this.state.projectDescription,
-      user_id: thip.props.userId,
+      user_id: this.props.userId,
     }).then(value => {
       console.log(value);
       TagsApi.sendNewTags(value.id, this.state.tags)

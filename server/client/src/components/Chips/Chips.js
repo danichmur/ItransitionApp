@@ -34,8 +34,7 @@ export default class Chips extends React.Component {
       this.state.redirect = false;
       return <Redirect push to={{
         pathname:`/tags/${this.state.tagId}/allprojects`,
-        state: this.state.redirect
-
+        state: {id: `${this.state.tagId}`}
       }}
 
       />;

@@ -58,6 +58,7 @@ export default class AllProjects extends React.Component {
             <FloatingActionButton
               style={{
                 position: 'fixed',
+                top: '20%',
                 left: '85%'
               }}
               onTouchTap={this.openDlg.bind(this)}

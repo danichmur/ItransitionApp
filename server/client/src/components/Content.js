@@ -12,6 +12,7 @@ import Project from './Project/Project';
 import SomeDiscussion from './Discussion/SomeDiscussion';
 import News from './news/News';
 import AccessApi from '../Api/AccessApi';
+import Paper from 'material-ui/Paper';
 
 import NoMatch from './NoMatch';
 import {
@@ -105,14 +106,14 @@ export default class Content extends React.Component {
   }
   renderContent() {
     return(
-      <div>
+      <Paper style={{width:'100%'}}>
         <Header
           isAuthenticated={this.state.isAuthenticated}
           logOut={this.logOut.bind(this)}
           showDrawer={this.leftButtonTouch.bind(this)}
         />
           { this.state.isAuthenticated ? this.renderPrivateRoute() : this.renderPublicRoute() }
-      </div>
+      </Paper>
     )
   }
   render() {

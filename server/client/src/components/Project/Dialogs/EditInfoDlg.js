@@ -100,7 +100,7 @@ export default class EditInfoDlg extends React.Component {
     if (this.state.newTag != '') {
       let tags = !!this.state.chips.find(tag => tag.value == this.state.newTag);
       if (!tags) {
-        this.state.tags.push({
+        this.state.chips.push({
           id: -1 - this.state.autoComlete.length ,
           value: this.state.newTag
         });

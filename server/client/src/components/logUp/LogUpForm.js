@@ -11,7 +11,6 @@ import {
 } from 'material-ui';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import AccessApi from '../../Api/AccessApi';
-import './LogUpForm.scss';
 
 export default class LogUpForm extends React.Component {
 
@@ -103,12 +102,6 @@ export default class LogUpForm extends React.Component {
     AccessApi.login(user)
    .then(value => {
      localStorage.setItem('token', value.authentication_token);
-     this.props.setUser({
-       id:value.id,
-       name: value.name,
-       nickName: value.nickname,
-       position: value.position,
-     });
      window.location.reload();
    });
   }

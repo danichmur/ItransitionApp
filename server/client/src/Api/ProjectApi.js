@@ -41,7 +41,7 @@ function updateProject(projectId,value,userId) {
   .then(Path.parseJSON);
 };
 function sendNewProject(data) {
-  return fetch(proxy + '/projects/create', {
+  return fetch(proxy + '/projects', {
     method: 'post',
     headers: {
       'Accept': 'application/json',

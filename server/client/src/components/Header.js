@@ -15,8 +15,7 @@ export default class Header extends React.Component {
       appBar:{
           position:'fixed',
            top: 0,
-           color:'red'
-      },
+            },
       iconStyle: {
         width: 40,
         height: 40,

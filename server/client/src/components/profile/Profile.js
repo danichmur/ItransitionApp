@@ -29,6 +29,7 @@ export default class Profile extends React.Component {
       },
       isDlgOpen: false,
     }
+    this.willUptate = null;
     let position = localStorage.getItem('position');
     if(!position) {
       this.userPosition = false
@@ -51,8 +52,14 @@ export default class Profile extends React.Component {
   componentDidMount() {
     UsersApi.getOneUser(this.props.match.params.id)
     .then((data) => {
-      this.setState({ user: data} );
+      this.setState({ user: data });
     });
+    this.willUptate = this.props.location.key;
+  };
+
+  componentDidUpdate() {
+    this.props.location.key != this.willUptate ? window.location.reload() : null;
+
   };
 
   openChangePhotoDlg(){
@@ -108,7 +115,7 @@ export default class Profile extends React.Component {
             </Row>
             <Row center="xs" start="sm">
               <Col>
-                <ListItem primaryText={this.state.user.position} />
+                <ListItem primaryText={<span>{this.state.user.position}</span>} />
               </Col>
             </Row>
           </Col>

@@ -32,6 +32,10 @@ const blackBaseTheme = {
     pickerHeaderColor: fade(fullWhite, 0.12),
     clockCircleColor: fade(fullWhite, 0.12),
   },
+  containerFluid:{
+    color: 'red',
+    height:'400px'
+  }
 }
 const lightBaseTheme = {
   fontFamily: 'Roboto, sans-serif',
@@ -55,7 +59,7 @@ const lightBaseTheme = {
   },
 
 };
-const THEME = getMuiTheme(lightBaseTheme);
+const THEME = getMuiTheme(blackBaseTheme);
 
 export default class App extends React.Component {
 	render() {

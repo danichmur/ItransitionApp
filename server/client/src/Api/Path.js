@@ -1,4 +1,4 @@
-const proxy = 'http://4716f05b.ngrok.io';
+const proxy = 'http://localhost:3005';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {

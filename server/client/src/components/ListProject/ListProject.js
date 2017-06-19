@@ -40,7 +40,7 @@ export default class ListProject extends React.Component {
                   </Col>
                 </Row>
               }
-              style = {!project.active ? {backgroundColor: '#cde4e8'} : null}
+              style = {!project.active ? {backgroundColor: '#d3d7d8'} : null}
             >
               <Row start="xs">
                 <Col xs={12}>
@@ -51,8 +51,8 @@ export default class ListProject extends React.Component {
                     }}
                   >
                     <h3>{project.name}</h3>
-                    {!project.active ? <p>freezed</p> : null}
                   </Link>
+                  {!project.active ? <p>freezed</p> : null}
                 </Col>
               </Row>
               <Divider />
