@@ -2,18 +2,15 @@ class ProjectsController < ApplicationController
   before_action :find_project, only: [:update, :show, :destroy]
   
   def index
-    render status: 200, json: Project.eager_load(:tags).order(created_at: :desc).to_json(include: {
-    tags: {only: [:value, :id]}})
+    render status: 200, json: Project.all_in_json
   end
   
   def limit_index
-    render status: 200, json: Project.where(active: true).eager_load(:tags).limit(10).to_json(include: {
-    tags: {only: [:value, :id]}})
+    render status: 200, json: Project.limit_in_json
   end
   
   def create
-    project = Project.create(project_params)
-    Project.add_news("Project #{project.name} created!", project, params[:author])
+    project = Project.new_project(project_params)
     render json: {id: project.id, created_at: project.created_at}, status: 200
   end
   
@@ -46,7 +43,7 @@ class ProjectsController < ApplicationController
   def users
     project = Project.find(params[:project_id])
     render status: 200, json: project.users.
-      to_json(:only => [:id, :name, :nickname, :email, :position, :photo])
+      to_json(only: [:id, :name, :nickname, :email, :position, :photo])
   end
     
   def find_project
