@@ -1,14 +1,25 @@
 import React from 'react';
-import { Drawer, Avatar, List, ListItem } from 'material-ui';
+import { Drawer, Avatar, List, ListItem, Toggle } from 'material-ui';
 import { Grid,Row,Col } from 'react-flexbox-grid';
 import { Link } from 'react-router-dom';
 import './Drawer.scss';
 
 export default class DrawerSimpleExample extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.toggled = false;
+  }
+
   handleClose() {
     this.props.drawerClose();
   }
+
+  changeTheme(data) {
+    this.toggled = !this.toggled;
+    this.props.changeTheme(this.toggled);
+  }
+
   render() {
     return (
       <div>
@@ -56,10 +67,16 @@ export default class DrawerSimpleExample extends React.Component {
               </Row>
             </ListItem>
           </Link>
-            <ListItem className="menu-link"
-                      onTouchTap={this.handleClose.bind(this)}>
-              <Row center="xs">
-                <Col xs={12}>Settings </Col>
+            <ListItem
+              className="menu-link"
+              onTouchTap={this.handleClose.bind(this)}
+            >
+              <Row>
+                <Col xs={4}>Light</Col>
+                <Col xs={4}>
+                  <Toggle toggled={this.toggled} onToggle={this.changeTheme.bind(this)}/>
+                </Col>
+                <Col xs={4}>Dark </Col>
               </Row>
             </ListItem>
           </List>

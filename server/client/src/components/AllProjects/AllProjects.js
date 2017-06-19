@@ -41,12 +41,11 @@ export default class AllProjects extends React.Component {
   }
 
   addProject(data) {
-    this.state.projects.push(data);
+    this.state.projects.unshift(data);
     this.setState({projects: this.state.projects});
   }
 
   render() {
-    this.state.projects.sort(project => project.created_at);
     const { projects } = this.state;
 		return (
       <Grid fluid>

@@ -1,4 +1,5 @@
 import React from 'react';
+import cryptlib from 'cryptlib';
 import {
   Divider,
   Avatar,
@@ -32,6 +33,7 @@ export default class Discussions extends React.Component {
       },
       access: false,
     }
+    let position = localStorage.getItem('position');
     if(!position) {
       this.userPosition = false
     }
@@ -57,7 +59,7 @@ export default class Discussions extends React.Component {
     UsersApi.getAllProjectUser(this.props.match.params.id)
       .then(data => {
         ;
-        this.user = data.find(user => user.id == id);
+        this.user = data.find(user => user.id == this.userId);
         let user = !!data.find(user => user.id == this.userId)
         this.setState({ users: data, access: user });
       });
@@ -79,12 +81,12 @@ export default class Discussions extends React.Component {
     DiscussionApi.sendNewComment(
       this.props.match.params.id,
       this.state.discussion.id,
-      {body: this.state.newComment.body, user_id: localStorage.getItem('userId')}
+      {body: this.state.newComment.body, user_id: this.userId}
     ).then(data => {
       this.state.discussion.comments.push({
           id:data.id,
           body: this.state.newComment.body,
-          user_id:this.user.id,
+          user_id:this.userId,
           updated_at: data.updated_at,
           userName: this.user.name,
       });
@@ -94,7 +96,8 @@ export default class Discussions extends React.Component {
   };
 
   renderComment(comment){
-    var user = this.state.users.find(user => user.id == comment.user_id);
+    let user = this.state.users.find(user => user.id == comment.user_id);
+    console.log(this.state.discussion.comments)
     return(
       <div className="news" key={comment.id}>
         <Row>

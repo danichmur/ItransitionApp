@@ -69,6 +69,10 @@ export default class Content extends React.Component {
     this.checkStatus();
   }
 
+  changeTheme(data) {
+    this.props.changeTheme(data);
+  }
+
   renderPublicRoute() {
     return(
       <div>
@@ -90,6 +94,7 @@ export default class Content extends React.Component {
           user={this.state.user}
           drawerClose={this.leftButtonTouch.bind(this)}
           drawerState={this.state.drawerState}
+          changeTheme={this.changeTheme.bind(this)}
         />
         <Switch>
           <Route path='/main'  component={Main} />
@@ -106,7 +111,12 @@ export default class Content extends React.Component {
   }
   renderContent() {
     return(
-      <Paper style={{width:'100%'}}>
+      <Paper style={{
+        width:'100%',
+        minHeight: window.innerHeight
+
+        }}
+      >
         <Header
           isAuthenticated={this.state.isAuthenticated}
           logOut={this.logOut.bind(this)}

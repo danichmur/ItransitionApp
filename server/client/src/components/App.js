@@ -59,14 +59,24 @@ const lightBaseTheme = {
   },
 
 };
-const THEME = getMuiTheme(blackBaseTheme);
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      theme: getMuiTheme(lightBaseTheme)
+    }
+  }
+  changeTheme(data) {
+    data ? this.state.theme = getMuiTheme(blackBaseTheme) :
+      this.state.theme = getMuiTheme(lightBaseTheme);
+    this.setState({ theme: this.state.theme })
+  }
 	render() {
 		return (
 			<div>
-				<MuiThemeProvider muiTheme={THEME}>
-					<Content/>
+				<MuiThemeProvider muiTheme={this.state.theme}>
+					<Content changeTheme={this.changeTheme.bind(this)}/>
 				</MuiThemeProvider>
 			</div>
 		);

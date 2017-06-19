@@ -3,7 +3,9 @@ import {
   Dialog,
   FlatButton,
   RaisedButton,
-  Divider
+  Divider,
+  SelectField,
+  MenuItem
 }  from 'material-ui';
 import { Row,Col } from 'react-flexbox-grid';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
@@ -28,6 +30,7 @@ export default class ChangePhotoDlg extends React.Component {
       uploadedFileCloudinaryUrl: '',
       name: '',
       nickname: '',
+      selectValue: ''
     };
     this.user = {
 
@@ -38,6 +41,7 @@ export default class ChangePhotoDlg extends React.Component {
     if (!this.props.open) {
       this.state.name = this.props.userInfo.name;
       this.state.nickname = this.props.userInfo.nickname;
+      this.state.selectValue = this.props.userInfo.position;
     } else {
       this.user = {
         name: '',
@@ -59,6 +63,11 @@ export default class ChangePhotoDlg extends React.Component {
     const value = e.target.value;
     this.setState({nickname: e.target.value})
   };
+
+  handleChangeSelect(e) {
+      this.setState({ selectValue: e });
+  }
+
 
   onImageDrop(files) {
     this.setState({
@@ -128,19 +137,29 @@ export default class ChangePhotoDlg extends React.Component {
           errorMessages={['this field is required']}
         />
         <Row>
-          <Col xs={12} sm={6}>
-            <Dropzone
-              multiple={true}
-              onDrop={this.onImageDrop.bind(this)}>
-              <p>Drop an image or click to select a file to upload.</p>
-            </Dropzone>
-          </Col>
-          <Col xs={12} sm={6}>
-              {this.state.uploadedFileCloudinaryUrl === '' ? null : (
-                <img src={this.state.uploadedFileCloudinaryUrl} />
-              )}
-          </Col>
-        </Row>
+          <SelectField
+            floatingLabelText="Position"
+            value={this.state.selectValue}
+            onChange={this.handleChangeSelect.bind(this)}
+          >
+           <MenuItem value={1} primaryText="Manager" />
+           <MenuItem value={2} primaryText="Programmer" />
+         </SelectField>
+         </Row>
+      <Row>
+        <Col xs={12} sm={6}>
+          <Dropzone
+            multiple={true}
+            onDrop={this.onImageDrop.bind(this)}>
+            <p>Drop an image or click to select a file to upload.</p>
+          </Dropzone>
+        </Col>
+        <Col xs={12} sm={6}>
+            {this.state.uploadedFileCloudinaryUrl === '' ? null : (
+              <img src={this.state.uploadedFileCloudinaryUrl} />
+            )}
+        </Col>
+      </Row>
         <RaisedButton
           label="Edit"
           disableTouchRipple={true}

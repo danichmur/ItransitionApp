@@ -64,7 +64,8 @@ export default class AddProjectDlg extends React.Component {
     ProjectApi.sendNewProject({
       name: this.state.projectName,
       description: this.state.projectDescription,
-      user_id: this.props.userId,
+      author: this.props.userId,
+      active: true,
     }).then(value => {
       console.log(value);
       TagsApi.sendNewTags(value.id, this.state.tags)
@@ -74,11 +75,11 @@ export default class AddProjectDlg extends React.Component {
           name: this.state.projectName,
           description: this.state.projectDescription,
           tags: tags,
-          active: false,
+          active: true,
           created_at: value.created_at,
-          user_id: thip.props.userId,
+          user_id: this.props.userId,
         })
-        this.handleCloseEditInfo();
+        this.handleCloseDlg();
       });
     });
   };

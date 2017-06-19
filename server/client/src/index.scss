@@ -1,6 +1,8 @@
 body {
 	margin: 0;
+	height: 100%;
 }
+
 .container-fluid {
   margin-top: 64px;
 }
@@ -9,10 +11,13 @@ body {
 	color: white;
 }
 
+
+
 .creator {
 	font-size: 13px;
 	font-weight: 100;
 }
+
 .was-created {
 	font-size: 13px;
 	font-weight: lighter;
