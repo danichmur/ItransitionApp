@@ -64,13 +64,16 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      theme: getMuiTheme(lightBaseTheme)
+      theme: null
     }
   }
   changeTheme(data) {
     data ? this.state.theme = getMuiTheme(blackBaseTheme) :
       this.state.theme = getMuiTheme(lightBaseTheme);
     this.setState({ theme: this.state.theme })
+  }
+  componentDidMount() {
+    this.changeTheme(localStorage.getItem('theme') == 'true');
   }
 	render() {
 		return (

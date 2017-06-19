@@ -42,12 +42,7 @@ export default class ChangePhotoDlg extends React.Component {
       this.state.name = this.props.userInfo.name;
       this.state.nickname = this.props.userInfo.nickname;
       this.state.selectValue = this.props.userInfo.position;
-    } else {
-      this.user = {
-        name: '',
-        nickname: ''
-      };
-    }
+    } 
   };
 
   handleCloseDlg() {

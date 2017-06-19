@@ -17,6 +17,7 @@ export default class DrawerSimpleExample extends React.Component {
 
   changeTheme(data) {
     this.toggled = !this.toggled;
+    localStorage.setItem('theme', this.toggled)
     this.props.changeTheme(this.toggled);
   }
 
@@ -69,12 +70,11 @@ export default class DrawerSimpleExample extends React.Component {
           </Link>
             <ListItem
               className="menu-link"
-              onTouchTap={this.handleClose.bind(this)}
             >
               <Row>
                 <Col xs={4}>Light</Col>
                 <Col xs={4}>
-                  <Toggle toggled={this.toggled} onToggle={this.changeTheme.bind(this)}/>
+                  <Toggle toggled={localStorage.getItem('theme') == 'true'} onToggle={this.changeTheme.bind(this)}/>
                 </Col>
                 <Col xs={4}>Dark </Col>
               </Row>

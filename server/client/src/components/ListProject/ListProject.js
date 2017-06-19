@@ -40,7 +40,7 @@ export default class ListProject extends React.Component {
                   </Col>
                 </Row>
               }
-              style = {!project.active ? {backgroundColor: '#d3d7d8'} : null}
+              style = {!project.active ? {backgroundColor: 'rgba(87, 115, 121, 0.5)'} : null}
             >
               <Row start="xs">
                 <Col xs={12}>

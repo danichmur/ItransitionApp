@@ -23,6 +23,7 @@ export default class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.currentUserId = localStorage.getItem('userId');
+    this.positions = {0: 'admin', 1: 'manager', 2: 'developer'};
     this.state = {
       user: {
         projects:[]
@@ -35,7 +36,8 @@ export default class Profile extends React.Component {
       this.userPosition = false
     }
     else {
-      this.userPosition = cryptlib.decrypt(position, '10', '10');
+      console.log()
+      this.userPosition = this.positions[cryptlib.decrypt(position, '10', '10')];
     }
     let id = localStorage.getItem('userId');
     if(!id) {
@@ -52,13 +54,25 @@ export default class Profile extends React.Component {
   componentDidMount() {
     UsersApi.getOneUser(this.props.match.params.id)
     .then((data) => {
-      this.setState({ user: data });
+      let user = data;
+      console.log(data)
+      user.position = this.positions[data.position];
+      this.setState({ user: user });
     });
     this.willUptate = this.props.location.key;
   };
 
   componentDidUpdate() {
-    this.props.location.key != this.willUptate ? window.location.reload() : null;
+    if (this.props.location.key != this.willUptate) {
+      UsersApi.getOneUser(this.props.match.params.id)
+      .then((data) => {
+        let user = data;
+        console.log(data)
+        user.position = this.positions[data.position];
+        this.setState({ user: user });
+      });
+    this.willUptate = this.props.location.key;
+    };
 
   };
 
@@ -74,7 +88,7 @@ export default class Profile extends React.Component {
 
   renderEditButton() {
 
-    if (this.props.match.params.id == this.userId || this.userPosition == 0 ) {
+    if (this.props.match.params.id == this.userId || this.userPosition == 'admin' ) {
       return (
         <FlatButton
           label="Edit profile"
@@ -115,7 +129,11 @@ export default class Profile extends React.Component {
             </Row>
             <Row center="xs" start="sm">
               <Col>
-                <ListItem primaryText={<span>{this.state.user.position}</span>} />
+                <ListItem
+                  primaryText={
+                    <span>{this.positions[this.state.user.position]}</span>
+                  }
+                />
               </Col>
             </Row>
           </Col>

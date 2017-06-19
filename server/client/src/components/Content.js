@@ -43,6 +43,7 @@ export default class Content extends React.Component {
   checkStatus() {
      var response = AccessApi.checkSession(localStorage.getItem("token"))
      .then(value => {
+       console.log(value);
        if (value == 401) {
          this.setState({isAuthenticated: false})
        } else {
@@ -54,9 +55,6 @@ export default class Content extends React.Component {
        }});
   };
 
-  setUser(data) {
-    this.user = data;
-  };
 
   logOut(){
     localStorage.removeItem('token');
@@ -78,10 +76,8 @@ export default class Content extends React.Component {
       <div>
         <Switch>
           <Route path='/main'  component={Main} />
-          <Route path='/logIn' component={LogInForm}
-          />
-          <Route path='/logUp' component={LogUpForm}
-          />
+          <Route path='/logIn' component={LogInForm} />
+          <Route path='/logUp' component={LogUpForm} />
           <Redirect from="*" to='/logIn' />
         </Switch>
       </div>

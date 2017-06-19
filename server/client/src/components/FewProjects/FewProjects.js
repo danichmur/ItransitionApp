@@ -23,7 +23,11 @@ export default class FewProject extends React.Component {
   };
 
   componentDidUpdate() {
-    this.props.location.key != this.willUptate ? window.location.reload() : null;
+    if (this.props.location.key != this.willUptate) {
+      ProjectApi.getFewProjects(this.props.match.params.id)
+        .then(data => this.setState({ projects: data }));
+    };
+    this.willUptate = this.props.location.key;
   }
   render() {
     const { projects } = this.state;
