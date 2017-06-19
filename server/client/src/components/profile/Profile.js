@@ -55,9 +55,8 @@ export default class Profile extends React.Component {
     UsersApi.getOneUser(this.props.match.params.id)
     .then((data) => {
       let user = data;
-      console.log(data)
       user.position = this.positions[data.position];
-      this.setState({ user: user });
+      this.setState({ user: data });
     });
     this.willUptate = this.props.location.key;
   };
@@ -67,7 +66,6 @@ export default class Profile extends React.Component {
       UsersApi.getOneUser(this.props.match.params.id)
       .then((data) => {
         let user = data;
-        console.log(data)
         user.position = this.positions[data.position];
         this.setState({ user: user });
       });
@@ -100,6 +98,7 @@ export default class Profile extends React.Component {
     }
   }
   render() {
+    console.log();
     var sectionStyle = {
       backgroundImage: 'url(' + this.state.user.photo + ')',
       height:"200px"
@@ -131,7 +130,7 @@ export default class Profile extends React.Component {
               <Col>
                 <ListItem
                   primaryText={
-                    <span>{this.positions[this.state.user.position]}</span>
+                    <span>{this.state.user.position}</span>
                   }
                 />
               </Col>

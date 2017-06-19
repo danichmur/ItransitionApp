@@ -30,7 +30,7 @@ export default class ChangePhotoDlg extends React.Component {
       uploadedFileCloudinaryUrl: '',
       name: '',
       nickname: '',
-      selectValue: ''
+      position: ''
     };
     this.user = {
 
@@ -41,8 +41,8 @@ export default class ChangePhotoDlg extends React.Component {
     if (!this.props.open) {
       this.state.name = this.props.userInfo.name;
       this.state.nickname = this.props.userInfo.nickname;
-      this.state.selectValue = this.props.userInfo.position;
-    } 
+      this.state.position = this.props.userInfo.position;
+    }
   };
 
   handleCloseDlg() {
@@ -60,7 +60,8 @@ export default class ChangePhotoDlg extends React.Component {
   };
 
   handleChangeSelect(e) {
-      this.setState({ selectValue: e });
+    console.log(e.target);
+    this.setState({ position: e });
   }
 
 
@@ -131,16 +132,18 @@ export default class ChangePhotoDlg extends React.Component {
           validators={['required']}
           errorMessages={['this field is required']}
         />
-        <Row>
-          <SelectField
-            floatingLabelText="Position"
-            value={this.state.selectValue}
-            onChange={this.handleChangeSelect.bind(this)}
-          >
-           <MenuItem value={1} primaryText="Manager" />
-           <MenuItem value={2} primaryText="Programmer" />
-         </SelectField>
-         </Row>
+        {this.props.userInfo.position != 'admin' ? null : (
+          <Row>
+            <SelectField
+              floatingLabelText="Position"
+              value={this.state.position}
+              onChange={this.handleChangeSelect.bind(this)}
+            >
+              <MenuItem value={1} primaryText="Manager" />
+              <MenuItem value={2} primaryText="Programmer" />
+            </SelectField>
+          </Row>
+        )}
       <Row>
         <Col xs={12} sm={6}>
           <Dropzone

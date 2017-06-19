@@ -67,7 +67,6 @@ export default class AddProjectDlg extends React.Component {
       author: this.props.userId,
       active: true,
     }).then(value => {
-      console.log(value);
       TagsApi.sendNewTags(value.id, this.state.tags)
       .then(tags => {
         this.props.sendData({
@@ -89,7 +88,7 @@ export default class AddProjectDlg extends React.Component {
       let tags = !!this.state.tags.find(tag => tag.value == this.state.newTag);
       if (!tags) {
         this.state.tags.push({
-          id:this.state.tags + 10000000,
+          id: this.state.tags.length + 1,
           value: this.state.newTag
         });
         this.setState({
@@ -104,7 +103,7 @@ export default class AddProjectDlg extends React.Component {
   };
 
   deleteTag(id) {
-    const tagsToDelete = this.state.tag.map((chip) => chip.id).indexOf(id);
+    const tagsToDelete = this.state.tags.map((tag) => tag.id).indexOf(id);
     this.state.tags.splice(tagsToDelete, 1);
     this.setState({chips: this.state.tags});
   };

@@ -43,7 +43,6 @@ export default class Content extends React.Component {
   checkStatus() {
      var response = AccessApi.checkSession(localStorage.getItem("token"))
      .then(value => {
-       console.log(value);
        if (value == 401) {
          this.setState({isAuthenticated: false})
        } else {
